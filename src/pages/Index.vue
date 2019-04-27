@@ -13,12 +13,12 @@
       </q-card-section>
       <q-card-section class="q-gutter-sm">
         <div>话费充值</div>
-        <q-btn v-for="{id, value} in skus.phone" @click="sku=id" :key="id" :outline="id!=sku" color="primary"
+        <q-btn v-for="{id, value} in skus.phone" @click="selectedSku=id" :key="id" :outline="id!=selectedSku" color="primary"
           :label="value + '元'" />
       </q-card-section>
       <q-card-section class="q-gutter-sm">
         <div>流量充值</div>
-        <q-btn v-for="{id, value} in skus.data" @click="sku=id" :key="id" :outline="id!=sku" color="primary"
+        <q-btn v-for="{id, value} in skus.data" @click="selectedSku=id" :key="id" :outline="id!=selectedSku" color="primary"
           class="btn-fixed-width" :label="dataLabel(value)" />
       </q-card-section>
     </q-card>
@@ -50,9 +50,18 @@ export default {
           { id: 'dt-0.5', value: 0.5 }
         ]
       },
-      sku: 'ph-100',
 
       token: 'eth'
+    }
+  },
+  computed: {
+    selectedSku: {
+      get () {
+        return this.$store.state.sku.selected
+      },
+      set (val) {
+        this.$store.commit('sku/updateSelectedSku', val)
+      }
     }
   },
   methods: {
