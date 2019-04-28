@@ -2,17 +2,6 @@
   <q-layout view="lHh Lpr lFf">
     <q-header reveal elevated>
       <q-toolbar>
-        <!--
-        <q-btn
-          flat
-          dense
-          round
-          @click="leftDrawerOpen = !leftDrawerOpen"
-          aria-label="Menu"
-        >
-          <q-icon name="menu" />
-        </q-btn>
-        -->
         <q-toolbar-title class="row justify-center">
           <span>LITE<b>X</b> Store</span>
         </q-toolbar-title>
@@ -25,29 +14,15 @@
     </q-header>
     <q-footer>
       <q-toolbar class="bg-secondary text-white">
-        <q-btn-dropdown stretch flat label="选择币种">
-          <q-list>
-            <q-item-label header>当前可用</q-item-label>
-            <q-item v-for="pn in supportedPnList" :key="pn.symbol" clickable v-close-popup tabindex="0">
+        <q-btn-dropdown stretch flat :label="selectedPn.symbol || '选择币种'">
+          <q-list separator>
+            <!-- <q-item-label header>当前可用</q-item-label> -->
+            <q-item v-for="pn in supportedPnList" :key="pn.symbol" clickable v-close-popup :active="pn === selectedPn" @click="selectedPn = pn">
               <q-item-section avatar>
                 <q-avatar :icon="`img:${pn.icon}`" />
               </q-item-section>
               <q-item-section>
-                <q-item-label> {{ pn.symbol }} </q-item-label>
-                <q-item-label caption>{{ pn.balance }}</q-item-label>
-              </q-item-section>
-              <q-item-section side>
-                {{ pn.status }}
-              </q-item-section>
-            </q-item>
-            <q-separator inset spaced />
-            <q-item-label header>即将支持</q-item-label>
-            <q-item v-for="pn in incomingPnList" disabled :key="pn.symbol" tabindex="0">
-              <q-item-section avatar>
-                <q-avatar icon="img:pn.icon" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label> {{ pn.symbol }} </q-item-label>
+                <q-item-label> {{ pn.symbol.toUpperCase() }} </q-item-label>
                 <q-item-label caption>{{ pn.balance }}</q-item-label>
               </q-item-section>
               <q-item-section side>
@@ -56,8 +31,14 @@
             </q-item>
           </q-list>
         </q-btn-dropdown>
+        <q-separator dark vertical inset />
+        <q-toolbar-title>
+          {{ selectedPn.price }}
+        </q-toolbar-title>
+        <q-space />
+
         <q-separator dark vertical />
-        <q-btn stretch flat label="Link" />
+        <q-btn stretch flat label="支付" />
       </q-toolbar>
     </q-footer>
     <q-page-container>
@@ -67,13 +48,11 @@
 </template>
 
 <script>
-import { openURL } from 'quasar'
 
 export default {
   name: 'MyLayout',
   data () {
     return {
-      // leftDrawerOpen: this.$q.platform.is.desktop
       cate: 'phone'
     }
   },
@@ -83,14 +62,19 @@ export default {
         return this.$store.state.pn.supported
       }
     },
-    incomingPnList: {
+    selectedPn: {
       get () {
-        return this.$store.state.pn.incoming
+        let symbol = this.$store.state.pn.selected
+        console.log(this.$store)
+        return this.$store.getters['pn/getPn'](symbol) || {}
+      },
+      set (val) {
+        this.$store.commit('pn/updateSelectedPn', val.symbol)
+        this.$store.dispatch('pn/updatePrice', val.symbol)
       }
     }
   },
   methods: {
-    openURL
   }
 }
 </script>

@@ -47,11 +47,13 @@ module.exports = function (ctx) {
         'QTabs',
         'QTab',
         'QInput',
-        'QSeparator'
+        'QSeparator',
+        'QSpace'
       ],
 
       directives: [
-        'Ripple'
+        'Ripple',
+        'ClosePopup'
       ],
 
       // Quasar plugins
