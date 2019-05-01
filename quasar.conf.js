@@ -74,6 +74,12 @@ module.exports = function (ctx) {
       // gzip: true,
       // analyze: true,
       // extractCSS: false,
+      env: ctx.dev
+        ? {
+          API: JSON.stringify('http://localhost:7001')
+        } : {
+          API: JSON.stringify('http://api.yamen.co:7001')
+        },
       extendWebpack (cfg) {
         cfg.module.rules.push({
           enforce: 'pre',

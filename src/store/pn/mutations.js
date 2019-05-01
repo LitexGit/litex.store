@@ -3,11 +3,15 @@ export function someMutation (state) {
 }
 */
 
-export function updateSelectedPn (state, selected) {
+export function loading (state, loading) {
+  state.loading = loading
+}
+
+export function updateSelected (state, selected) {
   state.selected = selected
 }
 
-export function updatePnPrice (state, { symbol, price }) {
-  let pn = state.available.find(pn => pn.symbol === symbol)
-  pn && (pn.price = price)
+export function updatePrice (state, price) {
+  price < 0 && (price = 0)
+  state.price = price
 }

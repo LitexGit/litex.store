@@ -14,10 +14,10 @@
     </q-header>
     <q-footer>
       <q-toolbar class="bg-secondary text-white">
-        <q-btn-dropdown stretch flat :label="selectedPn.symbol || '选择币种'">
+        <q-btn-dropdown stretch flat :label="supportedPnList[selected].symbol || '选择币种'">
           <q-list separator>
             <!-- <q-item-label header>当前可用</q-item-label> -->
-            <q-item v-for="pn in supportedPnList" :key="pn.symbol" clickable v-close-popup :active="pn === selectedPn" @click="selectedPn = pn">
+            <q-item v-for="(pn, index) in supportedPnList" :key="index" clickable v-close-popup :active="index === selected" @click="selectPn(index)">
               <q-item-section avatar>
                 <q-avatar :icon="`img:${pn.icon}`" />
               </q-item-section>
@@ -33,7 +33,7 @@
         </q-btn-dropdown>
         <q-separator dark vertical inset />
         <q-toolbar-title>
-          {{ selectedPn.price }}
+          <small> {{ loading ? '加载中..' : cnyPrice }} </small>
         </q-toolbar-title>
         <q-space />
 
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 
 export default {
   name: 'MyLayout',
@@ -57,24 +58,29 @@ export default {
     }
   },
   computed: {
-    supportedPnList: {
-      get () {
-        return this.$store.state.pn.supported
-      }
-    },
-    selectedPn: {
-      get () {
-        let symbol = this.$store.state.pn.selected
-        console.log(this.$store)
-        return this.$store.getters['pn/getPn'](symbol) || {}
-      },
-      set (val) {
-        this.$store.commit('pn/updateSelectedPn', val.symbol)
-        this.$store.dispatch('pn/updatePrice', val.symbol)
-      }
+    ...mapState('pn', {
+      supportedPnList: 'supported',
+      selected: 'selected',
+      price: 'price',
+      loading: 'loading'
+    }),
+    ...mapState('sku', {
+      sku: 'selected'
+    }),
+    cnyPrice: function () {
+      const { sku, price } = this
+      return (sku.value / price).toFixed(4)
     }
   },
   methods: {
+    selectPn: function (which) {
+      const { commit, dispatch } = this.$store
+      commit('pn/updateSelected', which)
+      dispatch('pn/updatePrice', this.supportedPnList[which].symbol)
+    }
+  },
+  mounted: function () {
+    this.selectPn(0)
   }
 }
 </script>
