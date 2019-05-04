@@ -48,7 +48,8 @@ module.exports = function (ctx) {
         'QTab',
         'QInput',
         'QSeparator',
-        'QSpace'
+        'QSpace',
+        'QDialog'
       ],
 
       directives: [
@@ -77,7 +78,7 @@ module.exports = function (ctx) {
       env: ctx.dev
         ? {
           API: JSON.stringify('http://localhost:7001'),
-          TO: JSON.stringify('0x308f27c8595B2Ee9e6a5FAA875B4c1f9de6b679A')
+          TO: JSON.stringify('0x85435801556be27ED7767bBc208B347012dDC91d')
         } : {
           API: JSON.stringify('http://api.yamen.co:7001')
         },

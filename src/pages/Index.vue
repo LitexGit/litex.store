@@ -11,15 +11,10 @@
         </template>
       </q-input>
       </q-card-section>
-      <q-card-section class="q-gutter-sm">
-        <div>话费充值</div>
-        <q-btn v-for="sku in skus.phone" @click="selectedSku=sku" :key="sku.id" :outline="sku!=selectedSku" color="primary"
-          :label="sku.value + '元'" />
-      </q-card-section>
-      <q-card-section class="q-gutter-sm">
-        <div>流量充值</div>
-        <q-btn v-for="sku in skus.data" @click="selectedSku=sku" :key="sku.id" :outline="sku!=selectedSku" color="primary"
-          class="btn-fixed-width" :label="dataLabel(sku.value)" />
+      <q-card-section v-for="{ cate, data } in skus" :key="cate" class="q-gutter-sm">
+        <div>{{cate}}</div>
+        <q-btn v-for="sku in data" @click="selectedSku=sku" :key="sku.id" :outline="sku!=selectedSku" color="primary"
+          :label="sku.label" />
       </q-card-section>
     </q-card>
   </q-page>
@@ -55,7 +50,7 @@ export default {
     dataLabel: (dc) => dc < 1 ? dc * 1000 + 'M' : dc + 'G'
   },
   created () {
-    this.selectedSku = this.skus.phone[2]
+    this.selectedSku = this.skus[0].data[2]
   }
 }
 </script>

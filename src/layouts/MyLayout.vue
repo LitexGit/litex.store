@@ -35,12 +35,32 @@
         <q-toolbar-title>
           <small> {{ loading ? '加载中..' : finalPrice }} </small>
         </q-toolbar-title>
-        <q-space />
-
         <q-separator dark vertical />
-        <q-btn stretch flat label="支付" @click="pay()" />
+        <q-btn stretch flat label="支付" @click="placingOrder = true" />
       </q-toolbar>
     </q-footer>
+    <q-dialog v-model="placingOrder">
+      <q-layout view="Lhh lpR fff" container class="bg-white">
+        <q-header class="bg-primary">
+          <q-toolbar>
+            <q-toolbar-title>Header</q-toolbar-title>
+            <q-btn flat v-close-popup round dense icon="close" />
+          </q-toolbar>
+        </q-header>
+        <q-footer class="bg-transparent q-pa-sm text-white">
+          <q-btn stretch color="secondary" class="full-width" label="支付" @click="pay()" />
+          <q-separator spaced />
+          <q-btn stretch color="red" class="full-width" label="取消" @click="placingOrder = false" />
+        </q-footer>
+        <q-page-container>
+          <q-page padding>
+            <p>{{ sku.cate + ' ' + sku.label }}</p>
+            <p>{{ '价值' + sku.value }}元</p>
+            <p>{{ finalPrice + ' ' + supportedPnList[selected].symbol}}</p>
+          </q-page>
+        </q-page-container>
+      </q-layout>
+    </q-dialog>
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -55,7 +75,8 @@ export default {
   name: 'MyLayout',
   data () {
     return {
-      cate: 'phone'
+      cate: 'phone',
+      placingOrder: false
     }
   },
   computed: {
