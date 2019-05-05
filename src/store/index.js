@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import sku from './sku'
 import pn from './pn'
+import order from './order'
 
 Vue.use(Vuex)
 
@@ -15,7 +16,8 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       sku,
-      pn
+      pn,
+      order
     },
 
     // enable strict mode (adds overhead!)

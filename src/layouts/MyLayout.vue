@@ -36,21 +36,21 @@
           <small> {{ loading ? '加载中..' : finalPrice }} </small>
         </q-toolbar-title>
         <q-separator dark vertical />
-        <q-btn stretch flat label="支付" @click="placingOrder = true" />
+        <q-btn stretch flat label="支付" @click="placeOrder()" />
       </q-toolbar>
     </q-footer>
     <q-dialog v-model="placingOrder">
       <q-layout view="Lhh lpR fff" container class="bg-white">
         <q-header class="bg-primary">
           <q-toolbar>
-            <q-toolbar-title>Header</q-toolbar-title>
+            <q-toolbar-title>订单详情</q-toolbar-title>
             <q-btn flat v-close-popup round dense icon="close" />
           </q-toolbar>
         </q-header>
         <q-footer class="bg-transparent q-pa-sm text-white">
           <q-btn stretch color="secondary" class="full-width" label="支付" @click="pay()" />
           <q-separator spaced />
-          <q-btn stretch color="red" class="full-width" label="取消" @click="placingOrder = false" />
+          <q-btn stretch color="red" class="full-width" label="取消" @click="placeOrder()" />
         </q-footer>
         <q-page-container>
           <q-page padding>
@@ -76,7 +76,7 @@ export default {
   data () {
     return {
       cate: 'phone',
-      placingOrder: false
+      user: ''
     }
   },
   computed: {
@@ -89,6 +89,10 @@ export default {
     ...mapState('sku', {
       sku: 'selected'
     }),
+    ...mapState('order', {
+      orders: 'orders',
+      currentOrder: 'current'
+    }),
     ...mapGetters('sku', [
       'getSkuById'
     ]),
@@ -99,6 +103,9 @@ export default {
         return (sku.value / price).toFixed(4)
       }
       return 0
+    },
+    placingOrder: function () {
+      return !this.$q.loading.isActive && this.currentOrder.status === 0
     }
   },
   methods: {
@@ -106,6 +113,12 @@ export default {
       const { commit, dispatch } = this.$store
       commit('pn/updateSelected', which)
       dispatch('pn/updatePrice', this.supportedPnList[which].symbol)
+    },
+    placeOrder: function () {
+      const { user, selected, supportedPnList, sku } = this
+      const pn = supportedPnList[selected].symbol
+      this.$q.loading.show()
+      this.$store.dispatch('order/placeOrder', { user, pn, sku })
     },
     pay: async function () {
       if (!window.web3) {
@@ -136,6 +149,8 @@ export default {
       try {
         // Request account access if needed
         await ethereum.enable()
+        this.user = ethereum.selectedAddress
+        console.log('USER:\n', this.user)
         // Acccounts now exposed
         // web3.eth.sendTransaction({/* ... */});
       } catch (error) {
