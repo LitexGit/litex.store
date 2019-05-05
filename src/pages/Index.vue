@@ -11,9 +11,9 @@
         </template>
       </q-input>
       </q-card-section>
-      <q-card-section v-for="{ cate, data } in skus" :key="cate" class="q-gutter-sm">
-        <div>{{cate}}</div>
-        <q-btn v-for="sku in data" @click="selectedSku=sku" :key="sku.id" :outline="sku!=selectedSku" color="primary"
+      <q-card-section v-for="cate in Object.keys(skus)" :key="cate" class="q-gutter-sm">
+        <div>{{cateLabels[cate]}}</div>
+        <q-btn v-for="sku in skus[cate]" @click="selectedSku=sku.id" :key="sku.id" :outline="sku.id!=selectedSku" color="primary"
           :label="sku.label" />
       </q-card-section>
     </q-card>
@@ -28,13 +28,28 @@ export default {
   name: 'PageIndex',
   data () {
     return {
-      phone: '11111111111'
+      phone: '11111111111',
+      cateLabels: {
+        1: '话费充值',
+        2: '流量充值'
+      }
     }
   },
   computed: {
     skus: {
       get () {
-        return this.$store.state.sku.available
+        const { skus } = this.$store.state.sku
+        let cates = {}
+        for (const sku of skus) {
+          if (cates[sku.cate]) {
+            cates[sku.cate].push(sku)
+          } else {
+            cates[sku.cate] = []
+            cates[sku.cate].push(sku)
+          }
+        }
+
+        return cates
       }
     },
     selectedSku: {
@@ -50,7 +65,7 @@ export default {
     dataLabel: (dc) => dc < 1 ? dc * 1000 + 'M' : dc + 'G'
   },
   created () {
-    this.selectedSku = this.skus[0].data[2]
+    this.$store.dispatch('sku/loadSkus')
   }
 }
 </script>

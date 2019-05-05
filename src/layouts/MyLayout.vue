@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import Web3 from 'web3'
 
 export default {
@@ -89,9 +89,16 @@ export default {
     ...mapState('sku', {
       sku: 'selected'
     }),
+    ...mapGetters('sku', [
+      'getSkuById'
+    ]),
     finalPrice: function () {
-      const { sku, price } = this
-      return (sku.value / price).toFixed(4)
+      let { sku, price, getSkuById } = this
+      sku = getSkuById(sku)
+      if (sku) {
+        return (sku.value / price).toFixed(4)
+      }
+      return 0
     }
   },
   methods: {
