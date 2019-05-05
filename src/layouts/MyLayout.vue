@@ -87,7 +87,7 @@ export default {
       loading: 'loading'
     }),
     ...mapState('sku', {
-      sku: 'selected'
+      skuId: 'selected'
     }),
     ...mapState('order', {
       orders: 'orders',
@@ -96,9 +96,11 @@ export default {
     ...mapGetters('sku', [
       'getSkuById'
     ]),
+    sku: function () {
+      return this.getSkuById(this.skuId) || {}
+    },
     finalPrice: function () {
-      let { sku, price, getSkuById } = this
-      sku = getSkuById(sku)
+      let { sku, price } = this
       if (sku) {
         return (sku.value / price).toFixed(4)
       }
@@ -118,7 +120,7 @@ export default {
       const { user, selected, supportedPnList, sku } = this
       const pn = supportedPnList[selected].symbol
       this.$q.loading.show()
-      this.$store.dispatch('order/placeOrder', { user, pn, sku })
+      this.$store.dispatch('order/placeOrder', { user, pn, sku: sku.id })
     },
     pay: async function () {
       if (!window.web3) {
