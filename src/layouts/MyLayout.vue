@@ -39,18 +39,17 @@
         <q-btn stretch flat label="支付" @click="placeOrder()" />
       </q-toolbar>
     </q-footer>
-    <q-dialog v-model="placingOrder">
+    <q-dialog v-model="placingOrder" persistent>
       <q-layout view="Lhh lpR fff" container class="bg-white">
         <q-header class="bg-primary">
           <q-toolbar>
             <q-toolbar-title>订单详情</q-toolbar-title>
-            <q-btn flat v-close-popup round dense icon="close" />
           </q-toolbar>
         </q-header>
         <q-footer class="bg-transparent q-pa-sm text-white">
           <q-btn stretch color="secondary" class="full-width" label="支付" @click="pay()" />
           <q-separator spaced />
-          <q-btn stretch color="red" class="full-width" label="取消" @click="placeOrder()" />
+          <q-btn stretch color="red" class="full-width" label="取消" @click="cancelOrder()" />
         </q-footer>
         <q-page-container>
           <q-page padding>
@@ -93,6 +92,14 @@ export default {
       orders: 'orders',
       currentOrder: 'current'
     }),
+    placingOrder: {
+      get () {
+        return this.$store.state.order.placing
+      },
+      set (val) {
+        this.$store.commit('order/update', { placing: val })
+      }
+    },
     ...mapGetters('sku', [
       'getSkuById'
     ]),
@@ -105,9 +112,6 @@ export default {
         return (sku.value / price).toFixed(4)
       }
       return 0
-    },
-    placingOrder: function () {
-      return !this.$q.loading.isActive && this.currentOrder.status === 0
     }
   },
   methods: {
@@ -117,24 +121,32 @@ export default {
       dispatch('pn/updatePrice', this.supportedPnList[which].symbol)
     },
     placeOrder: function () {
+      const { dispatch } = this.$store
       const { user, selected, supportedPnList, sku } = this
       const pn = supportedPnList[selected].symbol
+      dispatch('order/placeOrder', { user, pn, sku: sku.id })
       this.$q.loading.show()
-      this.$store.dispatch('order/placeOrder', { user, pn, sku: sku.id })
+    },
+    cancelOrder: function () {
+      const { id } = this.currentOrder
+      this.$store.dispatch('order/cancelOrder', { id })
     },
     pay: async function () {
+      const { dispatch } = this.$store
+      const { id } = this.currentOrder
       if (!window.web3) {
         alert('Web3 not ready')
       } else {
-        const { toWei } = window.web3.utils
-        const accounts = await window.web3.eth.getAccounts()
-        const value = toWei(this.finalPrice)
+        const { currentOrder } = this
+        const { toWei, toHex } = window.web3.utils
         web3.eth.sendTransaction({
-          from: accounts[0],
-          to: process.env.TO,
-          value
-        }).on('transactionHash', function (hash) {
-          console.log('HX: ', hash)
+          from: currentOrder.from,
+          to: currentOrder.to,
+          value: toWei(currentOrder.amount),
+          data: toHex(`orderId: ${id}`)
+        }).on('transactionHash', function (txhash) {
+          console.log('HX: ', txhash)
+          dispatch('order/updateOrder', { id, txhash })
         }).on('receipt', function (receipt) {
           console.log('RP: ', receipt)
         }).on('confirmation', function (confirmationNumber, receipt) {

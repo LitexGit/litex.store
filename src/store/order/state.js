@@ -1,4 +1,5 @@
 export default {
   orders: [],
-  current: {}
+  current: {},
+  placing: false
 }
