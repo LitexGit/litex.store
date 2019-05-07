@@ -2,7 +2,7 @@
   <q-page padding class="flex">
     <q-card class="q-pa-sm">
       <q-card-section>
-      <q-input filled v-model='phone' counter maxlength="11" type='tel' label="请输入手机号">
+      <q-input filled v-model="phone" @blur="updateInfo({phone})" counter maxlength="11" type='tel' label="请输入手机号">
         <template v-slot:prepend>
           <q-icon name="smartphone" />
         </template>
@@ -24,15 +24,12 @@
 </style>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'PageIndex',
   data () {
     return {
-      phone: '11111111111',
-      cateLabels: {
-        1: '话费充值',
-        2: '流量充值'
-      }
+      phone: '13488886666'
     }
   },
   computed: {
@@ -48,7 +45,6 @@ export default {
             cates[sku.cate].push(sku)
           }
         }
-
         return cates
       }
     },
@@ -56,13 +52,19 @@ export default {
       get () {
         return this.$store.state.sku.selected
       },
-      set (val) {
-        this.$store.commit('sku/updateSelectedSku', val)
+      set (selected) {
+        this.$store.commit('sku/update', { selected })
       }
-    }
+    },
+    ...mapState('sku', {
+      cateLabels: 'cates'
+    })
   },
   methods: {
-    dataLabel: (dc) => dc < 1 ? dc * 1000 + 'M' : dc + 'G'
+    dataLabel: (dc) => dc < 1 ? dc * 1000 + 'M' : dc + 'G',
+    updateInfo: function (info) {
+      this.$store.commit('sku/update', { info })
+    }
   },
   created () {
     this.$store.dispatch('sku/loadSkus')

@@ -6,7 +6,8 @@
           <span>LITE<b>X</b> Store</span>
         </q-toolbar-title>
       </q-toolbar>
-      <q-tabs v-model="cate">
+      <OrderStatusBar :status="currentOrder.status" pay="pay()" cancel="cancelOrder()" refresh="" />
+      <q-tabs v-model="skuCate">
         <q-tab name="phone" label="话费流量" />
         <q-tab name="gas" label="加油卡" />
         <q-tab name="vip" label="VIP会员" />
@@ -53,8 +54,9 @@
         </q-footer>
         <q-page-container>
           <q-page padding>
-            <p>{{ sku.cate + ' ' + sku.label }}</p>
-            <p>{{ '价值' + sku.value }}元</p>
+            <p>{{ cates[sku.cate] + ' ' + sku.label }}</p>
+            <p>{{ '手机号：' + info.phone }}</p>
+            <p>{{ '价值：' + sku.value }}元</p>
             <p>{{ finalPrice + ' ' + supportedPnList[selected].symbol}}</p>
           </q-page>
         </q-page-container>
@@ -69,12 +71,16 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import Web3 from 'web3'
+import OrderStatusBar from '../components/OrderStatusBar.vue'
 
 export default {
   name: 'MyLayout',
+  components: {
+    OrderStatusBar
+  },
   data () {
     return {
-      cate: 'phone',
+      skuCate: 'phone',
       user: ''
     }
   },
@@ -86,7 +92,9 @@ export default {
       loading: 'loading'
     }),
     ...mapState('sku', {
-      skuId: 'selected'
+      skuId: 'selected',
+      cates: 'cates',
+      info: 'info'
     }),
     ...mapState('order', {
       orders: 'orders',
@@ -122,9 +130,9 @@ export default {
     },
     placeOrder: function () {
       const { dispatch } = this.$store
-      const { user, selected, supportedPnList, sku } = this
+      const { user, info, selected, supportedPnList, sku } = this
       const pn = supportedPnList[selected].symbol
-      dispatch('order/placeOrder', { user, pn, sku: sku.id })
+      dispatch('order/placeOrder', { user, info, pn, sku: sku.id })
       this.$q.loading.show()
     },
     cancelOrder: function () {
@@ -151,9 +159,12 @@ export default {
           console.log('RP: ', receipt)
         }).on('confirmation', function (confirmationNumber, receipt) {
           console.log('CF: ', confirmationNumber)
+          confirmationNumber === 1 && dispatch('order/confirmPayment', { id })
         }).on('error', console.error) // If a out of gas error, the second parameter is the receipt.
       }
-    }
+    },
+    refreshOrder: function () {},
+    orderDetail: function () {}
   },
   mounted: async function () {
     this.selectPn(0)

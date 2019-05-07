@@ -49,7 +49,8 @@ module.exports = function (ctx) {
         'QInput',
         'QSeparator',
         'QSpace',
-        'QDialog'
+        'QDialog',
+        'QBanner'
       ],
 
       directives: [
