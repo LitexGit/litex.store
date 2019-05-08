@@ -1,12 +1,7 @@
-/*
-export function someAction (context) {
-}
-*/
-import axios from 'axios'
+import api from '../../service/api'
 
 export async function loadSkus ({ commit }) {
-  let api = `${process.env.API}/config`
-  let { data: { skus } } = await axios.get(api)
+  const skus = await api.getSkus()
 
   commit('update', { skus })
 }

@@ -1,23 +1,20 @@
-import axios from 'axios'
+import api from '../../service/api'
 
-export async function placeOrder ({ commit }, { user, info, pn, sku }) {
-  const api = `${process.env.API}/orders`
-  const { data: order } = await axios.post(api, { user, info, pn, sku })
+export async function placeOrder ({ commit }, data) {
+  const order = await api.newOrder(data)
   commit('update', { placing: true })
   commit('update', { current: order })
 }
 
 export async function updateOrder ({ commit }, { id, txhash }) {
-  const api = `${process.env.API}/orders/${id}`
-  const { data: order } = await axios.put(api, { status: 2, txhash })
+  const order = await api.updateOrder(id, { status: 2, txhash })
   console.log(`order ${id} paid:`, order)
   commit('update', { placing: false })
   commit('update', { current: order })
 }
 
 export async function confirmPayment ({ commit }, { id }) {
-  const api = `${process.env.API}/orders/${id}`
-  const { data: order } = await axios.put(api, { status: 4 })
+  const order = await api.updateOrder(id, { status: 4 })
 
   if (order.status === 4) {
     console.log(`order ${id} confirmed:`, order)
@@ -26,9 +23,10 @@ export async function confirmPayment ({ commit }, { id }) {
 }
 
 export async function cancelOrder ({ commit }, { id }) {
-  const api = `${process.env.API}/orders/${id}`
-  const res = await axios.put(api, { status: 0 })
-  console.log(`order ${id} cancelled:`, res)
-  commit('update', { placing: false })
-  commit('update', { current: {} })
+  const order = await api.updateOrder(id, { status: 0 })
+  if (order.status === 0) {
+    console.log(`order ${id} cancelled:`)
+    commit('update', { placing: false })
+    commit('update', { current: {} })
+  }
 }

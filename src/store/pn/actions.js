@@ -3,12 +3,11 @@ export function someAction (context) {
 }
 */
 
-import axios from 'axios'
+import api from '../../service/api'
 
 export async function updatePrice ({ commit }, symbol) {
   commit('loading', true)
-  let api = `${process.env.API}/price/${symbol}`
-  let { data: price } = await axios.get(api)
+  let price = await api.getPrice(symbol)
   console.log('Price: ', price)
 
   commit('updatePrice', price)
