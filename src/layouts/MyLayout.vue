@@ -141,18 +141,27 @@ export default {
     },
     pay: async function () {
       const { dispatch } = this.$store
-      const { id } = this.currentOrder
       if (!window.web3) {
         alert('Web3 not ready')
       } else {
-        const { currentOrder } = this
+        const { currentOrder: { id, from, to, amount } } = this
         const { toWei, toHex } = window.web3.utils
-        web3.eth.sendTransaction({
-          from: currentOrder.from,
-          to: currentOrder.to,
-          value: toWei(currentOrder.amount),
+
+        let tx = {
+          to,
           data: toHex(`orderId: ${id}`)
-        }).on('transactionHash', function (txhash) {
+        }
+
+        const gas = await web3.eth.estimateGas(tx)
+
+        tx = {
+          from,
+          ...tx,
+          value: toWei(amount),
+          gas
+        }
+
+        web3.eth.sendTransaction(tx).on('transactionHash', function (txhash) {
           console.log('HX: ', txhash)
           dispatch('order/updateOrder', { id, txhash })
         }).on('receipt', function (receipt) {
