@@ -46,6 +46,7 @@ module.exports = function (ctx) {
         'QCardActions',
         'QTabs',
         'QTab',
+        'QRouteTab',
         'QInput',
         'QSeparator',
         'QSpace',

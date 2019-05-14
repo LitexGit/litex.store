@@ -1,13 +1,27 @@
+import Shop from 'layouts/Shop'
+import Phone from 'pages/Phone'
 
-const routes = [
-  {
-    path: '/',
-    component: () => import('layouts/MyLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/Index.vue') }
-    ]
-  }
-]
+import Orders from 'layouts/Orders'
+import OrderList from 'pages/OrderList'
+
+const routes = [{
+  path: '/',
+  redirect: '/shop'
+}, {
+  path: '/shop',
+  component: Shop,
+  children: [
+    { path: '', redirect: 'phone' },
+    { path: 'phone', component: Phone }
+  ]
+}, {
+  path: '/orders',
+  component: Orders,
+  children: [
+    { path: '', redirect: 'list' },
+    { path: 'list', component: OrderList }
+  ]
+}]
 
 // Always leave this as last one
 if (process.env.MODE !== 'ssr') {

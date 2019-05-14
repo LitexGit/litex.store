@@ -5,17 +5,23 @@
         <q-toolbar-title class="row justify-center">
           <span>LITE<b>X</b> Store</span>
         </q-toolbar-title>
+        <q-btn flat icon="list" to="/orders" />
       </q-toolbar>
       <OrderStatusBar :status="currentOrder.status" pay="pay()" cancel="cancelOrder()" refresh="" />
-      <q-tabs v-model="skuCate">
-        <q-tab name="phone" label="话费流量" />
-        <q-tab name="gas" label="加油卡" />
-        <q-tab name="vip" label="VIP会员" />
+      <q-tabs>
+        <q-route-tab name="phone" to="phone" exact label="话费流量" />
+        <q-route-tab name="gas" to="gas" exact label="加油卡" />
+        <q-route-tab name="vip" to="vip" exact label="VIP会员" />
       </q-tabs>
     </q-header>
     <q-footer>
-      <q-toolbar class="bg-secondary text-white">
-        <q-btn-dropdown stretch flat :label="supportedPnList[selected].symbol || '选择币种'">
+      <q-toolbar class="bg-secondary text-white row">
+        <q-toolbar-title class="col-6">
+          <small> 金额：</small>
+          <small :class="[loading ? 'text-grey' : 'text-amber']"> {{ loading ? '加载中..' : finalPrice }} </small>
+        </q-toolbar-title>
+        <q-separator dark vertical inset />
+        <q-btn-dropdown class="col" flat :label="supportedPnList[selected].symbol || '选择币种'">
           <q-list separator>
             <!-- <q-item-label header>当前可用</q-item-label> -->
             <q-item v-for="(pn, index) in supportedPnList" :key="index" clickable v-close-popup :active="index === selected" @click="selectPn(index)">
@@ -32,12 +38,7 @@
             </q-item>
           </q-list>
         </q-btn-dropdown>
-        <q-separator dark vertical inset />
-        <q-toolbar-title>
-          <small> {{ loading ? '加载中..' : finalPrice }} </small>
-        </q-toolbar-title>
-        <q-separator dark vertical />
-        <q-btn stretch flat label="支付" @click="placeOrder()" />
+        <q-btn class="col-3 q-pa-sm" label="支付" color="purple" @click="placeOrder()" />
       </q-toolbar>
     </q-footer>
     <q-dialog v-model="placingOrder" persistent>
@@ -80,7 +81,6 @@ export default {
   },
   data () {
     return {
-      skuCate: 'phone',
       user: ''
     }
   },
