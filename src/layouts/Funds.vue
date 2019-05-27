@@ -18,11 +18,8 @@
         align="justify"
         narrow-indicator
       >
-        <!-- <q-route-tab name="ETH" label="ETH" to="/funds/records/ETH" /> -->
         <q-tab name="ETH" label="ETH" @click="changeToken('ETH')" />
-        <!-- <q-route-tab name="USDT" label="USDT" to="/funds/records/USDT" /> -->
         <q-tab name="USDT" label="USDT" @click="changeToken('USDT')" />
-        <!-- <q-route-tab name="LXT" label="LXT" to="/funds/records/LXT" /> -->
         <q-tab name="LXT" label="LXT" @click="changeToken('LXT')" />
       </q-tabs>
     </q-header>

@@ -13,7 +13,7 @@
           <td>
             <div class="column">
               <div class="col">{{ dateFormat(record.date) }}</div>
-              <div class="col">{{ timeFormat(record.time) }}</div>
+              <div class="col">{{ timeFormat(record.date) }}</div>
             </div>
           </td>
 
