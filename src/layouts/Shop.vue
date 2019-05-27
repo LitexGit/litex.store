@@ -5,7 +5,8 @@
         <q-toolbar-title class="row justify-center">
           <span>LITE<b>X</b> Store</span>
         </q-toolbar-title>
-        <q-btn flat icon="list" to="/orders" />
+        <!-- <q-btn flat icon="list" to="/orders" /> -->
+        <MenuBtn></MenuBtn>
       </q-toolbar>
       <OrderStatusBar :status="currentOrder.status" pay="pay()" cancel="cancelOrder()" refresh="" />
       <q-tabs>
@@ -73,11 +74,12 @@
 import { mapState, mapGetters } from 'vuex'
 import Web3 from 'web3'
 import OrderStatusBar from '../components/OrderStatusBar.vue'
+import MenuBtn from '../components/menu/MenuBtn'
 
 export default {
   name: 'MyLayout',
   components: {
-    OrderStatusBar
+    OrderStatusBar, MenuBtn
   },
   data () {
     return {
