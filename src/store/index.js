@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import sku from './sku'
 import pn from './pn'
 import order from './order'
+import fund from './fund'
 
 Vue.use(Vuex)
 
@@ -17,7 +18,8 @@ export default function (/* { ssrContext } */) {
     modules: {
       sku,
       pn,
-      order
+      order,
+      fund
     },
 
     // enable strict mode (adds overhead!)
