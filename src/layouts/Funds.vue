@@ -1,14 +1,10 @@
 <template>
   <q-layout view="hHh Lpr fFf">
-    <!-- Be sure to play with the Layout demo on docs -->
-
-    <!-- (Optional) The Header -->
     <q-header elevated>
       <q-toolbar>
         <q-btn flat round dense icon="reply" @click="back" />
         <q-toolbar-title style="text-align:center">资金记录</q-toolbar-title>
         <menu-btn></menu-btn>
-        <!-- <q-btn flat round dense icon="menu" @click="leftDrawer = !leftDrawer"/> -->
       </q-toolbar>
       <q-tabs
         v-model="tab"
@@ -34,11 +30,10 @@
 import MenuBtn from '../components/menu/MenuBtn'
 
 export default {
-  // name: 'LayoutName',
+  name: 'Funds',
 
   data () {
     return {
-      leftDrawer: true,
       tab: this.$store.state.fund.currentToken
     }
   },

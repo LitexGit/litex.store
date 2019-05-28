@@ -16,11 +16,14 @@
               <div class="col">{{ timeFormat(record.date) }}</div>
             </div>
           </td>
-
           <td>{{ record.use }}</td>
           <td>
             <div class="column">
-              <div class="col">{{ record.flat }}</div>
+              <div class="col">
+                <span v-if="record.flat < 0">-</span>
+                <span v-else>+</span>
+                ¥{{ Math.abs(record.flat) }}
+              </div>
               <div class="col">{{ record.token }}{{ currentToken }}</div>
             </div>
           </td>
@@ -38,7 +41,6 @@ export default {
   name: 'Records',
   data () {
     return {
-      token: this.$route.params.token ? this.$route.params.token : 'ETH'
     }
   },
   computed: {
