@@ -80,8 +80,9 @@ module.exports = function (ctx) {
       // extractCSS: false,
       env: ctx.dev
         ? {
-          API: JSON.stringify('http://localhost:7001'),
-          TO: JSON.stringify('0x85435801556be27ED7767bBc208B347012dDC91d')
+          // API: JSON.stringify('http://localhost:7001'),
+          // TO: JSON.stringify('0x85435801556be27ED7767bBc208B347012dDC91d')
+          API: JSON.stringify('http://api.yamen.co:7001')
         } : {
           API: JSON.stringify('http://api.yamen.co:7001')
         },
