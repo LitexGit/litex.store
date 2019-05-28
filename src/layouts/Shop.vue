@@ -36,7 +36,12 @@
         <q-btn class="col-3 q-pa-sm" label="支付" color="purple" @click="placeOrder()" />
       </q-toolbar>
     </q-footer>
-    <!-- <q-dialog v-model="placingOrder" persistent>
+    <q-page-container>
+      <router-view />
+    </q-page-container>
+    <confirm-pay-model/>
+
+    <q-dialog v-model="placingOrder" position='bottom'>
       <q-layout view="Lhh lpR fff" container class="bg-white">
         <q-header class="bg-primary">
           <q-toolbar>
@@ -57,10 +62,8 @@
           </q-page>
         </q-page-container>
       </q-layout>
-    </q-dialog> -->
-    <q-page-container>
-      <router-view />
-    </q-page-container>
+    </q-dialog>
+
   </q-layout>
 </template>
 
@@ -70,11 +73,12 @@ import Web3 from 'web3'
 import OrderStatusBar from '../components/OrderStatusBar.vue'
 import MenuBtn from '../components/menu/MenuBtn'
 import { TokenItem } from '../components/item'
+import { ConfirmPayModel } from '../components/modal'
 
 export default {
   name: 'MyLayout',
   components: {
-    OrderStatusBar, MenuBtn, TokenItem
+    OrderStatusBar, MenuBtn, TokenItem, ConfirmPayModel
   },
   data () {
     return {

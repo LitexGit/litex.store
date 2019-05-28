@@ -11,3 +11,7 @@ export function updatePrice (state, { price }) {
   price < 0 && (price = 0)
   state.price = price
 }
+
+export function updateShowConfirmPay (state, { open }) {
+  state.isShowConfirmPay = open
+}

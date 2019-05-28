@@ -3,6 +3,10 @@ export default {
   telegramUrl: '',
   categorys: [],
 
+  /** *********Modal*************/
+
+  isShowConfirmPay: true,
+
   /** *********DIY*************/
 
   tokens: [
