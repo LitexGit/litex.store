@@ -2,10 +2,10 @@
   <q-layout view="lHh Lpr lFf">
     <q-header reveal elevated>
       <q-toolbar>
+        <q-btn round color='primary' outline disable @click="goback"/>
         <q-toolbar-title class="row justify-center">
           <span>LITE<b>X</b> Store</span>
         </q-toolbar-title>
-        <!-- <q-btn flat icon="list" to="/orders" /> -->
         <MenuBtn></MenuBtn>
       </q-toolbar>
       <OrderStatusBar :status="currentOrder.status" pay="pay()" cancel="cancelOrder()" refresh="" />
@@ -42,7 +42,7 @@
         <q-btn class="col-3 q-pa-sm" label="支付" color="purple" @click="placeOrder()" />
       </q-toolbar>
     </q-footer>
-    <q-dialog v-model="placingOrder" persistent>
+    <!-- <q-dialog v-model="placingOrder" persistent>
       <q-layout view="Lhh lpR fff" container class="bg-white">
         <q-header class="bg-primary">
           <q-toolbar>
@@ -63,7 +63,7 @@
           </q-page>
         </q-page-container>
       </q-layout>
-    </q-dialog>
+    </q-dialog> -->
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -125,6 +125,7 @@ export default {
     }
   },
   methods: {
+    goback: () => { this.$router.go(-1) },
     selectPn: function (which) {
       const { commit, dispatch } = this.$store
       commit('pn/updateSelected', which)
