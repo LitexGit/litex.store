@@ -11,7 +11,7 @@ export default {
       state: 0
     },
     {
-      index: 0,
+      index: 1,
       date: new Date(),
       commodity: '话费充值',
       reveiverAccount: '',
@@ -21,7 +21,7 @@ export default {
       state: 2
     },
     {
-      index: 0,
+      index: 2,
       date: new Date(),
       commodity: '流量充值',
       reveiverAccount: '',

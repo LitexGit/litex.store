@@ -1,8 +1,5 @@
 <template>
   <q-layout view="hHh Lpr fFf">
-    <!-- Be sure to play with the Layout demo on docs -->
-
-    <!-- (Optional) The Header -->
     <q-header elevated>
       <q-toolbar>
         <q-btn flat round dense icon="reply" @click="back" />
@@ -21,7 +18,7 @@
 import MenuBtn from '../components/menu/MenuBtn'
 
 export default {
-  // name: 'LayoutName',
+  name: 'Orders',
 
   data () {
     return {
