@@ -5,6 +5,7 @@ import sku from './sku'
 import pn from './pn'
 import order from './order'
 import fund from './fund'
+import config from './config'
 
 Vue.use(Vuex)
 
@@ -16,6 +17,7 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
+      config,
       sku,
       pn,
       order,

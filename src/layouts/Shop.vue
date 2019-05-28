@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header reveal elevated>
       <q-toolbar>
-        <q-btn round color='primary' outline disable @click="goback"/>
+        <q-btn round flat disable @click="goback"/>
         <q-toolbar-title class="row justify-center">
           <span>LITE<b>X</b> Store</span>
         </q-toolbar-title>
@@ -22,23 +22,17 @@
           <small :class="[loading ? 'text-grey' : 'text-amber']"> {{ loading ? '加载中..' : finalPrice }} </small>
         </q-toolbar-title>
         <q-separator dark vertical inset />
-        <q-btn-dropdown class="col" flat :label="supportedPnList[selected].symbol || '选择币种'">
+
+        <q-btn-dropdown class="col" flat :label="tokens[selected].symbol || '选择币种'">
           <q-list separator>
-            <!-- <q-item-label header>当前可用</q-item-label> -->
-            <q-item v-for="(pn, index) in supportedPnList" :key="index" clickable v-close-popup :active="index === selected" @click="selectPn(index)">
-              <q-item-section avatar>
-                <q-avatar :icon="`img:${pn.icon}`" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label> {{ pn.symbol.toUpperCase() }} </q-item-label>
-                <q-item-label caption>{{ pn.balance }}</q-item-label>
-              </q-item-section>
-              <q-item-section side>
-                {{ pn.status }}
-              </q-item-section>
+            <q-item class="q-pa-none" v-for="(token, index) in tokens" :clickable="token.enable" v-close-popup
+              :key="index"  :active="index === selected"
+              @click="selectToken(index)">
+              <token-item :token = "token" @deposit="deposit(token)" @withdraw="withdraw(token)"/>
             </q-item>
           </q-list>
         </q-btn-dropdown>
+
         <q-btn class="col-3 q-pa-sm" label="支付" color="purple" @click="placeOrder()" />
       </q-toolbar>
     </q-footer>
@@ -75,22 +69,29 @@ import { mapState, mapGetters } from 'vuex'
 import Web3 from 'web3'
 import OrderStatusBar from '../components/OrderStatusBar.vue'
 import MenuBtn from '../components/menu/MenuBtn'
+import { TokenItem } from '../components/item'
 
 export default {
   name: 'MyLayout',
   components: {
-    OrderStatusBar, MenuBtn
+    OrderStatusBar, MenuBtn, TokenItem
   },
   data () {
     return {
-      user: ''
+      user: '',
+      isShowTokens: false
     }
   },
   computed: {
+    ...mapState('config', {
+      tokens: 'tokens',
+      selected: 'selected',
+      price: 'price'
+    }),
     ...mapState('pn', {
       supportedPnList: 'supported',
-      selected: 'selected',
-      price: 'price',
+      // selected: 'selected',
+      // price: 'price',
       loading: 'loading'
     }),
     ...mapState('sku', {
@@ -125,11 +126,23 @@ export default {
     }
   },
   methods: {
-    goback: () => { this.$router.go(-1) },
-    selectPn: function (which) {
+    goback: function () {
+      this.$router.go(-1)
+    },
+    selectToken: function (index) {
       const { commit, dispatch } = this.$store
-      commit('pn/updateSelected', which)
-      dispatch('pn/updatePrice', this.supportedPnList[which].symbol)
+      commit('config/updateSelected', { index })
+      dispatch('config/updatePrice', { symbol: this.tokens[index].symbol })
+    },
+    deposit: function (token) {
+      console.log('=============deposit=======================')
+      console.log(token)
+      console.log('=============deposit=======================')
+    },
+    withdraw: function (token) {
+      console.log('=============withdraw=======================')
+      console.log(token)
+      console.log('=============withdraw=======================')
     },
     placeOrder: function () {
       const { dispatch } = this.$store
@@ -179,8 +192,7 @@ export default {
     orderDetail: function () {}
   },
   mounted: async function () {
-    this.selectPn(0)
-
+    this.selectToken(0)
     if (window.ethereum) {
       window.web3 = new Web3(ethereum)
       try {

@@ -1,15 +1,15 @@
 <template>
   <q-page padding class="flex">
-    <q-card class="q-pa-sm">
+    <q-card class="q-pa-sm container">
       <q-card-section>
-      <q-input filled v-model="phone" @blur="updateInfo({phone})" counter maxlength="11" type='tel' label="请输入手机号">
-        <template v-slot:prepend>
-          <q-icon name="smartphone" />
-        </template>
-        <template v-slot:append>
-          <q-icon name="close" @click="phone = ''" class="cursor-pointer" />
-        </template>
-      </q-input>
+        <q-input filled v-model="phone" @blur="updateInfo({phone})" counter maxlength="11" type='tel' label="请输入手机号">
+          <template v-slot:prepend>
+            <q-icon name="smartphone" />
+          </template>
+          <template v-slot:append>
+            <q-icon name="close" @click="phone = ''" class="cursor-pointer" />
+          </template>
+        </q-input>
       </q-card-section>
       <q-card-section v-for="cate in Object.keys(skus)" :key="cate" class="q-gutter-sm">
         <div>{{cateLabels[cate]}}</div>
@@ -19,9 +19,6 @@
     </q-card>
   </q-page>
 </template>
-
-<style>
-</style>
 
 <script>
 import { mapState } from 'vuex'
@@ -71,3 +68,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.container {
+  flex: 1
+}
+</style>
