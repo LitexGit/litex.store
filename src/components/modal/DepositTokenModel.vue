@@ -14,7 +14,10 @@
       <div class="bg-white q-px-md q-pb-md q-pt-sm">
         <div class="q-mt-md text-subtitle1">
           <center class="text-black">充值金额</center>
-          <center class="text-primary">{{allowance}}&nbsp;<span class="text-black text-subtitle2">{{symbol}}</span></center>
+          <center>
+            <balance-view class="text-primary" :symbol="symbol" :decimal="decimal" :amount="allowance" :symbolStyle="symbolStyle"/>
+          </center>
+          <!-- <center class="text-primary">{{allowance}}&nbsp;<span class="text-black text-subtitle2">{{symbol}}</span></center> -->
           <div class="q-mt-md text-caption text-weight-light">
             1.<span>您的充值安全由<span class="text-weight-regular">以太坊状态通道</span>保障，游戏运营方无法操纵用户充值的代币，且您可以随时提现。</span><br/>
             2.<span>抢红包之前请先充值，以保证有相应场次足够的代币。</span><br/>
@@ -31,12 +34,18 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import { BalanceView } from '../../components/view'
 
 export default {
   name: 'DepositTokenModel',
+  components: { BalanceView },
   data () {
     return {
-      input: ''
+      input: '',
+      symbolStyle: {
+        color: 'red',
+        'font-size': '1em'
+      }
     }
   },
   computed: {
@@ -54,7 +63,10 @@ export default {
     symbol: function () {
       return this.getSelectedToken().symbol.toUpperCase()
     },
-    token: function () {
+    decimal: function () {
+      return this.getSelectedToken().decimal
+    },
+    address: function () {
       return this.getSelectedToken().contract
     }
   },
@@ -67,7 +79,7 @@ export default {
     },
     clickConfirm: function () {
       this.$store.commit('channel/updateShowDERC20Model', { open: false })
-      this.$store.dispatch('channel/confirmDeposit', { amount: this.allowance, token: this.token })
+      this.$store.dispatch('channel/confirmDeposit', { amount: this.allowance, address: this.address })
     }
   }
 }

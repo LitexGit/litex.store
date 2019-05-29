@@ -8,9 +8,9 @@ export function confirmDeposit ({ commit }, payload) {
   console.log('===============【确认充值】=====================')
   commit('updateShowDERC20Model', { open: false })
   commit('updateShowDpositModel', { open: false })
-  const { amount, token } = payload
-  token && console.log('==============token======================')
-  token && console.log(token)
+  const { amount, address } = payload
+  address && console.log('==============token======================')
+  address && console.log(address)
   console.log('==============amount======================')
   console.log(amount)
   // layer2
@@ -46,11 +46,11 @@ export function submitERC20Approval ({ commit }, payload) {
 function getERC20Allowance ({ commit }, { address }) {
   // layer2
 
-  commit('updateShowDRemindModel', { open: true })
+  // commit('updateShowDRemindModel', { open: true })
 
-  // const allowance = '100000000000000'
-  // commit('updateAllowance', { allowance })
-  // commit('updateShowDERC20Model', { open: true })
+  const allowance = '100000000000000'
+  commit('updateAllowance', { allowance })
+  commit('updateShowDERC20Model', { open: true })
 }
 
 /**
@@ -67,7 +67,6 @@ export function preWithdraw ({ commit }, payload) {
 /**
  *【确认提现】
  */
-
 export function confirmWithdraw ({ commit, rootState }, payload) {
   console.log('===============【确认提现】=====================')
   // 01: 校验通道余额
@@ -77,4 +76,11 @@ export function confirmWithdraw ({ commit, rootState }, payload) {
   console.log('====================================')
   // 02: channelStatus
   // layer2 withdraw
+}
+
+/**
+ *【支付】
+ */
+export function transfer ({ commit }, payload) {
+  console.log('===============【支付】=====================')
 }

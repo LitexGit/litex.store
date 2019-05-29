@@ -15,7 +15,7 @@
         <q-input filled v-model="input" @blur="updateInputValue({input})" type='amount' label="请输入数量"/>
         <div class="q-mt-md">
           <span>钱包余额：</span>
-          <span>0.00000</span>&nbsp;<span>{{symbol}}</span>
+          <balance-view :symbol="symbol" :decimal="decimal" :amount="balance"/>
           <div class="q-mt-md text-caption text-weight-light">
             1.<span>您的充值安全由<span class="text-weight-regular">以太坊状态通道</span>保障，游戏运营方无法操纵用户充值的代币，且您可以随时提现。</span><br/>
             2.<span>抢红包之前请先充值，以保证有相应场次足够的代币。</span><br/>
@@ -32,12 +32,15 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { BalanceView } from '../../components/view'
 
 export default {
   name: 'PreDpositModel',
+  components: { BalanceView },
   data () {
     return {
-      input: ''
+      input: '',
+      balance: '20202020020200202000'
     }
   },
   computed: {
@@ -51,6 +54,9 @@ export default {
     },
     symbol: function () {
       return this.getSelectedToken().symbol.toUpperCase()
+    },
+    decimal: function () {
+      return this.getSelectedToken().decimal
     },
     address: function () {
       return this.getSelectedToken().contract

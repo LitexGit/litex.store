@@ -34,8 +34,8 @@
             </q-item>
           </q-list>
         </q-btn-dropdown>
-
-        <q-btn class="col-3 q-pa-sm" label="支付" color="purple" @click="placeOrder()" />
+        <q-separator dark vertical inset />
+        <q-btn flat class="col-3 q-pa-sm" label="支付" color="white" @click="placeOrder()" />
       </q-toolbar>
     </q-footer>
     <q-page-container>
@@ -107,6 +107,7 @@ export default {
     placeOrder: function () {
       // 01: token 02: goodsId 03: api
       console.log('==============【下单】======================')
+      this.$store.commit('channel/updateShowConfirmPay', { open: true })
     },
     pay: async function () {
       console.log('=============【layer1 支付】=======================')
