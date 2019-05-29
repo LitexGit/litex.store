@@ -39,30 +39,11 @@
     <q-page-container>
       <router-view />
     </q-page-container>
-    <confirm-pay-model/>
 
-    <q-dialog v-model="placingOrder" position='bottom'>
-      <q-layout view="Lhh lpR fff" container class="bg-white">
-        <q-header class="bg-primary">
-          <q-toolbar>
-            <q-toolbar-title>订单详情</q-toolbar-title>
-          </q-toolbar>
-        </q-header>
-        <q-footer class="bg-transparent q-pa-sm text-white">
-          <q-btn stretch color="secondary" class="full-width" label="支付" @click="pay()" />
-          <q-separator spaced />
-          <q-btn stretch color="red" class="full-width" label="取消" @click="cancelOrder()" />
-        </q-footer>
-        <q-page-container>
-          <q-page padding>
-            <p>{{ cates[sku.cate] + ' ' + sku.label }}</p>
-            <p>{{ '手机号：' + info.phone }}</p>
-            <p>{{ '价值：' + sku.value }}元</p>
-            <p>{{ finalPrice + ' ' + supportedPnList[selected].symbol}}</p>
-          </q-page>
-        </q-page-container>
-      </q-layout>
-    </q-dialog>
+    <confirm-pay-model/>
+    <d-remind-model/>
+    <pre-dposit-model/>
+    <dposit-model/>
 
   </q-layout>
 </template>
@@ -73,12 +54,12 @@ import Web3 from 'web3'
 import OrderStatusBar from '../components/OrderStatusBar.vue'
 import MenuBtn from '../components/menu/MenuBtn'
 import { TokenItem } from '../components/item'
-import { ConfirmPayModel } from '../components/modal'
+import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel } from '../components/modal'
 
 export default {
   name: 'MyLayout',
   components: {
-    OrderStatusBar, MenuBtn, TokenItem, ConfirmPayModel
+    OrderStatusBar, MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel
   },
   data () {
     return {
@@ -149,6 +130,11 @@ export default {
       console.log('=============withdraw=======================')
     },
     placeOrder: function () {
+      /**
+       * 01: token
+       * 02: goods
+       * 03: api
+       * */
       const { dispatch } = this.$store
       const { user, info, selected, supportedPnList, sku } = this
       const pn = supportedPnList[selected].symbol
@@ -222,3 +208,26 @@ export default {
 
 <style>
 </style>
+
+    // <q-dialog v-model="placingOrder" position='bottom'>
+    //   <q-layout view="Lhh lpR fff" container class="bg-white">
+    //     <q-header class="bg-primary">
+    //       <q-toolbar>
+    //         <q-toolbar-title>订单详情</q-toolbar-title>
+    //       </q-toolbar>
+    //     </q-header>
+    //     <q-footer class="bg-transparent q-pa-sm text-white">
+    //       <q-btn stretch color="secondary" class="full-width" label="支付" @click="pay()" />
+    //       <q-separator spaced />
+    //       <q-btn stretch color="red" class="full-width" label="取消" @click="cancelOrder()" />
+    //     </q-footer>
+    //     <q-page-container>
+    //       <q-page padding>
+    //         <p>{{ cates[sku.cate] + ' ' + sku.label }}</p>
+    //         <p>{{ '手机号：' + info.phone }}</p>
+    //         <p>{{ '价值：' + sku.value }}元</p>
+    //         <p>{{ finalPrice + ' ' + supportedPnList[selected].symbol}}</p>
+    //       </q-page>
+    //     </q-page-container>
+    //   </q-layout>
+    // </q-dialog>

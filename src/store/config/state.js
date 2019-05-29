@@ -5,7 +5,11 @@ export default {
 
   /** *********Modal*************/
 
-  isShowConfirmPay: true,
+  isShowConfirmPay: false,
+
+  isShowDRemindModel: false,
+  isShowPreDpositModel: false,
+  isShowDpositModel: true,
 
   /** *********DIY*************/
 

@@ -5,7 +5,7 @@
       <div class="bg-primary q-pa-sm">
         <q-btn class="absolute-top-left" color="white" round outline flat size="1rem" icon="close" @click="clickClose()"/>
           <center>
-            <span class="text-h6" text-color="white">确认支付</span>
+            <span class="text-h6 text-white">确认支付</span>
           </center>
       </div>
       <div class="q-pa-md bg-white">
