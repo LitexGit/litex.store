@@ -40,10 +40,10 @@ export default {
   computed: {
     isShowDRemindModel: {
       get () {
-        return this.$store.state.config.isShowDpositModel
+        return this.$store.state.channel.isShowDpositModel
       },
       set (open) {
-        this.$store.commit('config/updateShowDpositModel', { open })
+        this.$store.commit('channel/updateShowDpositModel', { open })
       }
     },
     symbol: function () {
@@ -55,10 +55,10 @@ export default {
       'getSelectedToken'
     ]),
     clickClose: function () {
-      this.$store.commit('config/updateShowDpositModel', { open: false })
+      this.$store.commit('channel/updateShowDpositModel', { open: false })
     },
     clickConfirm: function () {
-      this.$store.commit('config/updateShowDpositModel', { open: false })
+      this.$store.commit('channel/updateShowDpositModel', { open: false })
       this.$store.dispatch('channel/confirmDeposit', { amount: '1000000000000', address: '' })
     },
     updateInputValue: function (input) {

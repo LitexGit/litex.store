@@ -30,19 +30,19 @@ export default {
   computed: {
     isShowWRemindModel: {
       get () {
-        return this.$store.state.config.isShowWRemindModel
+        return this.$store.state.channel.isShowWRemindModel
       },
       set (open) {
-        this.$store.commit('config/updateShowWRemindModel', { open })
+        this.$store.commit('channel/updateShowWRemindModel', { open })
       }
     }
   },
   methods: {
     clickClose: function () {
-      this.$store.commit('config/updateShowWRemindModel', { open: false })
+      this.$store.commit('channel/updateShowWRemindModel', { open: false })
     },
     clickConfirm: function () {
-      this.$store.commit('config/updateShowWRemindModel', { open: false })
+      this.$store.commit('channel/updateShowWRemindModel', { open: false })
       this.$store.dispatch('channel/confirmWithdraw')
     }
   }

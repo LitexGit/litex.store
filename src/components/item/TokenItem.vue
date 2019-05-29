@@ -8,12 +8,13 @@
       <q-item-label caption>{{ token.balance }}</q-item-label>
     </div>
     <center class="col-2">
-      <q-btn no-wrap flat dense label="充值"
-        v-if="token.enable" @click.stop="$emit('deposit')"/>
+      <!-- .stop -->
+      <q-btn no-wrap flat dense label="充值" text-color="primary"
+        v-if="token.enable" @click="$emit('deposit')"/>
     </center>
     <center class="col-2">
-      <q-btn no-wrap flat dense label="提现"
-        v-if="token.enable" @click.stop="$emit('withdraw')"/>
+      <q-btn no-wrap flat dense label="提现" text-color="primary"
+        v-if="token.enable" @click="$emit('withdraw')"/>
     </center>
     <center class="col-3">{{ token.status }}</center>
   </div>

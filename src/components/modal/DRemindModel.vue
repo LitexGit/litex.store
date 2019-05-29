@@ -33,20 +33,20 @@ export default {
   computed: {
     isShowDRemindModel: {
       get () {
-        return this.$store.state.config.isShowDRemindModel
+        return this.$store.state.channel.isShowDRemindModel
       },
       set (open) {
-        this.$store.commit('config/updateShowDRemindModel', { open })
+        this.$store.commit('channel/updateShowDRemindModel', { open })
       }
     }
   },
   methods: {
     clickClose: function () {
-      this.$store.commit('config/updateShowDRemindModel', { open: false })
+      this.$store.commit('channel/updateShowDRemindModel', { open: false })
     },
     clickContinue: function () {
-      this.$store.commit('config/updateShowDRemindModel', { open: false })
-      this.$store.commit('config/updateShowPreDpositModel', { open: true })
+      this.$store.commit('channel/updateShowDRemindModel', { open: false })
+      this.$store.commit('channel/updateShowPreDpositModel', { open: true })
     }
   }
 }

@@ -35,10 +35,10 @@ export default {
   computed: {
     isShowWithdrawModel: {
       get () {
-        return this.$store.state.config.isShowWithdrawModel
+        return this.$store.state.channel.isShowWithdrawModel
       },
       set (open) {
-        this.$store.commit('config/updateShowWithdrawModel', { open })
+        this.$store.commit('channel/updateShowWithdrawModel', { open })
       }
     },
     symbol: function () {
@@ -53,11 +53,11 @@ export default {
       'getSelectedToken'
     ]),
     clickClose: function () {
-      this.$store.commit('config/updateShowWithdrawModel', { open: false })
+      this.$store.commit('channel/updateShowWithdrawModel', { open: false })
     },
     clickContinue: function () {
-      this.$store.commit('config/updateShowWithdrawModel', { open: false })
-      this.$store.commit('config/updateShowWRemindModel', { open: true })
+      this.$store.commit('channel/updateShowWithdrawModel', { open: false })
+      this.$store.commit('channel/updateShowWRemindModel', { open: true })
     }
   },
   mounted: function () {

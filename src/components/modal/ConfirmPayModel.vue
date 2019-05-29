@@ -33,21 +33,21 @@ export default {
   computed: {
     isShowConfirmPay: {
       get () {
-        return this.$store.state.config.isShowConfirmPay
+        return this.$store.state.channel.isShowConfirmPay
       },
       set (open) {
-        this.$store.commit('config/updateShowConfirmPay', { open })
+        this.$store.commit('channel/updateShowConfirmPay', { open })
       }
     }
   },
   methods: {
     clickConfirm: function () {
       console.log('=============确认支付=======================')
-      this.$store.commit('config/updateShowConfirmPay', { open: false })
+      this.$store.commit('channel/updateShowConfirmPay', { open: false })
     },
     clickClose: function () {
       console.log('=============取消=======================')
-      this.$store.commit('config/updateShowConfirmPay', { open: false })
+      this.$store.commit('channel/updateShowConfirmPay', { open: false })
     }
   },
   mounted: function () {

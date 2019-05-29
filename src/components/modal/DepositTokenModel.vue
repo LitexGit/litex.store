@@ -45,14 +45,17 @@ export default {
     ]),
     isShowDERC20Model: {
       get () {
-        return this.$store.state.config.isShowDERC20Model
+        return this.$store.state.channel.isShowDERC20Model
       },
       set (open) {
-        this.$store.commit('config/updateShowDERC20Model', { open })
+        this.$store.commit('channel/updateShowDERC20Model', { open })
       }
     },
     symbol: function () {
       return this.getSelectedToken().symbol.toUpperCase()
+    },
+    token: function () {
+      return this.getSelectedToken().contract
     }
   },
   methods: {
@@ -60,11 +63,11 @@ export default {
       'getSelectedToken'
     ]),
     clickClose: function () {
-      this.$store.commit('config/updateShowDERC20Model', { open: false })
+      this.$store.commit('channel/updateShowDERC20Model', { open: false })
     },
     clickConfirm: function () {
-      this.$store.commit('config/updateShowDERC20Model', { open: false })
-      this.$store.dispatch('channel/confirmDeposit', { amount: '1000000000000', address: '' })
+      this.$store.commit('channel/updateShowDERC20Model', { open: false })
+      this.$store.dispatch('channel/confirmDeposit', { amount: this.allowance, token: this.token })
     }
   }
 }

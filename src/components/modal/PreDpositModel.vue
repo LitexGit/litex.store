@@ -43,14 +43,17 @@ export default {
   computed: {
     isShowDRemindModel: {
       get () {
-        return this.$store.state.config.isShowPreDpositModel
+        return this.$store.state.channel.isShowPreDpositModel
       },
       set (open) {
-        this.$store.commit('config/updateShowPreDpositModel', { open })
+        this.$store.commit('channel/updateShowPreDpositModel', { open })
       }
     },
     symbol: function () {
       return this.getSelectedToken().symbol.toUpperCase()
+    },
+    address: function () {
+      return this.getSelectedToken().contract
     }
   },
   methods: {
@@ -58,13 +61,12 @@ export default {
       'getSelectedToken'
     ]),
     clickClose: function () {
-      console.log('=============取消=======================')
-      this.$store.commit('config/updateShowPreDpositModel', { open: false })
+      this.$store.commit('channel/updateShowPreDpositModel', { open: false })
     },
     clickAuthorize: function () {
       // 校验授权金额
-      this.$store.commit('config/updateShowPreDpositModel', { open: false })
-      this.$store.dispatch('channel/submitERC20Approval', { value: '1.2' })
+      this.$store.commit('channel/updateShowPreDpositModel', { open: false })
+      this.$store.dispatch('channel/submitERC20Approval', { amount: '10000000000000', address: this.address })
     },
     updateInputValue: function (input) {
       console.log('=============updateInputValue=======================')

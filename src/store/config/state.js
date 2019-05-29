@@ -3,25 +3,13 @@ export default {
   telegramUrl: '',
   categorys: [],
 
-  /** *********Modal*************/
-
-  isShowConfirmPay: false,
-
-  isShowDRemindModel: false,
-  isShowPreDpositModel: false,
-  isShowDERC20Model: false,
-  isShowDpositModel: false,
-
-  isShowWithdrawModel: false,
-  isShowWRemindModel: false,
-
   /** *********DIY*************/
 
   tokens: [
     {
       index: 0,
-      contract: null,
-      symbol: 'eth',
+      contract: '0x0000000000000000000000000000000000000000',
+      symbol: 'ETH',
       icon: 'statics/tokens/eth.svg',
       balance: 1.2345,
       status: '可用',
@@ -30,7 +18,7 @@ export default {
     {
       index: 1,
       contract: '0xdac17f958d2ee523a2206206994597c13d831ec7',
-      symbol: 'usdt',
+      symbol: 'USDT',
       icon: 'statics/tokens/usdt.svg',
       balance: 0,
       status: '准备中',
@@ -39,7 +27,7 @@ export default {
     {
       index: 2,
       contract: '0xbc46d9961a3932f7d6b64abfdec80c1816c4b835',
-      symbol: 'lxt',
+      symbol: 'LXT',
       icon: 'statics/tokens/lxt.png',
       balance: 0,
       status: '不可用',
