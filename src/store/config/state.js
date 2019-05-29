@@ -9,7 +9,10 @@ export default {
 
   isShowDRemindModel: false,
   isShowPreDpositModel: false,
-  isShowDpositModel: true,
+  isShowDpositModel: false,
+
+  isShowWithdrawModel: false,
+  isShowWRemindModel: false,
 
   /** *********DIY*************/
 

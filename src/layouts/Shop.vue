@@ -44,6 +44,8 @@
     <d-remind-model/>
     <pre-dposit-model/>
     <dposit-model/>
+    <withdraw-model/>
+    <w-remind-model/>
 
   </q-layout>
 </template>
@@ -54,12 +56,12 @@ import Web3 from 'web3'
 import OrderStatusBar from '../components/OrderStatusBar.vue'
 import MenuBtn from '../components/menu/MenuBtn'
 import { TokenItem } from '../components/item'
-import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel } from '../components/modal'
+import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel } from '../components/modal'
 
 export default {
   name: 'MyLayout',
   components: {
-    OrderStatusBar, MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel
+    OrderStatusBar, MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel
   },
   data () {
     return {

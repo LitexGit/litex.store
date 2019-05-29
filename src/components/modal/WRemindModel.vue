@@ -1,16 +1,17 @@
 <template>
   <q-dialog minimized no-backdrop-dismiss content-classes="flex justify-center items-center" position='standard'
-    v-model="isShowDRemindModel" @hide="clickClose()" @cancel="clickCancel()">
+    v-model="isShowWRemindModel" @hide="clickClose()" @cancel="clickCancel()">
     <div class="container bg-white">
       <div class="bg-primary q-pa-sm row">
         <q-btn class="col-1" color="white" dense flat size="md" icon="close" @click="clickClose()"/>
         <div class="row col-11 q-pr-md justify-center items-center text-white">
-          <span class="text-subtitle1">充值 ETH</span>
+          <span class="text-subtitle1">注意</span>
+          <img class="q-ml-sm" style="width: 20px" src="../../statics/icons/reminder.png" />
         </div>
       </div>
       <div class="bg-white q-pa-xl">
 
-        <center>DpositModel</center>
+        <center>WRemindModel</center>
 
       </div>
     </div>
@@ -19,23 +20,23 @@
 
 <script>
 export default {
-  name: 'DpositModel',
+  name: 'DRemindModel',
   data () {
     return {}
   },
   methods: {
     clickClose: function () {
       console.log('=============取消=======================')
-      this.$store.commit('config/updateShowDpositModel', { open: false })
+      this.$store.commit('config/updateShowWRemindModel', { open: false })
     }
   },
   computed: {
-    isShowDRemindModel: {
+    isShowWRemindModel: {
       get () {
-        return this.$store.state.config.isShowDpositModel
+        return this.$store.state.config.isShowWRemindModel
       },
       set (open) {
-        this.$store.commit('config/updateShowDpositModel', { open })
+        this.$store.commit('config/updateShowWRemindModel', { open })
       }
     }
   }

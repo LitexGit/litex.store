@@ -1,17 +1,16 @@
 <template>
   <q-dialog minimized no-backdrop-dismiss content-classes="flex justify-center items-center" position='standard'
-    v-model="isShowDRemindModel" @hide="clickClose()" @cancel="clickCancel()">
+    v-model="isShowWithdrawModel" @hide="clickClose()" @cancel="clickCancel()">
     <div class="container bg-white">
       <div class="bg-primary q-pa-sm row">
-        <q-btn class="col-1 q-pb-lg" color="white" dense flat size="md" icon="close" @click="clickClose()"/>
-        <div class="col-11 q-pr-md text-white">
-          <center class="text-subtitle1">充值 PKT</center>
-          <center class="text-caption">step 1/2 预授权</center>
+        <q-btn class="col-1" color="white" dense flat size="md" icon="close" @click="clickClose()"/>
+        <div class="row col-11 q-pr-md justify-center items-center text-white">
+          <span class="text-subtitle1">提现 ETH</span>
         </div>
       </div>
       <div class="bg-white q-pa-xl">
 
-        <center>PreDpositModel</center>
+        <center>WithdrawModel</center>
 
       </div>
     </div>
@@ -20,23 +19,23 @@
 
 <script>
 export default {
-  name: 'PreDpositModel',
+  name: 'WithdrawModel',
   data () {
     return {}
   },
   methods: {
     clickClose: function () {
       console.log('=============取消=======================')
-      this.$store.commit('config/updateShowDRemindModel', { open: false })
+      this.$store.commit('config/updateShowWithdrawModel', { open: false })
     }
   },
   computed: {
-    isShowDRemindModel: {
+    isShowWithdrawModel: {
       get () {
-        return this.$store.state.config.isShowPreDpositModel
+        return this.$store.state.config.isShowWithdrawModel
       },
       set (open) {
-        this.$store.commit('config/updateShowPreDpositModel', { open })
+        this.$store.commit('config/updateWithdrawModel', { open })
       }
     }
   }
