@@ -4,6 +4,7 @@ import PreDpositModel from './PreDpositModel.vue'
 import DpositModel from './DpositModel.vue'
 import WithdrawModel from './WithdrawModel.vue'
 import WRemindModel from './WRemindModel.vue'
+import DepositTokenModel from './DepositTokenModel.vue'
 
 export {
   ConfirmPayModel,
@@ -11,5 +12,6 @@ export {
   PreDpositModel,
   DpositModel,
   WithdrawModel,
-  WRemindModel
+  WRemindModel,
+  DepositTokenModel
 }

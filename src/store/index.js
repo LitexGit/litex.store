@@ -5,7 +5,9 @@ import sku from './sku'
 import pn from './pn'
 import order from './order'
 import fund from './fund'
+
 import config from './config'
+import channel from './channel'
 
 Vue.use(Vuex)
 
@@ -18,6 +20,7 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       config,
+      channel,
       sku,
       pn,
       order,

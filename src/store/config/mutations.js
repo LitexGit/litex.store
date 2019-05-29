@@ -35,3 +35,7 @@ export function updateShowWithdrawModel (state, { open }) {
 export function updateShowWRemindModel (state, { open }) {
   state.isShowWRemindModel = open
 }
+
+export function updateShowDERC20Model (state, { open }) {
+  state.isShowDERC20Model = open
+}

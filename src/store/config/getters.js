@@ -1,4 +1,4 @@
-/*
-export function someGetter (state) {
+
+export const getSelectedToken = ({ tokens, selected }) => {
+  return tokens[selected]
 }
-*/

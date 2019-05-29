@@ -1,6 +1,6 @@
 <template>
   <q-dialog minimized no-backdrop-dismiss content-classes="flex justify-center items-center" position='standard'
-    v-model="isShowDRemindModel" @hide="clickClose()" @cancel="clickCancel()">
+    v-model="isShowDERC20Model" @hide="clickClose()" @cancel="clickCancel()">
     <div class="container bg-white">
       <div class="bg-primary q-pa-sm row">
         <q-btn class="col-1 q-pb-lg" color="white" dense flat size="md" icon="close" @click="clickClose()"/>
@@ -8,21 +8,20 @@
           <center class="text-subtitle1">
             <span>充值</span>&nbsp;<span>{{symbol}}</span>
           </center>
-          <center class="text-caption">step 1/2 预授权</center>
+          <center class="text-caption">step 2/2 充值</center>
         </div>
       </div>
       <div class="bg-white q-px-md q-pb-md q-pt-sm">
-        <q-input filled v-model="input" @blur="updateInputValue({input})" type='amount' label="请输入数量"/>
-        <div class="q-mt-md">
-          <span>钱包余额：</span>
-          <span>0.00000</span>&nbsp;<span>{{symbol}}</span>
+        <div class="q-mt-md text-subtitle1">
+          <center class="text-black">充值金额</center>
+          <center class="text-primary">{{allowance}}&nbsp;<span class="text-black text-subtitle2">{{symbol}}</span></center>
           <div class="q-mt-md text-caption text-weight-light">
             1.<span>您的充值安全由<span class="text-weight-regular">以太坊状态通道</span>保障，游戏运营方无法操纵用户充值的代币，且您可以随时提现。</span><br/>
             2.<span>抢红包之前请先充值，以保证有相应场次足够的代币。</span><br/>
             3.<span>充值涉及与以太坊的链上交互，请确保有足够的Gas费。成功的操作可以在“资金记录中查看”。</span><br/>
           </div>
           <center class="q-mt-md">
-            <q-btn class="q-px-xl" dense color="primary" label="确认授权" @click="clickAuthorize()"/>
+            <q-btn class="q-px-xl" dense color="primary" label="确认充值" @click="clickConfirm()"/>
           </center>
         </div>
       </div>
@@ -31,22 +30,25 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
-  name: 'PreDpositModel',
+  name: 'DepositTokenModel',
   data () {
     return {
       input: ''
     }
   },
   computed: {
-    isShowDRemindModel: {
+    ...mapState('channel', [
+      'allowance'
+    ]),
+    isShowDERC20Model: {
       get () {
-        return this.$store.state.config.isShowPreDpositModel
+        return this.$store.state.config.isShowDERC20Model
       },
       set (open) {
-        this.$store.commit('config/updateShowPreDpositModel', { open })
+        this.$store.commit('config/updateShowDERC20Model', { open })
       }
     },
     symbol: function () {
@@ -58,18 +60,11 @@ export default {
       'getSelectedToken'
     ]),
     clickClose: function () {
-      console.log('=============取消=======================')
-      this.$store.commit('config/updateShowPreDpositModel', { open: false })
+      this.$store.commit('config/updateShowDERC20Model', { open: false })
     },
-    clickAuthorize: function () {
-      // 校验授权金额
-      this.$store.commit('config/updateShowPreDpositModel', { open: false })
-      this.$store.dispatch('channel/submitERC20Approval', { value: '1.2' })
-    },
-    updateInputValue: function (input) {
-      console.log('=============updateInputValue=======================')
-      console.log(input)
-      console.log('=============updateInputValue=======================')
+    clickConfirm: function () {
+      this.$store.commit('config/updateShowDERC20Model', { open: false })
+      this.$store.dispatch('channel/confirmDeposit', { amount: '1000000000000', address: '' })
     }
   }
 }

@@ -27,6 +27,9 @@
 
 export default {
   name: 'ConfirmPayModel',
+  data () {
+    return {}
+  },
   computed: {
     isShowConfirmPay: {
       get () {
@@ -36,9 +39,6 @@ export default {
         this.$store.commit('config/updateShowConfirmPay', { open })
       }
     }
-  },
-  data () {
-    return {}
   },
   methods: {
     clickConfirm: function () {
