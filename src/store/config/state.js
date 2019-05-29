@@ -25,7 +25,8 @@ export default {
       balance: 1.2345,
       status: '可用',
       enable: true
-    }, {
+    },
+    {
       index: 1,
       contract: '0xdac17f958d2ee523a2206206994597c13d831ec7',
       symbol: 'usdt',
@@ -33,7 +34,8 @@ export default {
       balance: 0,
       status: '准备中',
       enable: false
-    }, {
+    },
+    {
       index: 2,
       contract: '0xbc46d9961a3932f7d6b64abfdec80c1816c4b835',
       symbol: 'lxt',
@@ -44,5 +46,29 @@ export default {
     }
   ],
   selected: 0,
-  price: 0
+  price: 0,
+
+  menuList: [
+    {
+      key: 'shop',
+      label: '商城'
+    },
+    {
+      key: 'funds',
+      label: '资金记录'
+    },
+    {
+      key: 'orders',
+      label: '订单列表'
+    },
+    {
+      key: 'introduction',
+      label: '说明'
+    },
+    {
+      key: 'contactUS',
+      label: '联系我们'
+    }
+  ],
+  telegramGroup: 'https://t.me/joinchat/IyBmRhSSMJYw8FBQ3tpK4Q'
 }
