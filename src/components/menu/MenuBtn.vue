@@ -18,15 +18,15 @@
       </q-list>
     </q-menu>
     <q-dialog v-model="showIntroduction" class="bg-blue-1">
-      <q-card>
-        <q-card-section>
-          <div class="text-h6 text-center">LITEX STORE 说明</div>
+      <q-card class="q-mx-lg">
+        <q-card-section class="bg-primary">
+          <div class="text-h6 text-center text-white">LITEX STORE 说明</div>
         </q-card-section>
         <q-separator />
         <q-card-section style="max-height: 50vh" class="scroll">
           <p>
             1.
-           <span>{{ $t("introduction01") }}</span>
+            <span>{{ $t("introduction01") }}</span>
           </p>
           <p>
             2.
@@ -73,7 +73,7 @@ export default {
           this.$router.push('/funds')
           break
         case 'orders':
-          this.$router.push('/orders/list')
+          this.$router.push('/orders')
           break
         case 'introduction':
           this.showIntroduction = true
@@ -89,5 +89,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.container {
+  border: 2px solid #2ca6e0;
+  width: 80%;
+}
 </style>

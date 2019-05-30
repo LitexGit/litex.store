@@ -10,7 +10,7 @@ export default {
       flat: -100,
       token: -50,
       tokenType: 'ETH',
-      state: 0
+      state: 3
     },
     {
       index: 1,

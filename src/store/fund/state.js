@@ -1,5 +1,4 @@
 export default {
-  currentToken: 'ETH',
   records: [
     {
       index: 0,
