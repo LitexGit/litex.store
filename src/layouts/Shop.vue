@@ -30,7 +30,7 @@
             <q-item class="q-pa-none" v-for="(token, index) in tokens" :clickable="token.enable" v-close-popup
               :key="index"  :active="index === selected"
               @click="selectToken(index)">
-              <token-item :token = "token" @deposit="deposit(token)" @withdraw="withdraw(token)"/>
+              <token-item :key="index" :token = "token" @deposit="deposit(token)" @withdraw="withdraw(token)"/>
             </q-item>
           </q-list>
         </q-btn-dropdown>

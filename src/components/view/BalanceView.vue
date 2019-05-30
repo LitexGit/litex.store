@@ -40,7 +40,7 @@ export default {
     },
     showValue: function () {
       let decimal = this.decimal
-      if (decimal) {
+      if (!decimal) {
         decimal = this.getSelectedToken().decimal
       }
       return this.toDecimal({ amount: this.amount, decimal })
@@ -53,9 +53,6 @@ export default {
     ])
   },
   mounted: function () {
-    console.log('==============this.style======================')
-    console.log(this.symbolStyle)
-    console.log('===============this.style=====================')
   }
 }
 </script>

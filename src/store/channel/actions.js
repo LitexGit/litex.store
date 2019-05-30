@@ -46,11 +46,11 @@ export function submitERC20Approval ({ commit }, payload) {
 function getERC20Allowance ({ commit }, { address }) {
   // layer2
 
-  // commit('updateShowDRemindModel', { open: true })
+  commit('updateShowDRemindModel', { open: true })
 
-  const allowance = '100000000000000'
-  commit('updateAllowance', { allowance })
-  commit('updateShowDERC20Model', { open: true })
+  // const allowance = '100000000000000'
+  // commit('updateAllowance', { allowance })
+  // commit('updateShowDERC20Model', { open: true })
 }
 
 /**

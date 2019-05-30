@@ -1,3 +1,4 @@
+import { formattedInput } from '../../utils/helper'
 
 export function updateShowDRemindModel (state, { open }) {
   state.isShowDRemindModel = open
@@ -25,4 +26,20 @@ export function updateShowDERC20Model (state, { open }) {
 
 export function updateAllowance (state, { allowance }) {
   state.allowance = allowance
+}
+
+export function update (state, payload) {
+  Object.keys(payload).forEach(key => {
+    this._vm.$set(state, key, payload[key])
+  })
+}
+
+export function updateDepInput (state, { depInput }) {
+  const input = formattedInput(depInput)
+  state.depInput = input
+}
+
+export function updateAuthInput (state, { authInput }) {
+  const input = formattedInput(authInput)
+  state.authInput = input
 }

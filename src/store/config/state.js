@@ -7,6 +7,7 @@ export default {
 
   /** *********DIY*************/
 
+  // 钱包余额  通道余额
   tokens: [
     {
       index: 0,
@@ -14,9 +15,10 @@ export default {
       symbol: 'ETH',
       decimal: 18,
       icon: 'statics/tokens/eth.svg',
-      balance: 1.2345,
+      channelBalance: '2300000000000000',
       status: '可用',
-      enable: true
+      enable: true,
+      balance: '12300000000000000'
     },
     {
       index: 1,
@@ -24,9 +26,10 @@ export default {
       symbol: 'USDT',
       decimal: 5,
       icon: 'statics/tokens/usdt.svg',
-      balance: 0,
+      channelBalance: '56000',
       status: '准备中',
-      enable: false
+      enable: false,
+      balance: '456000'
     },
     {
       index: 2,
@@ -34,9 +37,10 @@ export default {
       symbol: 'LXT',
       decimal: 12,
       icon: 'statics/tokens/lxt.png',
-      balance: 0,
+      channelBalance: '890000000000',
       status: '不可用',
-      enable: true
+      enable: true,
+      balance: '7890000000000'
     }
   ],
   selected: 0,

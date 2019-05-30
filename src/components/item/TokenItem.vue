@@ -5,7 +5,9 @@
     </center>
     <div class="col-3 q-pl-sm">
       <q-item-label> {{ token.symbol.toUpperCase() }} </q-item-label>
-      <q-item-label caption>{{ token.balance }}</q-item-label>
+      <q-item-label caption class="q-pt-sm">
+        <balance-view :symbol="token.symbol" :decimal="token.decimal" :amount="token.channelBalance"/>
+      </q-item-label>
     </div>
     <center class="col-2">
       <!-- .stop -->
@@ -21,9 +23,11 @@
 </template>
 
 <script>
+import { BalanceView } from '../../components/view'
 
 export default {
   name: 'TokenItem',
+  components: { BalanceView },
   props: {
     token: {
       type: Object
@@ -31,6 +35,10 @@ export default {
   },
   data () {
     return {}
+  },
+  computed: {
+  },
+  mounted: function () {
   }
 }
 </script>

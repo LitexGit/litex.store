@@ -12,7 +12,8 @@
         </div>
       </div>
       <div class="bg-white q-px-md q-pb-md q-pt-sm">
-        <q-input filled v-model="input" @blur="updateInputValue({input})" type='amount' label="请输入数量"/>
+        <!-- @blur="updateInputValue({input})" -->
+        <q-input filled type='number' v-model="authInput" label="请输入数量"/>
         <div class="q-mt-md">
           <span>钱包余额：</span>
           <balance-view :symbol="symbol" :decimal="decimal" :amount="balance"/>
@@ -31,19 +32,30 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { BalanceView } from '../../components/view'
+import { isAvailableFormat } from '../../utils/helper'
 
 export default {
   name: 'PreDpositModel',
   components: { BalanceView },
   data () {
     return {
-      input: '',
       balance: '20202020020200202000'
     }
   },
   computed: {
+    ...mapState('config', {
+      duration: 'duration'
+    }),
+    authInput: {
+      get () {
+        return this.$store.state.channel.authInput
+      },
+      set (input) {
+        this.$store.commit('channel/updateAuthInput', { authInput: input })
+      }
+    },
     isShowDRemindModel: {
       get () {
         return this.$store.state.channel.isShowPreDpositModel
@@ -63,21 +75,29 @@ export default {
     }
   },
   methods: {
+    isAvailableFormat,
     ...mapGetters('config', [
       'getSelectedToken'
     ]),
     clickClose: function () {
       this.$store.commit('channel/updateShowPreDpositModel', { open: false })
     },
+    checkInput: function (input) {
+      // 校验 01:format
+      if (!this.isAvailableFormat(input)) {
+        this.$q.notify({ message: '请输入有效的充值金额', position: 'top', type: 'negative', timeout: this.duration })
+        return false
+      }
+      // 校验 02:banlance
+
+      return true
+    },
     clickAuthorize: function () {
+      blur()
+      if (!this.checkInput(this.authInput)) return
       // 校验授权金额
       this.$store.commit('channel/updateShowPreDpositModel', { open: false })
       this.$store.dispatch('channel/submitERC20Approval', { amount: '10000000000000', address: this.address })
-    },
-    updateInputValue: function (input) {
-      console.log('=============updateInputValue=======================')
-      console.log(input)
-      console.log('=============updateInputValue=======================')
     }
   }
 }

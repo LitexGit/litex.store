@@ -15,7 +15,7 @@
         <div class="q-mt-md text-subtitle1">
           <center class="text-black">充值金额</center>
           <center>
-            <balance-view class="text-primary" :symbol="symbol" :decimal="decimal" :amount="allowance" :symbolStyle="symbolStyle"/>
+            <balance-view class="text-primary text-subtitle1" :symbol="symbol" :decimal="decimal" :amount="allowance" :symbolStyle="symbolStyle"/>
           </center>
           <!-- <center class="text-primary">{{allowance}}&nbsp;<span class="text-black text-subtitle2">{{symbol}}</span></center> -->
           <div class="q-mt-md text-caption text-weight-light">
@@ -43,8 +43,8 @@ export default {
     return {
       input: '',
       symbolStyle: {
-        color: 'red',
-        'font-size': '1em'
+        color: 'black',
+        'font-size': '0.5em'
       }
     }
   },

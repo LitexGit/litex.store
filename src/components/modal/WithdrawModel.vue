@@ -10,7 +10,9 @@
       </div>
       <div class="bg-white q-pa-md">
         <center>可提现金额</center>
-        <center class="q-mt-sm">{{balance}}&nbsp;<span>{{symbol}}</span></center>
+        <center>
+          <balance-view class="text-primary text-subtitle1" :symbol="symbol" :decimal="decimal" :amount="balance" :symbolStyle="symbolStyle"/>
+        </center>
         <div class="q-mt-sm text-caption text-weight-light">
           1.<span>您提现的代币将直接进入您的数字钱包账户。</span><br/>
           2.<span>您可以随时提现。</span><br/>
@@ -26,11 +28,18 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { BalanceView } from '../../components/view'
 
 export default {
   name: 'WithdrawModel',
+  components: { BalanceView },
   data () {
-    return {}
+    return {
+      symbolStyle: {
+        color: 'black',
+        'font-size': '0.5em'
+      }
+    }
   },
   computed: {
     isShowWithdrawModel: {
@@ -43,6 +52,9 @@ export default {
     },
     symbol: function () {
       return this.getSelectedToken().symbol.toUpperCase()
+    },
+    decimal: function () {
+      return this.getSelectedToken().decimal
     },
     balance: function () {
       return this.getSelectedToken().balance

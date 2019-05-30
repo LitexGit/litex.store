@@ -2,7 +2,8 @@
   <q-page padding class="flex">
     <q-card class="q-pa-sm container">
       <q-card-section>
-        <q-input filled autofocus counter maxlength="11" type='tel' :label="remind" v-model="phone" @blur="updateInfo({phone})">
+        <!-- autofocus -->
+        <q-input filled counter maxlength="11" type='tel' :label="remind" v-model="phone" @blur="updateInfo({phone})">
           <template v-slot:prepend>
             <q-icon name="smartphone" />
           </template>

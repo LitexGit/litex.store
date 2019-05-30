@@ -1,6 +1,6 @@
 <template>
   <q-dialog minimized no-backdrop-dismiss content-classes="flex justify-center items-center" position='standard'
-    v-model="isShowDRemindModel" @hide="clickClose()" @cancel="clickCancel()">
+    v-model="isShowDRemindModel" @show="show()" @hide="clickClose()" @cancel="clickCancel()">
     <div class="container bg-white">
       <div class="bg-primary q-pa-sm row">
         <q-btn class="col-1" color="white" dense flat size="md" icon="close" @click="clickClose()"/>
@@ -9,7 +9,8 @@
         </div>
       </div>
       <div class="bg-white q-px-md q-pb-md q-pt-sm">
-          <q-input filled v-model="input" @blur="updateInputValue({input})" type='amount' label="请输入数量"/>
+          <!-- @blur="updateInputValue(input)" -->
+          <q-input filled type='number' v-model="depInput" label="请输入数量"/>
           <div class="q-mt-md">
             <span>钱包余额：</span>
             <balance-view :symbol="symbol" :decimal="decimal" :amount="balance"/>
@@ -28,19 +29,30 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { BalanceView } from '../../components/view'
+import { isAvailableFormat } from '../../utils/helper'
 
 export default {
   name: 'DpositModel',
   components: { BalanceView },
   data () {
     return {
-      input: '',
       balance: '10101010010100101000'
     }
   },
   computed: {
+    ...mapState('config', {
+      duration: 'duration'
+    }),
+    depInput: {
+      get () {
+        return this.$store.state.channel.depInput
+      },
+      set (input) {
+        this.$store.commit('channel/updateDepInput', { depInput: input })
+      }
+    },
     isShowDRemindModel: {
       get () {
         return this.$store.state.channel.isShowDpositModel
@@ -57,20 +69,31 @@ export default {
     }
   },
   methods: {
+    isAvailableFormat,
     ...mapGetters('config', [
       'getSelectedToken'
     ]),
+    show: function () {
+      this.$store.commit('channel/updateDepInput', { depInput: '' })
+    },
     clickClose: function () {
       this.$store.commit('channel/updateShowDpositModel', { open: false })
     },
+    checkInput: function (input) {
+      // 校验 01:format
+      if (!this.isAvailableFormat(input)) {
+        this.$q.notify({ message: '请输入有效的充值金额', position: 'top', type: 'negative', timeout: this.duration })
+        return false
+      }
+      // 校验 02:banlance
+
+      return true
+    },
     clickConfirm: function () {
+      blur()
+      if (!this.checkInput(this.depInput)) return
       this.$store.commit('channel/updateShowDpositModel', { open: false })
       this.$store.dispatch('channel/confirmDeposit', { amount: '1000000000000', address: '' })
-    },
-    updateInputValue: function (input) {
-      console.log('=============updateInputValue=======================')
-      console.log(input)
-      console.log('=============updateInputValue=======================')
     }
   }
 }

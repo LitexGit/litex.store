@@ -93,3 +93,38 @@ export function isPoneAvailable (pone) {
     return true
   }
 }
+
+/**
+ * 格式化输入
+ * @param {*} input
+ */
+export function formattedInput (input) {
+  if (!input || input === '0' || input === '0.0' || input === '0.00') return '' // string ==> number === 0 return ''
+  const reg = /^(0|[1-9]\d*|[1-9]\d*\.\d+|0\.\d*[1-9]\d*)$/
+  if (!reg.test(input)) return ''
+  // 清除“数字”和“.”以外的字符
+  let value = input.replace(/[^\d.]/g, '')
+  // 只保留第一个. 清除多余的
+  value = value.replace(/\.{2,}/g, '.')
+  value = value.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.')
+  // 只能输入4个小数
+  /* eslint-disable */
+  value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/, '$1$2.$3')
+  /* eslint-disable */
+  // 以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
+  if (value.indexOf('.') < 0 && value !== '') {
+    value = parseFloat(value)
+  }
+  return value
+}
+
+/**
+ * 校验 input format
+ * @param {*} input
+ */
+export function isAvailableFormat (input) {
+  if (!input) return false
+  const reg = /^(0|[1-9]\d*|[1-9]\d*\.\d+|0\.\d*[1-9]\d*)$/
+  if (!reg.test(input)) return false
+  return true
+}
