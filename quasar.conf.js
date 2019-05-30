@@ -55,7 +55,10 @@ module.exports = function (ctx) {
         'QRouteTab',
         'QMarkupTable',
         'QMenu',
-        'QDialog'
+        'QDialog',
+        'QInnerLoading',
+        'QSpinner',
+        'QSpinnerBars'
       ],
 
       directives: ['Ripple', 'ClosePopup'],

@@ -2,7 +2,6 @@ import Shop from 'layouts/Shop'
 import Phone from 'pages/Phone'
 
 import Orders from 'layouts/Orders'
-import OrderList from 'pages/OrderList'
 
 const routes = [
   {
@@ -19,22 +18,11 @@ const routes = [
   },
   {
     path: '/orders',
-    component: Orders,
-    children: [
-      { path: '', redirect: 'list' },
-      { path: 'list', component: OrderList }
-    ]
+    component: Orders
   },
   {
     path: '/funds',
-    component: () => import('layouts/Funds'),
-    children: [
-      { path: '', redirect: 'records/ETH' },
-      {
-        path: 'records/:token',
-        component: () => import('pages/funds/Records')
-      }
-    ]
+    component: () => import('layouts/Funds')
   }
 ]
 
