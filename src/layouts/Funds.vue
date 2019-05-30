@@ -27,7 +27,7 @@
 
     <q-page-container>
       <q-page padding>
-        <q-markup-table separator="horizontal" flat>
+        <q-markup-table separator="horizontal" flat class="q-mr-md">
           <thead>
             <tr>
               <th class="text-center">时间</th>
