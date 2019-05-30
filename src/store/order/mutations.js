@@ -6,3 +6,7 @@ export function update (state, payload) {
     Loading.hide()
   })
 }
+
+export function updateShowConfirmPay (state, { open }) {
+  state.isShowConfirmPay = open
+}

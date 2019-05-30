@@ -1,8 +1,4 @@
 
-export function updateShowConfirmPay (state, { open }) {
-  state.isShowConfirmPay = open
-}
-
 export function updateShowDRemindModel (state, { open }) {
   state.isShowDRemindModel = open
 }

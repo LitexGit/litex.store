@@ -1,4 +1,6 @@
 export default {
+  duration: 1500,
+
   baseUrl: '',
   telegramUrl: '',
   categorys: [],

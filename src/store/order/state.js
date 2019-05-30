@@ -1,4 +1,6 @@
 export default {
+  isShowConfirmPay: false,
+
   orders: [
     {
       index: 0,

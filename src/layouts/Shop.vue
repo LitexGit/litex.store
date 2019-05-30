@@ -78,9 +78,15 @@ export default {
       selected: 'selected',
       price: 'price'
     }),
+    ...mapState('sku', {
+      info: 'info'
+    }),
     ...mapState('pn', {
       loading: 'loading'
-    })
+    }),
+    phone: function () {
+      return this.info.phone
+    }
   },
   methods: {
     getAccount,
@@ -107,7 +113,8 @@ export default {
     placeOrder: function () {
       // 01: token 02: goodsId 03: api
       console.log('==============【下单】======================')
-      this.$store.commit('channel/updateShowConfirmPay', { open: true })
+      // account info:{phone} token goodsId
+      this.$store.dispatch('order/placeOrder', { phone: this.phone, msg: 'account info:{phone} token goodsId' })
     },
     pay: async function () {
       console.log('=============【layer1 支付】=======================')

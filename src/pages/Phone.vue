@@ -2,7 +2,7 @@
   <q-page padding class="flex">
     <q-card class="q-pa-sm container">
       <q-card-section>
-        <q-input filled v-model="phone" @blur="updateInfo({phone})" counter maxlength="11" type='tel' label="请输入手机号">
+        <q-input filled autofocus counter maxlength="11" type='tel' :label="remind" v-model="phone" @blur="updateInfo({phone})">
           <template v-slot:prepend>
             <q-icon name="smartphone" />
           </template>
@@ -22,14 +22,26 @@
 
 <script>
 import { mapState } from 'vuex'
+
 export default {
   name: 'PageIndex',
   data () {
-    return {
-      phone: '13488886666'
-    }
+    return {}
   },
   computed: {
+    ...mapState('sku', {
+      remind: 'remind',
+      info: 'info',
+      cateLabels: 'cates'
+    }),
+    phone: {
+      get () {
+        return this.$store.state.sku.info.phone
+      },
+      set (phone) {
+        this.$store.commit('sku/update', { info: { phone } })
+      }
+    },
     skus: {
       get () {
         const { skus } = this.$store.state.sku
@@ -52,15 +64,13 @@ export default {
       set (selected) {
         this.$store.commit('sku/update', { selected })
       }
-    },
-    ...mapState('sku', {
-      cateLabels: 'cates'
-    })
+    }
   },
   methods: {
     dataLabel: (dc) => dc < 1 ? dc * 1000 + 'M' : dc + 'G',
     updateInfo: function (info) {
       this.$store.commit('sku/update', { info })
+      this.$store.commit('sku/updatePhoneRemind', info)
     }
   },
   created () {

@@ -37,10 +37,10 @@ export default {
   computed: {
     isShowConfirmPay: {
       get () {
-        return this.$store.state.channel.isShowConfirmPay
+        return this.$store.state.order.isShowConfirmPay
       },
       set (open) {
-        this.$store.commit('channel/updateShowConfirmPay', { open })
+        this.$store.commit('order/updateShowConfirmPay', { open })
       }
     },
     symbol: function () {
@@ -53,11 +53,11 @@ export default {
     ]),
     clickConfirm: function () {
       console.log('=============【确认支付】=======================')
-      this.$store.commit('channel/updateShowConfirmPay', { open: false })
+      this.$store.commit('order/updateShowConfirmPay', { open: false })
       this.$store.dispatch('channel/transfer', { })
     },
     clickClose: function () {
-      this.$store.commit('channel/updateShowConfirmPay', { open: false })
+      this.$store.commit('order/updateShowConfirmPay', { open: false })
     }
   }
 }

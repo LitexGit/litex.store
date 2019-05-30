@@ -80,3 +80,16 @@ export function weiToDecimal (x, n, fixed) {
   // return parseFloat(str).toFixed(fixed)
   return str
 }
+
+/**
+ * 判断是否为手机号 校验是否为有效的手机号
+ * @param {*} pone
+ */
+export function isPoneAvailable (pone) {
+  const myreg = /^[1][3,4,5,7,8][0-9]{9}$/
+  if (!myreg.test(pone)) {
+    return false
+  } else {
+    return true
+  }
+}
