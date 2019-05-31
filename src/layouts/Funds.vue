@@ -62,7 +62,12 @@
                     ¥{{ Math.abs(record.fiatAmount / 100) }}
                   </div>
                   <div class="col">
-                    {{ record.token.amount / Math.pow(10, record.token.decimal)
+                    {{
+                      roundFun(
+                        record.token.amount /
+                          Math.pow(10, record.token.decimal),
+                        record.token.symbol
+                      )
                     }}{{ record.token.symbol }}
                   </div>
                 </div>
@@ -83,8 +88,9 @@
 
 <script>
 import MenuBtn from '../components/menu/MenuBtn'
-import { mapState } from 'vuex'
 import format from 'date-fns/format'
+import { roundFun } from '../utils/math'
+import { mapState } from 'vuex'
 import { ASSET_STATE } from '../constants/state'
 
 export default {
@@ -110,6 +116,7 @@ export default {
   },
   methods: {
     format,
+    roundFun,
     back: () => {
       window.history.back(-1)
     },

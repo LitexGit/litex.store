@@ -46,7 +46,11 @@
                     ¥{{ Math.abs(order.fiatAmount) }}
                   </div> -->
                   <div class="col">
-                    {{ order.token.amount / Math.pow(10, order.token.decimal)
+                    {{
+                      roundFun(
+                        order.token.amount / Math.pow(10, order.token.decimal),
+                        order.token.symbol
+                      )
                     }}{{ order.token.symbol }}
                   </div>
                 </div>
@@ -68,6 +72,7 @@
 <script>
 import format from 'date-fns/format'
 import MenuBtn from '../components/menu/MenuBtn'
+import { roundFun } from '../utils/math'
 import { mapState } from 'vuex'
 import { ORDER_STATE } from '../constants/state'
 
@@ -95,12 +100,14 @@ export default {
   },
   methods: {
     format,
+    roundFun,
     getOrderState: (state) => {
       return ORDER_STATE[state]
     },
     back: () => {
       window.history.back(-1)
     }
+
   }
 }
 </script>
