@@ -13,7 +13,11 @@ const routes = [
     component: Shop,
     children: [
       { path: '', redirect: 'phone' },
-      { path: 'phone', component: Phone }
+      { path: 'phone', component: Phone },
+      {
+        path: '*',
+        component: () => import('pages/Error404.vue')
+      }
     ]
   },
   {

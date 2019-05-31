@@ -51,3 +51,12 @@ export async function cancelOrder ({ commit }, { id }) {
     commit('update', { current: {} })
   }
 }
+
+export async function updateOrderRecords ({ commit }, { account }) {
+  commit('updateLoading', true)
+  const records = await api.getOrderRecords({
+    address: account
+  })
+  commit('updateOrderRecords', records)
+  commit('updateLoading', false)
+}

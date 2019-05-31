@@ -10,3 +10,11 @@ export function update (state, payload) {
 export function updateShowConfirmPay (state, { open }) {
   state.isShowConfirmPay = open
 }
+
+export function updateOrderRecords (state, records) {
+  state.orders = records
+}
+
+export function updateLoading (state, loading) {
+  state.loading = loading
+}
