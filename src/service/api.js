@@ -2,9 +2,15 @@
 import axios from 'axios'
 import Api from '../constants/interface'
 
-/**
- * ===============================
- */
+async function get (path, params) {
+  if (params) {
+    path += '?'
+    for (let k of Object.keys(params)) {
+      path += k + '=' + params[k] + '&'
+    }
+  }
+  return axios.get(path)
+}
 
 export default {
   /**
@@ -17,15 +23,14 @@ export default {
    */
   getRates: async (tokens) => axios.post(Api.GET_RATES, { tokens }),
 
+  /** **********
+   * order api
+   ************/
+
   getSkus: async () => {
     const { data: { skus } } = await get(Api.GET_SKU)
     return skus
   },
-
-  /************
-   * order api
-   ************/
-
   /**
    * get specific order by id
    */
@@ -49,12 +54,12 @@ export default {
    * create order
    */
   newOrder: async (data) => {
-    const { data: order } = await post(Api.GET_ORDER, data)
+    const { data: order } = await axios.post(Api.GET_ORDER, data)
     return order
   },
 
   updateOrder: async (id, data) => {
-    const { data: order } = await put(`${Api.GET_ORDER}/${id}`, data)
+    const { data: order } = await axios.put(`${Api.GET_ORDER}/${id}`, data)
     return order
   },
 
@@ -65,21 +70,4 @@ export default {
     const { data: price } = await get(`${Api.GET_PRICE}/${symbol}`)
     return price
   }
-}
-async function get (path, params) {
-  if (params) {
-    path += '?'
-    for (let k of Object.keys(params)) {
-      path += k + '=' + params[k] + '&'
-    }
-  }
-  return axios.get(path)
-}
-
-async function post (path, params) {
-  return (path, params)
-}
-
-async function put (path, params) {
-  return axios.put(path, params)
 }
