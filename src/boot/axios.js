@@ -10,9 +10,9 @@ axios.interceptors.request.use(config => {
   // if (store.getters.token) {
   //   config.headers['X-Token'] = getToken()
   // }
-  console.log('================config====================')
-  console.log(config)
-  console.log('================config====================')
+  // console.log('================config====================')
+  // console.log(config)
+  // console.log('================config====================')
   return config
 }, error => {
   console.log(error)
@@ -20,9 +20,9 @@ axios.interceptors.request.use(config => {
 })
 
 axios.interceptors.response.use(response => {
-  console.log('================response====================')
-  console.log(response)
-  console.log('================response====================')
+  // console.log('================response====================')
+  // console.log(response)
+  // console.log('================response====================')
   if (response.status === 200) {
     const { data } = response
     const { code = 0, msg = '', data: res } = data

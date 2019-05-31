@@ -29,3 +29,5 @@ export async function updatePrice ({ commit }, { symbol }) {
   // commit('updatePrice', { price })
   // commit('loading', false)
 }
+
+// { categoryId, accountNum }

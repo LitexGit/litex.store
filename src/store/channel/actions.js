@@ -1,5 +1,7 @@
 
 // import * as utils from 'web3-utils'
+import { timeoutCheck } from '../../utils/helper'
+import { Notify } from 'quasar'
 
 /**
  *【确认充值】
@@ -81,6 +83,13 @@ export function confirmWithdraw ({ commit, rootState }, payload) {
 /**
  *【支付】
  */
-export function transfer ({ commit }, payload) {
+export function transfer ({ commit, rootState }, payload) {
   console.log('===============【支付】=====================')
+  const { order: { current }, config } = rootState
+  const { timeout } = current
+  if (timeoutCheck(timeout)) {
+    Notify.create({ message: '订单已超时，请重新下单', position: 'top', type: 'negative', timeout: config.duration })
+    return
+  }
+  console.log('==============【订单未超时=>继续支付】======================')
 }

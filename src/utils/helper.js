@@ -128,3 +128,43 @@ export function isAvailableFormat (input) {
   if (!reg.test(input)) return false
   return true
 }
+
+/**
+ * categoryId => router
+ * @param {*} categoryId
+ */
+export function getRouter(categoryId) {
+  switch (categoryId) {
+    case 0:
+      return 'phone'
+    case 1:
+      return 'gas'
+    case 2:
+      return 'vip'
+
+    default:
+      break;
+  }
+}
+
+/**
+ * 向上取整保留小数
+ * @param {*} decimal 小数
+ * @param {*} float 保留小数位数
+ */
+export function mathCeil({decimal, float}) {
+  let value = decimal * Math.pow(10, float)
+  value = Math.ceil(value) / Math.pow(10, float)
+  return value
+}
+
+/**
+ * 校验订单支付是否超时
+ * @param {*} decimal 小数
+ * @param {*} float 保留小数位数
+ */
+export function timeoutCheck(timeout) {
+  const moment = require('moment')
+  const otime = moment(timeout).format()
+  return moment().isSameOrAfter(otime)
+}

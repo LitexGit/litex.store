@@ -11,9 +11,9 @@
       <!-- currentOrder.status -->
       <OrderStatusBar :status="null" pay="pay()" cancel="cancelOrder()" refresh="" />
       <q-tabs>
-        <q-route-tab name="phone" to="phone" exact label="话费流量" />
-        <q-route-tab name="gas" to="gas" exact label="加油卡" />
-        <q-route-tab name="vip" to="vip" exact label="VIP会员" />
+        <!-- @select="clickTab(category)" -->
+        <q-route-tab v-for="(category, index) in categorys" :key="index" exact
+           :name="getRouter(category.categoryId)" :to="getRouter(category.categoryId)" :label="category.categoryDes" />
       </q-tabs>
     </q-header>
     <q-footer>
@@ -21,7 +21,7 @@
         <q-toolbar-title class="col-6">
           <small> 金额：</small>
           <!-- finalPrice -->
-          <small :class="[loading ? 'text-grey' : 'text-amber']"> {{ loading ? '加载中..' :  '12345'}} </small>
+          <small :class="[loading ? 'text-grey' : 'text-amber']"> {{ loading ? '加载中..' :  price}} </small>
         </q-toolbar-title>
         <q-separator dark vertical inset />
 
@@ -59,7 +59,8 @@ import OrderStatusBar from '../components/OrderStatusBar.vue'
 import { TokenItem } from '../components/item'
 import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel } from '../components/modal'
 import MenuBtn from '../components/menu/MenuBtn'
-import { getAccount, getNetwork } from '../utils/helper'
+import { getAccount, getNetwork, getRouter } from '../utils/helper'
+import { Preferences, PrefKeys } from '../utils/preferences'
 
 export default {
   name: 'MyLayout',
@@ -74,30 +75,58 @@ export default {
   },
   computed: {
     ...mapState('config', {
+      duration: 'duration',
       tokens: 'tokens',
       selected: 'selected',
-      price: 'price'
+      categorys: 'categorys'
     }),
     ...mapState('sku', {
-      info: 'info'
+      info: 'info',
+      selectGoods: 'selectGoods'
     }),
     ...mapState('pn', {
-      loading: 'loading'
+      loading: 'loading',
+      price: 'price'
     }),
     phone: function () {
       return this.info.phone
     }
   },
   methods: {
+    getRouter,
     getAccount,
     getNetwork,
+    // clickTab: function (category) {
+    //   console.log('==========clickTab==========================')
+    //   console.log(category)
+    //   console.log('==========clickTab==========================')
+    // },
+    isCanPress: function () {
+      const { productId, goodsId } = this.selectGoods
+      if (!productId || !goodsId) {
+        return false
+      }
+      return true
+    },
     goback: function () {
       this.$router.go(-1)
     },
     selectToken: function (index) {
       const { commit, dispatch } = this.$store
       commit('config/updateSelected', { index })
-      dispatch('config/updatePrice', { symbol: this.tokens[index].symbol })
+      dispatch('pn/updatePrice')
+    },
+
+    placeOrder: function () {
+      if (!this.isCanPress()) {
+        this.$q.notify({ message: '请先选择下单商品', position: 'top', type: 'negative', timeout: this.duration })
+        return
+      }
+      console.log('==============【下单】======================')
+      this.$store.dispatch('order/placeOrder', { phone: this.phone })
+    },
+    pay: async function () {
+      console.log('=============【layer1 支付】=======================')
     },
     deposit: function (token) {
       console.log('=============【deposit】=======================')
@@ -109,20 +138,12 @@ export default {
       console.log('=============【withdraw】=======================')
       const { address, symbol } = token
       this.$store.dispatch('channel/preWithdraw', { address, symbol })
-    },
-    placeOrder: function () {
-      // 01: token 02: goodsId 03: api
-      console.log('==============【下单】======================')
-      // account info:{phone} token goodsId
-      this.$store.dispatch('order/placeOrder', { phone: this.phone, msg: 'account info:{phone} token goodsId' })
-    },
-    pay: async function () {
-      console.log('=============【layer1 支付】=======================')
     }
   },
   created: function () {
     window.addEventListener('load', async () => {
       const account = await this.getAccount()
+      Preferences.setItem(PrefKeys.USER_ACCOUNT, account)
       console.log('=================getAccount===================')
       console.log(account)
       console.log('=================getAccount===================')
@@ -131,7 +152,6 @@ export default {
         window.location.reload(true)
       })
       window.ethereum.on('networkChanged', function (netId) {
-        debugger
         console.log('=============【切换 netId】=======================')
       })
     })

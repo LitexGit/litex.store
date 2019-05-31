@@ -1,25 +1,30 @@
 import { Notify } from 'quasar'
 import api from '../../service/api'
 import { isPoneAvailable } from '../../utils/helper'
+import { Preferences, PrefKeys } from '../../utils/preferences'
 
+//
 /**
  *【下单】
  */
 export async function placeOrder ({ commit, rootState }, payload) {
   console.log('===============【下单】=====================')
-  const { phone, msg } = payload
-  if (!isPoneAvailable(phone)) {
-    // color: 'red',
+  const { phone } = payload
+  if (!isPoneAvailable(phone)) { // color: 'red',
     Notify.create({ message: '请输入正确的手机号码', position: 'top', type: 'negative', timeout: rootState.config.duration })
     return
   }
+  // price ?? channelBalance
+  // api
+  const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
+  const { tokens, selected } = rootState.config
+  const { type: tokenType } = tokens[selected]
 
-  console.log(msg)
-  // const order = await api.newOrder(data)
+  const { selectGoods: { productId, goodsId } } = rootState.sku
+
+  const order = await api.placeOrder({ address, accountNum: phone, tokenType, productId, goodsId })
+  commit('update', { current: order })
   commit('updateShowConfirmPay', { open: true })
-
-  // commit('update', { placing: true })
-  // commit('update', { current: order })
 }
 
 export async function updateOrder ({ commit }, { id, txhash }) {

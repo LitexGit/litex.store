@@ -1,5 +1,9 @@
 export default {
   isShowConfirmPay: false,
+  // 当前订单
+  current: {},
+
+  placing: false,
 
   orders: [
     {
@@ -32,7 +36,6 @@ export default {
       tokenType: 'LXT',
       state: 3
     }
-  ],
-  current: {},
-  placing: false
+  ]
+
 }

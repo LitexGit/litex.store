@@ -19,9 +19,19 @@ export default {
   getConfigs: async (netId) => get(Api.GET_CONFIGS, { netId }),
 
   /**
-   * 查询App配置接口
+   * 查询汇率接口
    */
   getRates: async (tokens) => axios.post(Api.GET_RATES, { tokens }),
+
+  /**
+   * 查询App配置接口
+   */
+  getGoodsList: async (params) => axios.post(Api.GET_GOODS_LIST, params),
+
+  /**
+   * 下单接口
+   */
+  placeOrder: async (params) => axios.post(Api.PLEASE_ORDER, params),
 
   /** **********
    * order api

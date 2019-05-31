@@ -5,8 +5,9 @@ export function update (state, payload) {
     this._vm.$set(state, key, payload[key])
   })
 }
-export function updateSelectedSku (state, selected) {
-  state.selected = selected
+
+export function loading (state, loading) {
+  state.loading = loading
 }
 
 export function updatePhoneRemind (state, { phone }) {
@@ -22,4 +23,8 @@ export function updatePhoneRemind (state, { phone }) {
     remind = '请输入手机号'
   }
   state.remind = remind
+}
+
+export function updateSelectedSku (state, selected) {
+  state.selected = selected
 }

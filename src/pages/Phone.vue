@@ -12,10 +12,10 @@
           </template>
         </q-input>
       </q-card-section>
-      <q-card-section v-for="cate in Object.keys(skus)" :key="cate" class="q-gutter-sm">
-        <div>{{cateLabels[cate]}}</div>
-        <q-btn v-for="sku in skus[cate]" @click="selectedSku=sku.id" :key="sku.id" :outline="sku.id!=selectedSku" color="primary"
-          :label="sku.label" />
+      <q-card-section v-for="(product, index) in skus" :key="index" class="q-gutter-sm">
+        <div>{{product.productDes}}</div>
+        <q-btn v-for="(goods, index) in product.goodsList" :key="index" color="primary" :label="goods.goodsDes"
+          :outline="goods.goodsId!=selectGoods.goodsId" @click="clickGoods(goods, product.productId)"/>
       </q-card-section>
     </q-card>
   </q-page>
@@ -32,8 +32,9 @@ export default {
   computed: {
     ...mapState('sku', {
       remind: 'remind',
+      skus: 'skus',
       info: 'info',
-      cateLabels: 'cates'
+      selectGoods: 'selectGoods'
     }),
     phone: {
       get () {
@@ -42,43 +43,23 @@ export default {
       set (phone) {
         this.$store.commit('sku/update', { info: { phone } })
       }
-    },
-    skus: {
-      get () {
-        const { skus } = this.$store.state.sku
-        let cates = {}
-        for (const sku of skus) {
-          if (cates[sku.cate]) {
-            cates[sku.cate].push(sku)
-          } else {
-            cates[sku.cate] = []
-            cates[sku.cate].push(sku)
-          }
-        }
-        return cates
-      }
-    },
-    selectedSku: {
-      get () {
-        return this.$store.state.sku.selected
-      },
-      set (selected) {
-        this.$store.commit('sku/update', { selected })
-      }
     }
   },
   methods: {
-    dataLabel: (dc) => dc < 1 ? dc * 1000 + 'M' : dc + 'G',
     updateInfo: function (info) {
       this.$store.commit('sku/update', { info })
       this.$store.commit('sku/updatePhoneRemind', info)
+    },
+    clickGoods: function (goods, productId) {
+      goods.productId = productId
+      this.$store.commit('sku/update', { selectGoods: goods })
+      this.$store.dispatch('pn/updatePrice')
     }
   },
   created () {
-    this.$store.dispatch('sku/loadSkus')
+    this.$store.dispatch('sku/getGoodsList')
   },
-  mounted () {
-  }
+  mounted () {}
 }
 </script>
 
