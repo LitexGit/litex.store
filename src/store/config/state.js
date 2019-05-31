@@ -12,7 +12,7 @@ export default {
   categorys: [],
   telegramURL: '',
 
-  /** *********DIY*************/
+  rates: [],
 
   // 钱包余额  通道余额
   tokens: [

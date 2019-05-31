@@ -9,6 +9,17 @@ export async function getConfigs ({ commit }, payload) {
   commit('loading', false)
 }
 
+export async function getRates ({ state, commit }, payload) {
+  const { tokens } = state
+  const list = tokens.map(({ address }) => {
+    return { address }
+  })
+  commit('loading', true)
+  const { tokens: rates } = await api.getRates(list)
+  commit('update', { rates })
+  commit('loading', false)
+}
+
 export async function updatePrice ({ commit }, { symbol }) {
   // commit('loading', true)
   // const price = await api.getPrice(symbol)

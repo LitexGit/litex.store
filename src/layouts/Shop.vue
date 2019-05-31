@@ -136,6 +136,7 @@ export default {
       })
     })
     this.$store.dispatch('config/getConfigs')
+    this.$store.dispatch('config/getRates')
   },
   mounted: async function () {
     this.selectToken(0)

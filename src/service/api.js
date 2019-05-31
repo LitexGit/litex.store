@@ -7,7 +7,15 @@ import Api from '../constants/interface'
  */
 
 export default {
+  /**
+   * 查询App配置接口
+   */
   getConfigs: async (netId) => get(Api.GET_CONFIGS, { netId }),
+
+  /**
+   * 查询App配置接口
+   */
+  getRates: async (tokens) => axios.post(Api.GET_RATES, { tokens }),
 
   getSkus: async () => {
     const { data: { skus } } = await get(Api.GET_SKU)
@@ -69,7 +77,7 @@ async function get (path, params) {
 }
 
 async function post (path, params) {
-  return axios.post(path, params)
+  return (path, params)
 }
 
 async function put (path, params) {
