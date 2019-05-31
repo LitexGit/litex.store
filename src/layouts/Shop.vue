@@ -102,12 +102,12 @@ export default {
     deposit: function (token) {
       console.log('=============【deposit】=======================')
       // 01: 同步钱包余额
-      const { contract: address, symbol } = token
+      const { address, symbol } = token
       this.$store.dispatch('channel/preDeposit', { address, symbol })
     },
     withdraw: function (token) {
       console.log('=============【withdraw】=======================')
-      const { contract: address, symbol } = token
+      const { address, symbol } = token
       this.$store.dispatch('channel/preWithdraw', { address, symbol })
     },
     placeOrder: function () {
@@ -131,9 +131,11 @@ export default {
         window.location.reload(true)
       })
       window.ethereum.on('networkChanged', function (netId) {
+        debugger
         console.log('=============【切换 netId】=======================')
       })
     })
+    this.$store.dispatch('config/getConfigs')
   },
   mounted: async function () {
     this.selectToken(0)

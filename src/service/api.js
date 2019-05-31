@@ -7,7 +7,7 @@ import Api from '../constants/interface'
  */
 
 export default {
-  getConfigs: async () => post(Api.POOST_CONFIGS, { netId: 4 }),
+  getConfigs: async (netId) => get(Api.GET_CONFIGS, { netId }),
 
   getSkus: async () => {
     const { data: { skus } } = await get(Api.GET_SKU)

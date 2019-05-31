@@ -71,7 +71,7 @@ export default {
       return this.getSelectedToken().decimal
     },
     address: function () {
-      return this.getSelectedToken().contract
+      return this.getSelectedToken().address
     }
   },
   methods: {

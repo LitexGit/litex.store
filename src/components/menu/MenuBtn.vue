@@ -52,7 +52,7 @@ export default {
   computed: {
     ...mapState('config', [
       'menuList',
-      'telegramGroup'
+      'telegramURL'
     ])
   },
   methods: {
@@ -79,7 +79,7 @@ export default {
           this.showIntroduction = true
           break
         case 'contactUS':
-          window.location.href = this.telegramGroup
+          window.location.href = this.telegramURL
           break
         default:
           break

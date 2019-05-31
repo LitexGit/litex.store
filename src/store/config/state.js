@@ -1,11 +1,16 @@
 export default {
+
   duration: 1500,
 
-  baseURL: 'http://api.yamen.co:7001',
+  // baseURL: 'http://a1.litex.fun:7001',
+  baseURL: 'http://192.168.51.73:7001',
+
   timeout: 5000,
 
-  telegramURL: '',
+  loading: false,
+
   categorys: [],
+  telegramURL: '',
 
   /** *********DIY*************/
 
@@ -13,36 +18,39 @@ export default {
   tokens: [
     {
       index: 0,
-      contract: '0x0000000000000000000000000000000000000000',
+      address: '0x0000000000000000000000000000000000000000',
       symbol: 'ETH',
       decimal: 18,
       icon: 'statics/tokens/eth.svg',
       channelBalance: '2300000000000000',
       status: '可用',
       enable: true,
-      balance: '12300000000000000'
+      balance: '12300000000000000',
+      type: 1
     },
     {
       index: 1,
-      contract: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+      address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
       symbol: 'USDT',
       decimal: 5,
       icon: 'statics/tokens/usdt.svg',
       channelBalance: '56000',
       status: '准备中',
       enable: false,
-      balance: '456000'
+      balance: '456000',
+      type: 2
     },
     {
       index: 2,
-      contract: '0xbc46d9961a3932f7d6b64abfdec80c1816c4b835',
+      address: '0xbc46d9961a3932f7d6b64abfdec80c1816c4b835',
       symbol: 'LXT',
       decimal: 12,
       icon: 'statics/tokens/lxt.png',
       channelBalance: '890000000000',
       status: '不可用',
       enable: true,
-      balance: '7890000000000'
+      balance: '7890000000000',
+      type: 3
     }
   ],
   selected: 0,
@@ -69,6 +77,6 @@ export default {
       key: 'contactUS',
       label: '联系我们'
     }
-  ],
-  telegramGroup: 'https://t.me/joinchat/IyBmRhSSMJYw8FBQ3tpK4Q'
+  ]
+
 }
