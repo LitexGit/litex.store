@@ -10,7 +10,12 @@ export async function placeOrder ({ commit, rootState }, payload) {
   const { phone, msg } = payload
   if (!isPoneAvailable(phone)) {
     // color: 'red',
-    Notify.create({ message: '请输入正确的手机号码', position: 'top', type: 'negative', timeout: rootState.config.duration })
+    Notify.create({
+      message: '请输入正确的手机号码',
+      position: 'top',
+      type: 'negative',
+      timeout: rootState.config.duration
+    })
     return
   }
 
@@ -45,4 +50,13 @@ export async function cancelOrder ({ commit }, { id }) {
     commit('update', { placing: false })
     commit('update', { current: {} })
   }
+}
+
+export async function updateOrderRecords ({ commit }, { account }) {
+  commit('updateLoading', true)
+  const records = await api.getOrderRecords({
+    address: account
+  })
+  commit('updateOrderRecords', records)
+  commit('updateLoading', false)
 }
