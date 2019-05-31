@@ -10,11 +10,7 @@
 
     <q-page-container>
       <q-page padding>
-        <q-markup-table
-          separator="horizontal"
-          flat
-          dense
-        >
+        <q-markup-table separator="horizontal" flat dense>
           <thead>
             <tr>
               <th class="text-center q-px-xs">时间</th>
@@ -38,19 +34,20 @@
 
               <td class=" q-px-sm" style="font-size:80%">
                 <div class="column">
-                  <div class="col">{{ order.orderInfo.commodity }}</div>
                   <div class="col">{{ order.orderInfo.orderDes }}</div>
+                  <div class="col">{{ order.orderInfo.accountNum }}</div>
                 </div>
               </td>
               <td class=" q-px-sm" style="font-size:85%">
                 <div class="column">
-                  <div class="col">
+                  <!-- <div class="col">
                     <span v-if="order.fiatAmount < 0">-</span>
                     <span v-else>+</span>
                     ¥{{ Math.abs(order.fiatAmount) }}
-                  </div>
+                  </div> -->
                   <div class="col">
-                    {{ order.token.amount }}{{ order.token.symbol }}
+                    {{ order.token.amount / Math.pow(10, order.token.decimal)
+                    }}{{ order.token.symbol }}
                   </div>
                 </div>
               </td>

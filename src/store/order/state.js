@@ -37,8 +37,8 @@ export default {
     //   orderInfo: {
     //     ordered:
     //       '0x5c851d4c0aa810d02b21eb3538977892325c62c39e347a620d22f115e340d3e6',
-    //     orderDes: '137181047941',
-    //     commodity: '话费充值'
+    //     orderDes: '话费充值',
+    //     accountNum: '137181047941'
     //   },
     //   fiatAmount: -100,
     //   token: {

@@ -62,7 +62,8 @@
                     ¥{{ Math.abs(record.fiatAmount / 100) }}
                   </div>
                   <div class="col">
-                    {{ record.token.amount }}{{ record.token.symbol }}
+                    {{ record.token.amount / Math.pow(10, record.token.decimal)
+                    }}{{ record.token.symbol }}
                   </div>
                 </div>
               </td>
