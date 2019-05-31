@@ -76,6 +76,8 @@ export default {
   },
   created () {
     this.$store.dispatch('sku/loadSkus')
+  },
+  mounted () {
   }
 }
 </script>

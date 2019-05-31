@@ -1,8 +1,10 @@
 export default {
   duration: 1500,
 
-  baseUrl: '',
-  telegramUrl: '',
+  baseURL: 'http://api.yamen.co:7001',
+  timeout: 5000,
+
+  telegramURL: '',
   categorys: [],
 
   /** *********DIY*************/
