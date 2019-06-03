@@ -15,11 +15,11 @@
         narrow-indicator
       >
         <q-tab
-          v-for="token in tokens"
+          v-for="(token, index) in tokens"
           :key="token.type"
           :label="token.symbol"
           :name="token.type"
-          @click="selectToken(token.index, token.type)"
+          @click="selectToken(index, token.type)"
           class="col-4"
         ></q-tab>
       </q-tabs>
