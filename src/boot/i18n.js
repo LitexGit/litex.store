@@ -10,4 +10,5 @@ export default async ({ app, Vue }) => {
     fallbackLocale: 'en-us',
     messages
   })
+  app.i18n.locale = 'zh-cn'
 }

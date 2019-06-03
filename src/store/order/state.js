@@ -1,5 +1,7 @@
 export default {
-  orders: [],
+  loading: false,
+  isShowConfirmPay: false,
   current: {},
-  placing: false
+  placing: false,
+  orders: []
 }

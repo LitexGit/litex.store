@@ -33,7 +33,7 @@ export default {
       switch (this.status) {
         case 1: bg = 'bg-orange'; break
         case 2: bg = 'bg-purple'; break
-        case 3: bg = 'bg-red！'; break
+        case 3: bg = 'bg-red'; break
         case 4: bg = 'bg-blue'; break
         case 5: bg = 'bg-green'; break
       }
@@ -43,7 +43,7 @@ export default {
     labelL: function () {
       let label = ''
       switch (this.status) {
-        case 1: label = '取消订单'; break
+        case 1: label = ''; break // 取消订单
         case 2: label = '刷新'; break
         case 3:
         case 4:
@@ -55,7 +55,7 @@ export default {
     labelR: function () {
       let label = ''
       switch (this.status) {
-        case 1: label = '支付'; break
+        case 1: label = ''; break // 支付
         case 2: break
         case 3: break
         case 4: break

@@ -1,9 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createLogger from 'vuex/dist/logger'
 
 import sku from './sku'
 import pn from './pn'
 import order from './order'
+import fund from './fund'
+
+import config from './config'
+import channel from './channel'
 
 Vue.use(Vuex)
 
@@ -14,10 +19,14 @@ Vue.use(Vuex)
 
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
+    plugins: [createLogger()],
     modules: {
+      config,
+      channel,
       sku,
       pn,
-      order
+      order,
+      fund
     },
 
     // enable strict mode (adds overhead!)

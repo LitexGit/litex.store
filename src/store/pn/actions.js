@@ -1,15 +1,17 @@
-/*
-export function someAction (context) {
-}
-*/
-
 import api from '../../service/api'
+import { mathCeil } from '../../utils/helper'
 
-export async function updatePrice ({ commit }, symbol) {
+export async function updatePrice ({ commit, rootGetters, rootState }, payload) {
   commit('loading', true)
-  let price = await api.getPrice(symbol)
-  console.log('Price: ', price)
+  const { selectGoods: { price } } = rootState.sku
+  const { tokens, selected } = rootState.config
+  const { address, float } = tokens[selected]
+  const { tokens: rates } = await api.getRates([{ address }])
+  const Ramda = require('ramda')
+  const { rate } = Ramda.head(rates)
 
-  commit('updatePrice', price)
+  let decimal = price / 100 / rate
+  decimal = mathCeil({ decimal, float })
+  commit('updatePrice', decimal)
   commit('loading', false)
 }

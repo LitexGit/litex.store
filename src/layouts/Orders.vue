@@ -1,54 +1,113 @@
 <template>
-  <q-layout view="hHh Lpr fFf"> <!-- Be sure to play with the Layout demo on docs -->
-
-    <!-- (Optional) The Header -->
+  <q-layout view="hHh Lpr fFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn
-          flat
-          round
-          dense
-          icon="menu"
-          @click="leftDrawer = !leftDrawer"
-        />
-        <q-toolbar-title>
-          Header
-        </q-toolbar-title>
+        <q-btn flat dense icon="reply" @click="back" />
+        <q-toolbar-title style="text-align:center">订单列表</q-toolbar-title>
+        <menu-btn></menu-btn>
       </q-toolbar>
     </q-header>
 
-    <!-- (Optional) The Footer -->
-    <q-footer>
-      <q-toolbar>
-        <q-btn
-          flat
-          round
-          dense
-          icon="menu"
-          @click="leftDrawer = !leftDrawer"
-        />
-        <q-toolbar-title>
-          Footer
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-footer>
-
     <q-page-container>
-      <!-- This is where pages get injected -->
-      <router-view />
-    </q-page-container>
+      <q-page padding>
+        <q-markup-table separator="horizontal" flat dense>
+          <thead>
+            <tr>
+              <th class="text-center q-px-xs">时间</th>
+              <th class="text-center q-px-sm">商品</th>
+              <th class="text-center q-px-sm">金额</th>
+              <th class="text-center q-px-sm">订单状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="order in orders" :key="order.index" class="text-center">
+              <td class=" q-px-sm" style="font-size:80%">
+                <div class="column">
+                  <div class="col">
+                    {{ format(new Date(order.stamp), "DD/MM/YYYY") }}
+                  </div>
+                  <div class="col">
+                    {{ format(new Date(order.stamp), "HH:mm:ss") }}
+                  </div>
+                </div>
+              </td>
 
+              <td class=" q-px-sm" style="font-size:80%">
+                <div class="column">
+                  <div class="col">{{ order.orderInfo.orderDes }}</div>
+                  <div class="col">{{ order.orderInfo.accountNum }}</div>
+                </div>
+              </td>
+              <td class=" q-px-sm" style="font-size:85%">
+                <div class="column">
+                  <!-- <div class="col">
+                    <span v-if="order.fiatAmount < 0">-</span>
+                    <span v-else>+</span>
+                    ¥{{ Math.abs(order.fiatAmount) }}
+                  </div> -->
+                  <div class="col">
+                    {{
+                      roundFun(
+                        order.token.amount / Math.pow(10, order.token.decimal),
+                        order.token.symbol
+                      )
+                    }}{{ order.token.symbol }}
+                  </div>
+                </div>
+              </td>
+              <td class=" q-px-sm" style="font-size:90%">
+                {{ getOrderState(order.status) }}
+              </td>
+            </tr>
+          </tbody>
+        </q-markup-table>
+        <div v-if="orders.length < 1" class="text-center q-mt-md">
+          暂无记录
+        </div>
+      </q-page>
+    </q-page-container>
   </q-layout>
 </template>
 
 <script>
+import format from 'date-fns/format'
+import MenuBtn from '../components/menu/MenuBtn'
+import { roundFun } from '../utils/math'
+import { mapState } from 'vuex'
+import { ORDER_STATE } from '../constants/state'
+
 export default {
-  // name: 'LayoutName',
+  name: 'Orders',
 
   data () {
     return {
-      leftDrawer: true
+      // pagination: {
+      //   page: 2,
+      //   rowsPerPage: 5
+      // }
     }
+  },
+  computed: {
+    ...mapState('order', [
+      'orders'
+    ])
+  },
+  components: {
+    'menu-btn': MenuBtn
+  },
+  created () {
+    this.$store.dispatch('order/updateOrderRecords', { account: 1 })
+  },
+  methods: {
+    format,
+    roundFun,
+    getOrderState: (state) => {
+      return ORDER_STATE[state]
+    },
+    back: () => {
+      window.history.back(-1)
+    }
+
   }
 }
 </script>

@@ -1,9 +1,15 @@
 export default {
+  loading: false,
+
+  remind: '请输入手机号',
+  info: {
+    // phone: null,
+    phone: '18516804325'
+  },
+
   skus: [],
-  selected: 3,
-  info: {},
-  cates: {
-    1: '话费充值',
-    2: '流量充值'
+  selectGoods: {
+    goodsId: null,
+    productId: null
   }
 }

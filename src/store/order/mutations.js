@@ -6,3 +6,19 @@ export function update (state, payload) {
     Loading.hide()
   })
 }
+
+export function updateShowConfirmPay (state, { open }) {
+  state.isShowConfirmPay = open
+}
+
+export function updateOrderRecords (state, records) {
+  state.orders = records
+}
+
+export function updateLoading (state, loading) {
+  state.loading = loading
+}
+
+export function updateOrderStatus (state, { status }) {
+  Object.assign(state.current, { status })
+}
