@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="isShowConfirmPay" position='bottom'
-    @hide="clickClose()" @cancel="clickCancel()">
+    @hide="hide()" @cancel="clickCancel()">
     <div class="container">
       <div class="bg-primary q-pa-sm">
         <q-btn class="absolute-top-left" color="white" round outline flat size="md" icon="close" @click="clickClose()"/>
@@ -10,7 +10,7 @@
       </div>
       <div class="q-pa-md bg-white">
         <center class="text-subtitle1">
-          <span>11.1111</span>&nbsp;<span>{{symbol}}</span>
+          <span>{{amount}}</span>&nbsp;<span>{{symbol}}</span>
         </center>
         <div class="q-py-md q-px-md text-body2">
           <span>订单信息：<span>{{orderinfo.accountNum}}</span></span> <br/>
@@ -28,6 +28,7 @@
 <script>
 
 import { mapState, mapGetters } from 'vuex'
+import { toDecimal, mathCeil } from '../../utils/helper'
 
 export default {
   name: 'ConfirmPayModel',
@@ -49,6 +50,13 @@ export default {
         this.$store.commit('order/updateShowConfirmPay', { open })
       }
     },
+    amount: function () {
+      let amount = this.orderinfo.amount || '0'
+      const decimal = this.getSelectedToken().decimal
+      const float = this.getSelectedToken().float
+      amount = toDecimal({ amount, decimal })
+      return mathCeil({ decimal: amount, float })
+    },
     orderinfo: function () {
       return this.current.orderinfo || {}
     },
@@ -68,16 +76,23 @@ export default {
     }
   },
   methods: {
+    toDecimal,
     ...mapGetters('config', [
       'getSelectedToken'
     ]),
     clickConfirm: function () {
       console.log('=============【确认支付】=======================')
       this.$store.commit('order/updateShowConfirmPay', { open: false })
-      // 订单支付超时
       this.$store.dispatch('channel/transfer', { })
+      setTimeout(() => {
+        this.$store.commit('order/updateOrderStatus', { status: 5 })
+      }, 3500)
+    },
+    hide: function () {
+      this.$store.commit('order/updateShowConfirmPay', { open: false })
     },
     clickClose: function () {
+      this.$store.commit('order/updateOrderStatus', { status: 0 })
       this.$store.commit('order/updateShowConfirmPay', { open: false })
     }
   },

@@ -1,4 +1,5 @@
 export default {
+  loading: false,
   allowance: '',
   depInput: '', // 充值输入
   authInput: '', // 授权输入

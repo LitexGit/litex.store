@@ -18,6 +18,9 @@
           :outline="goods.goodsId!=selectGoods.goodsId" @click="clickGoods(goods, product.productId)"/>
       </q-card-section>
     </q-card>
+    <q-inner-loading :showing="loading001 || loading002">
+      <q-spinner-bars size="50px" color="primary" />
+    </q-inner-loading>
   </q-page>
 </template>
 
@@ -27,9 +30,16 @@ import { mapState } from 'vuex'
 export default {
   name: 'PageIndex',
   data () {
-    return {}
+    return {
+    }
   },
   computed: {
+    ...mapState('order', {
+      loading001: 'loading'
+    }),
+    ...mapState('channel', {
+      loading002: 'loading'
+    }),
     ...mapState('sku', {
       remind: 'remind',
       skus: 'skus',

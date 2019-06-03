@@ -1,36 +1,28 @@
 export default {
-
+  loading: false,
   duration: 1500,
-
   // baseURL: 'http://a1.litex.fun:7001',
   baseURL: 'http://192.168.51.73:7001',
-
   timeout: 5000,
-
-  loading: false,
-
   categorys: [],
   telegramURL: '',
-
-  rates: [],
-
+  selected: 0,
+  price: 0,
   // 钱包余额  通道余额
   tokens: [
     {
-      index: 0,
       address: '0x0000000000000000000000000000000000000000',
       symbol: 'ETH',
       decimal: 18,
       float: 4,
       icon: 'statics/tokens/eth.svg',
-      channelBalance: '2300000000000000',
+      channelBalance: '23000000000000000',
       status: '可用',
       enable: true,
       balance: '12300000000000000',
-      type: 1
+      type: 0
     },
     {
-      index: 1,
       address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
       symbol: 'USDT',
       decimal: 5,
@@ -40,24 +32,21 @@ export default {
       status: '准备中',
       enable: false,
       balance: '456000',
-      type: 2
+      type: 0
     },
     {
-      index: 2,
       address: '0xbc46d9961a3932f7d6b64abfdec80c1816c4b835',
       symbol: 'LXT',
       decimal: 12,
       float: 0,
       icon: 'statics/tokens/lxt.png',
-      channelBalance: '890000000000',
+      channelBalance: '89000000000000000',
       status: '不可用',
       enable: true,
       balance: '7890000000000',
-      type: 3
+      type: 0
     }
   ],
-  selected: 0,
-  price: 0,
 
   menuList: [
     {

@@ -18,3 +18,7 @@ export function updateOrderRecords (state, records) {
 export function updateLoading (state, loading) {
   state.loading = loading
 }
+
+export function updateOrderStatus (state, { status }) {
+  Object.assign(state.current, { status })
+}

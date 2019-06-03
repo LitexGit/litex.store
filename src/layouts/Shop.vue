@@ -8,10 +8,8 @@
         </q-toolbar-title>
         <MenuBtn></MenuBtn>
       </q-toolbar>
-      <!-- currentOrder.status -->
-      <OrderStatusBar :status="null" pay="pay()" cancel="cancelOrder()" refresh="" />
+      <!-- <OrderStatusBar :status="current.status" pay="pay()" cancel="cancelOrder()" refresh="" /> -->
       <q-tabs>
-        <!-- @select="clickTab(category)" -->
         <q-route-tab v-for="(category, index) in categorys" :key="index" exact
            :name="getRouter(category.categoryId)" :to="getRouter(category.categoryId)" :label="category.categoryDes" />
       </q-tabs>
@@ -20,7 +18,6 @@
       <q-toolbar class="bg-secondary text-white row">
         <q-toolbar-title class="col-6">
           <small> 金额：</small>
-          <!-- finalPrice -->
           <small :class="[loading ? 'text-grey' : 'text-amber']"> {{ loading ? '加载中..' :  price}} </small>
         </q-toolbar-title>
         <q-separator dark vertical inset />
@@ -55,23 +52,21 @@
 
 <script>
 import { mapState } from 'vuex'
-import OrderStatusBar from '../components/OrderStatusBar.vue'
+// import OrderStatusBar from '../components/OrderStatusBar.vue'
 import { TokenItem } from '../components/item'
 import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel } from '../components/modal'
 import MenuBtn from '../components/menu/MenuBtn'
 import { getAccount, getNetwork, getRouter } from '../utils/helper'
 import { Preferences, PrefKeys } from '../utils/preferences'
 
+// OrderStatusBar
 export default {
   name: 'MyLayout',
   components: {
-    OrderStatusBar, MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel
+    MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel
   },
   data () {
-    return {
-      user: '',
-      isShowTokens: false
-    }
+    return {}
   },
   computed: {
     ...mapState('config', {
@@ -88,6 +83,9 @@ export default {
       loading: 'loading',
       price: 'price'
     }),
+    ...mapState('order', {
+      current: 'current'
+    }),
     phone: function () {
       return this.info.phone
     }
@@ -96,11 +94,6 @@ export default {
     getRouter,
     getAccount,
     getNetwork,
-    // clickTab: function (category) {
-    //   console.log('==========clickTab==========================')
-    //   console.log(category)
-    //   console.log('==========clickTab==========================')
-    // },
     isCanPress: function () {
       const { productId, goodsId } = this.selectGoods
       if (!productId || !goodsId) {
@@ -112,17 +105,14 @@ export default {
       this.$router.go(-1)
     },
     selectToken: function (index) {
-      const { commit, dispatch } = this.$store
-      commit('config/updateSelected', { index })
-      dispatch('pn/updatePrice')
+      this.$store.commit('config/updateSelected', { index })
+      this.$store.dispatch('pn/updatePrice')
     },
-
     placeOrder: function () {
       if (!this.isCanPress()) {
         this.$q.notify({ message: '请先选择下单商品', position: 'top', type: 'negative', timeout: this.duration })
         return
       }
-      console.log('==============【下单】======================')
       this.$store.dispatch('order/placeOrder', { phone: this.phone })
     },
     pay: async function () {
@@ -156,7 +146,6 @@ export default {
       })
     })
     this.$store.dispatch('config/getConfigs')
-    this.$store.dispatch('config/getRates')
   },
   mounted: async function () {
     this.selectToken(0)

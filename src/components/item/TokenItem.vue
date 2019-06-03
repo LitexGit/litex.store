@@ -6,7 +6,7 @@
     <div class="col-3 q-pl-sm">
       <q-item-label> {{ token.symbol.toUpperCase() }} </q-item-label>
       <q-item-label caption class="q-pt-sm">
-        <balance-view :symbol="token.symbol" :decimal="token.decimal" :amount="token.channelBalance"/>
+        <balance-view :symbol="token.symbol" :decimal="token.decimal" :amount="token.channelBalance" :float="token.float"/>
       </q-item-label>
     </div>
     <center class="col-2">
@@ -35,10 +35,6 @@ export default {
   },
   data () {
     return {}
-  },
-  computed: {
-  },
-  mounted: function () {
   }
 }
 </script>

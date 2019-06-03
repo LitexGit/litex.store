@@ -3,7 +3,8 @@ export default {
 
   remind: '请输入手机号',
   info: {
-    phone: null
+    // phone: null,
+    phone: '18516804325'
   },
 
   skus: [],

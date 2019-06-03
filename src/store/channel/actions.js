@@ -1,7 +1,7 @@
 
 // import * as utils from 'web3-utils'
 import { timeoutCheck } from '../../utils/helper'
-import { Notify } from 'quasar'
+import { Notify, Loading } from 'quasar'
 
 /**
  *【确认充值】
@@ -91,5 +91,11 @@ export function transfer ({ commit, rootState }, payload) {
     Notify.create({ message: '订单已超时，请重新下单', position: 'top', type: 'negative', timeout: config.duration })
     return
   }
+  Loading.show()
+  // commit('update', { loading: true })
+  setTimeout(() => {
+    Loading.hide()
+    // commit('update', { loading: false })
+  }, 3000)
   console.log('==============【订单未超时=>继续支付】======================')
 }
