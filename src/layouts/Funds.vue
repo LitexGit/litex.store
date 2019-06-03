@@ -7,7 +7,7 @@
         <menu-btn></menu-btn>
       </q-toolbar>
       <q-tabs
-        v-model="tokens[selected].index"
+        v-model="tokens[selected].type"
         dense
         class="bg-primary text-white row"
         indicator-bg-color="primary"
@@ -16,10 +16,10 @@
       >
         <q-tab
           v-for="token in tokens"
-          :key="token.index"
+          :key="token.type"
           :label="token.symbol"
-          :name="token.index"
-          @click="selectToken(token.index)"
+          :name="token.type"
+          @click="selectToken(token.index, token.type)"
           class="col-4"
         ></q-tab>
       </q-tabs>
@@ -112,7 +112,7 @@ export default {
     'menu-btn': MenuBtn
   },
   created () {
-    this.$store.dispatch('fund/updateFundRecords', { index: 0, account: 1 })
+    this.$store.dispatch('fund/updateFundRecords', { type: this.tokens[this.selected].type, account: 1 })
   },
   methods: {
     format,
@@ -120,8 +120,8 @@ export default {
     back: () => {
       window.history.back(-1)
     },
-    selectToken (index) {
-      this.$store.dispatch('fund/updateFundRecords', { index, account: 1 })
+    selectToken (index, type) {
+      this.$store.dispatch('fund/updateFundRecords', { type, account: 1 })
       this.$store.commit('config/updateSelected', { index })
     },
     getAssetUse: reason => {
