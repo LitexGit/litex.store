@@ -56,7 +56,7 @@ export default {
       type: 3
     }
   ],
-  selected: 1,
+  selected: 0,
   price: 0,
 
   menuList: [
