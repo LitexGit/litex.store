@@ -160,8 +160,7 @@ export function mathCeil({decimal, float}) {
 
 /**
  * 校验订单支付是否超时
- * @param {*} decimal 小数
- * @param {*} float 保留小数位数
+ * @param {*} timeout 超时时刻
  */
 export function timeoutCheck(timeout) {
   const moment = require('moment')

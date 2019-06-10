@@ -1,7 +1,7 @@
 export default {
   loading: false,
   duration: 1500,
-  // baseURL: 'http://a1.litex.fun:7001',
+  // baseURL: 'http://a1.litex.fun:7777',
   baseURL: 'http://192.168.51.73:7001',
   timeout: 5000,
   categorys: [],

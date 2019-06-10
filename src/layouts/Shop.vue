@@ -149,6 +149,10 @@ export default {
   },
   mounted: async function () {
     this.selectToken(0)
+    const layer2 = require('l2.js')
+    console.log('==============layer2.default.getInstance======================')
+    console.log(layer2.default.getInstance())
+    console.log('==============layer2.default.getInstance======================')
   }
 }
 </script>
