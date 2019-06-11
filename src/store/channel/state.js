@@ -1,6 +1,6 @@
 export default {
   loading: false,
-  allowance: '',
+  allowance: '0',
   depInput: '', // 充值输入
   authInput: '', // 授权输入
 

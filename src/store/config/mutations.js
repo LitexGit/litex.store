@@ -36,3 +36,23 @@ export function updatePrice (state, { price }) {
   price < 0 && (price = 0)
   state.price = price
 }
+
+export function updateOnchainBalance (state, { list }) {
+  const { tokens } = state
+  for (const token of tokens) {
+    const t = list.find(item => {
+      return item.address === token.address
+    })
+    token.balance = t.balance
+  }
+}
+
+export function updateBalance (state, { list }) {
+  const { tokens } = state
+  for (const token of tokens) {
+    const t = list.find(item => {
+      return item.address === token.address
+    })
+    token.channelBalance = t.channelBalance
+  }
+}

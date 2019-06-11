@@ -1,4 +1,5 @@
 import * as utils from 'web3-utils'
+import { Preferences, PrefKeys } from '../utils/preferences'
 
 /**
  * 获取账户信息
@@ -41,6 +42,19 @@ export function getNetwork () {
       resolve(result)
     })
   })
+}
+
+/**
+ * toWei
+ * @param {*} input      输入值
+ * @param {*} decimal    decimal
+ * @param {*} pos        小数点位数
+ */
+export function toWei ({ input, decimal = 18, pos = 4 }) {
+  let value = input * Math.pow(10, pos).toString()
+  value = utils.toBN(value).mul(utils.toBN(Math.pow(10, decimal - pos)))
+  value = value.toString()
+  return value
 }
 
 /**
@@ -166,4 +180,46 @@ export function timeoutCheck(timeout) {
   const moment = require('moment')
   const otime = moment(timeout).format()
   return moment().isSameOrAfter(otime)
+}
+
+
+/**
+ * 解析异常提示
+ * @param {*} error
+ */
+export function getErrMsg(error) {
+  const {code, message} = error
+  let msg = ''
+  if (code) {
+    msg = 'code:'+code
+  }
+  if (message) {
+    const array = message.split('.')
+    const Ramda = require('ramda')
+    const errMsg = Ramda.head(array)
+    msg = msg + errMsg + '.'
+  }
+  return msg
+}
+
+/**
+ * 校验是否为当前用户
+ * @param {*} user msg 用户地址
+ */
+export function isCurrentUser (user) {
+  const account = Preferences.getItem(PrefKeys.USER_ACCOUNT)
+  if (user.toLowerCase() === account.toLowerCase()) return true
+  return false
+}
+
+/**
+ * 获取授权 token
+ * @param {*} address
+ * @param {*} tokens
+ */
+export function getShowToken (address, tokens) {
+  const token = tokens.find(token => {
+    return token.address.toLowerCase() === address.toLowerCase()
+  });
+  return token
 }

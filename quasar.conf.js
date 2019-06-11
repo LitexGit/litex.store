@@ -4,7 +4,7 @@ module.exports = function (ctx) {
   return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
-    boot: ['i18n', 'axios'],
+    boot: ['i18n', 'axios', 'layer2'],
 
     css: ['app.styl'],
 
