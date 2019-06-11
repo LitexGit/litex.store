@@ -106,13 +106,6 @@ export default {
     getShowToken,
     toDecimal,
     mathCeil,
-    isCanPress: function () {
-      const { productId, goodsId } = this.selectGoods
-      if (!productId || !goodsId) {
-        return false
-      }
-      return true
-    },
     goback: function () {
       this.$router.go(-1)
     },
@@ -122,18 +115,10 @@ export default {
       this.$store.dispatch('pn/updatePrice')
     },
     placeOrder: function () {
-      if (!this.isCanPress()) {
-        this.$q.notify({ message: '请先选择下单商品', position: 'top', type: 'negative', timeout: this.duration })
-        return
-      }
       this.$store.dispatch('order/placeOrder', { phone: this.phone })
-    },
-    pay: async function () {
-      console.log('=============【layer1 支付】=======================')
     },
     deposit: function (token) {
       console.log('=============【deposit】=======================')
-      // 01: 同步钱包余额
       const { address, symbol } = token
       this.$store.dispatch('channel/preDeposit', { address, symbol })
     },
@@ -244,11 +229,20 @@ export default {
       this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
     })
     this.$layer2.on('Transfer', (err, res) => {
-      console.log('===========TransferTransfer=========================')
+      console.log('===========Transfer=========================')
       console.log('Transfer from L2', err, res)
       console.log('===========Transfer=========================')
+      this.$store.dispatch('config/getBalance')
       // TODO 更新通道余额
       // TODO 更新钱包余额
+      // additionalHash: '0xf569983d1df7db3e9b14014373e7db838cc7c564cae929d9e0afd8b3f7da9ea1'
+      // amount: '57900111191373532'
+      // channelID: '0x1cd3a84f17cd16723d7de8baa7295fe4fe02bdc3c6143c12f2bf055ed71b2a8e'
+      // nonce: '1'
+      // token: '0x0000000000000000000000000000000000000000'
+      // user: '0xb5538753f2641a83409d2786790b42ac857c5340'
+      // userSignature: '0x58f687a2211b4bef1a30921d9f69eb2aac695773f8dd1c392422b880fb2cb46a1b3134a723a4ec5ce1755f2ae410d9748fce1580df55565aad20b1add45b978e1b'
+      // userTransferAmount: '57900111191373532'
     })
   }
 }

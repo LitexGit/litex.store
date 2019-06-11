@@ -17,6 +17,7 @@ export async function initLayer2 ({ commit, state }, payload) {
   const account = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   const { ethPNAddress, appRpcUrl, appPNAddress } = state
   await Vue.prototype.$layer2.init(account, window.web3, ethPNAddress, appRpcUrl, appPNAddress)
+  Vue.prototype.$layer2.setDebug(false)
   commit('update', { isInitL2: true })
 }
 

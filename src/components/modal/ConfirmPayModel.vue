@@ -83,10 +83,7 @@ export default {
     clickConfirm: function () {
       console.log('=============【确认支付】=======================')
       this.$store.commit('order/updateShowConfirmPay', { open: false })
-      this.$store.dispatch('channel/transfer', { })
-      setTimeout(() => {
-        this.$store.commit('order/updateOrderStatus', { status: 5 })
-      }, 3500)
+      this.$store.dispatch('channel/transfer', {})
     },
     hide: function () {
       this.$store.commit('order/updateShowConfirmPay', { open: false })
