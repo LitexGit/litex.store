@@ -9,7 +9,6 @@
         </div>
       </div>
       <div class="bg-white q-px-md q-pb-md q-pt-sm">
-          <!-- @blur="updateInputValue(input)" -->
           <q-input filled type='number' v-model="depInput" label="请输入数量"/>
           <div class="q-mt-md">
             <span>钱包余额：</span>

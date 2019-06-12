@@ -24,7 +24,8 @@
 
         <q-btn-dropdown class="col" flat :label="tokens[selected].symbol || '选择币种'">
           <q-list separator>
-            <q-item class="q-pa-none" v-for="(token, index) in tokens" :clickable="token.enable" v-close-popup
+            <!-- :clickable="token.status === 1" -->
+            <q-item class="q-pa-none" v-for="(token, index) in tokens" clickable v-close-popup
               :key="index"  :active="index === selected"
               @click="selectToken(index)">
               <token-item :key="index" :token = "token" @deposit="deposit(token)" @withdraw="withdraw(token)"/>
@@ -87,6 +88,9 @@ export default {
     ...mapState('order', {
       current: 'current'
     }),
+    ...mapState('channel', {
+      channel: 'channel'
+    }),
     phone: function () {
       return this.info.phone
     }
@@ -96,6 +100,15 @@ export default {
       if (!this.isInitL2) return
       this.$store.dispatch('config/getOnchainBalance')
       this.$store.dispatch('config/getBalance')
+      this.$store.dispatch('config/getChannelInfo')
+    },
+    channel: function (newValue, oldValue) {
+      const { isUpdate = false } = this.channel
+      if (isUpdate) {
+        this.$store.dispatch('config/getChannelInfo')
+      } else {
+        this.$store.commit('config/syncChannelStatus', { channel: this.channel })
+      }
     }
   },
   methods: {
@@ -146,7 +159,6 @@ export default {
     })
   },
   mounted: async function () {
-    this.selectToken(0)
     this.$layer2.on('TokenApproval', (err, res) => {
       console.log('===========TokenApproval=========================')
       console.log('TokenApproval from L2', err, res)
@@ -168,6 +180,8 @@ export default {
       const message = '成功授权' + ' ' + value + ' ' + symbol
       this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
       this.$store.dispatch('channel/confirmDeposit', { amount, address: token })
+
+      this.$store.dispatch('config/getChannelInfo')
     })
     this.$layer2.on('Deposit', (err, res) => {
       console.log('===========Deposit=========================')
@@ -189,6 +203,8 @@ export default {
       value = this.mathCeil({ decimal: value, float })
       const message = '成功充值' + ' ' + value + ' ' + symbol
       this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
+
+      this.$store.dispatch('config/getChannelInfo')
     })
     this.$layer2.on('Withdraw', (err, res) => {
       console.log('===========Withdraw=========================')
@@ -211,6 +227,8 @@ export default {
       value = this.mathCeil({ decimal: value, float })
       const message = '成功提现' + ' ' + value + ' ' + symbol
       this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
+
+      this.$store.dispatch('config/getChannelInfo')
     })
     this.$layer2.on('WithdrawUnlocked', (err, res) => {
       console.log('=============WithdrawUnlocked=======================')
@@ -227,6 +245,8 @@ export default {
       value = this.mathCeil({ decimal: value, float })
       const message = '提现' + ' ' + value + ' ' + symbol + '请求已取消'
       this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
+
+      this.$store.dispatch('config/getChannelInfo')
     })
     this.$layer2.on('Transfer', (err, res) => {
       console.log('===========Transfer=========================')

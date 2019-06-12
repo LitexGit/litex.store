@@ -21,32 +21,29 @@ export default {
       float: 4,
       icon: 'statics/tokens/eth.svg',
       channelBalance: '0',
-      status: '可用',
-      enable: true,
+      status: 0,
       balance: '0',
       type: 0
     },
     {
       address: '0x9ac78c85A0d3a86a8BE1e08Bea6Ef2EE1687bE18',
       symbol: 'USDT',
-      decimal: 5,
+      decimal: 18,
       float: 2,
       icon: 'statics/tokens/usdt.svg',
       channelBalance: '0',
-      status: '准备中',
-      enable: false,
+      status: 0,
       balance: '0',
       type: 0
     },
     {
       address: '0x3052c3104c32e666666fbef3a5ead4603747ea83',
       symbol: 'LXT',
-      decimal: 12,
+      decimal: 18,
       float: 0,
       icon: 'statics/tokens/lxt.png',
       channelBalance: '0',
-      status: '不可用',
-      enable: true,
+      status: 0,
       balance: '0',
       type: 0
     }

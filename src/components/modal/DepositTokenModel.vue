@@ -15,9 +15,9 @@
         <div class="q-mt-md text-subtitle1">
           <center class="text-black">充值金额</center>
           <center>
+            <!-- <center>{{allowance}}</center> -->
             <balance-view class="text-primary text-subtitle1" :symbol="symbol" :decimal="decimal" :amount="allowance" :symbolStyle="symbolStyle"/>
           </center>
-          <!-- <center class="text-primary">{{allowance}}&nbsp;<span class="text-black text-subtitle2">{{symbol}}</span></center> -->
           <div class="q-mt-md text-caption text-weight-light">
             1.<span>您的充值安全由<span class="text-weight-regular">以太坊状态通道</span>保障，游戏运营方无法操纵用户充值的代币，且您可以随时提现。</span><br/>
             2.<span>抢红包之前请先充值，以保证有相应场次足够的代币。</span><br/>

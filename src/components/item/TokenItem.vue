@@ -10,20 +10,20 @@
       </q-item-label>
     </div>
     <center class="col-2">
-      <!-- .stop -->
-      <q-btn no-wrap flat dense label="充值" text-color="primary"
-        v-if="token.enable" @click="$emit('deposit')"/>
+      <q-btn v-if="token.status !== 2" no-wrap flat dense label="充值" text-color="primary"
+         @click="$emit('deposit')"/>
     </center>
     <center class="col-2">
-      <q-btn no-wrap flat dense label="提现" text-color="primary"
-        v-if="token.enable" @click="$emit('withdraw')"/>
+      <q-btn v-if="token.status !== 2" no-wrap flat dense label="提现" text-color="primary"
+         @click="$emit('withdraw')"/>
     </center>
-    <center class="col-3">{{ token.status }}</center>
+    <center class="col-3" :style="getChannelStatusStyle(token.status)">{{ getChannelStatusDes(token.status) }}</center>
   </div>
 </template>
 
 <script>
 import { BalanceView } from '../../components/view'
+import { getChannelStatusDes, getChannelStatusStyle } from '../../utils/helper'
 
 export default {
   name: 'TokenItem',
@@ -35,6 +35,10 @@ export default {
   },
   data () {
     return {}
+  },
+  methods: {
+    getChannelStatusDes,
+    getChannelStatusStyle
   }
 }
 </script>

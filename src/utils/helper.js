@@ -88,7 +88,13 @@ export function weiToDecimal (x, n, fixed) {
     decimal = decimal.substring(0, fixed)
   }
   // const str = dm.div + '.' + dm.mod.toString(10, n);
-  const str = dm.div.toString() + '.' + decimal
+  let str = ''
+  if (fixed > 0) {
+    str = dm.div.toString() + '.' + decimal
+  } else {
+    str = dm.div.toString()
+  }
+
   // fixed = fixed ? fixed : 2;
   // return new Decimal(str).toFixed(fixed).replace(/\d(?=(\d{3})+\.)/g, '$&,');
   // return parseFloat(str).toFixed(fixed)
@@ -222,4 +228,77 @@ export function getShowToken (address, tokens) {
     return token.address.toLowerCase() === address.toLowerCase()
   });
   return token
+}
+
+/**
+ * 获取通道状态
+ * @param {*} status
+ * 0:已关闭 1:可支付 2:等待中
+ */
+export function getChannelStatus ({ status, tokens, address }) {
+
+  switch (parseInt(status)) {
+    case 0:       // 默认初始化状态
+    case 3:       // 已关闭
+    case 4:
+      return 0
+    case 1:        // 通道打开
+      return 1
+    case 10001:  {
+      const token = tokens.find(token => {
+        return token.address.toLowerCase() === address.toLowerCase()
+      });
+      const isGT = utils.toBN(token.channelBalance).gt(utils.toBN('0'))
+      return isGT ? 1 : 0
+    }
+    case 2:        // 强关中
+    case 10000:    // 授权中
+    case 10002:    // 开通道
+    case 10003:    // 充值
+    case 10004:
+    case 10005:
+    case 10006:
+    case 10007:
+      return 2
+    default:
+      return 0
+  }
+}
+
+/**
+ * 获取通道状态描述
+ * @param {*} status
+ * 0:不可用 1:可用 2:准备中
+ */
+export function getChannelStatusDes (status) {
+  switch (parseInt(status)) {
+    case 0:
+      return '已关闭'
+    case 1:
+      return '可支付'
+    case 2:
+      return '等待中'
+
+    default:
+      return '已关闭'
+  }
+}
+
+/**
+ * 获取通道状态描述
+ * @param {*} status
+ * 0:不可用 1:可用 2:准备中
+ */
+export function getChannelStatusStyle(status) {
+  switch (parseInt(this.token.status)) {
+    case 0:
+      return { color: '#C10015' }
+    case 1:
+      return { color: '#21BA45' }
+    case 2:
+      return { color: '#F2C037' }
+
+    default:
+      return { color: '#C10015' }
+  }
 }

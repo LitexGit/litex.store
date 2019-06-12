@@ -43,7 +43,7 @@ export default {
     },
     clickConfirm: function () {
       this.$store.commit('channel/updateShowWRemindModel', { open: false })
-      this.$store.dispatch('channel/preWithdraw')
+      this.$store.dispatch('channel/confirmWithdraw')
     }
   }
 }

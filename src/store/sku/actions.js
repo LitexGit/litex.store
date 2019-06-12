@@ -6,9 +6,9 @@ export async function getGoodsList ({ commit }, payload) {
   // 当前默认为 0 => 话费流量
   const categoryId = 0
   const { accountNum = '' } = payload
-  console.log('============accountNum========================')
-  console.log(accountNum)
-  console.log('============accountNum========================')
+  // console.log('============accountNum========================')
+  // console.log(accountNum)
+  // console.log('============accountNum========================')
   const skus = await api.getGoodsList({ categoryId, accountNum })
   commit('update', { skus })
   commit('loading', false)

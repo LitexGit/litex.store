@@ -13,15 +13,18 @@ export async function confirmDeposit ({ commit, rootState }, payload) {
   commit('updateShowDERC20Model', { open: false })
   commit('updateShowDpositModel', { open: false })
   const { amount, address } = payload
-  // TODO 锁定通道
+  const { config: { duration, tokens } } = rootState
+  const { status } = tokens.find(item => {
+    return item.address.toLowerCase() === address.toLowerCase()
+  })
   try {
+    commit('update', { channel: { address, status: 2 } })
     const txHex = await Vue.prototype.$layer2.deposit(amount, address)
     console.log('===========deposit=========================')
     console.log(txHex)
     console.log('===========deposit=========================')
   } catch (error) {
-    // TODO 解锁通道
-    const { config: { duration } } = rootState
+    commit('update', { channel: { address, status } })
     Notify.create({ message: getErrMsg(error), position: 'top', color: 'red', timeout: duration })
   }
 }
@@ -46,15 +49,18 @@ export function preDeposit ({ commit, rootState }, payload) {
 export async function submitERC20Approval ({ commit, rootState }, payload) {
   console.log('===============【确认授权】=====================')
   const { amount, address } = payload
-  // TODO 01:锁定通道
+  const { config: { duration, tokens } } = rootState
+  const { status } = tokens.find(item => {
+    return item.address.toLowerCase() === address.toLowerCase()
+  })
   try {
+    commit('update', { channel: { address, status: 2 } })
     const txHex = await Vue.prototype.$layer2.submitERC20Approval(amount, address)
     console.log('===========submitERC20Approval=========================')
     console.log(txHex)
     console.log('===========submitERC20Approval=========================')
   } catch (error) {
-    // TODO 02:解锁通道
-    const { config: { duration } } = rootState
+    commit('update', { channel: { address, status } })
     Notify.create({ message: getErrMsg(error), position: 'top', color: 'red', timeout: duration })
   }
 }
@@ -64,6 +70,7 @@ async function getERC20Allowance ({ commit, rootState }, { address }) {
   const owner = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   const { config: { ethPNAddress: spender } } = rootState
   let allowance = await Vue.prototype.$layer2.getERC20Allowance(owner, spender, address)
+  // debugger
   allowance = allowance.toString()
   const isLTE = utils.toBN(allowance).lte(utils.toBN('0'))
   if (isLTE) {
@@ -79,8 +86,11 @@ async function getERC20Allowance ({ commit, rootState }, { address }) {
  */
 export async function preWithdraw ({ commit, rootState }, payload) {
   console.log('===============【准备提现】=====================')
-  const { config: { tokens, selected, duration } } = rootState
-  const { channelBalance } = tokens[selected]
+  const { address } = payload
+  const { config: { tokens, duration } } = rootState
+  const { channelBalance } = tokens.find(item => {
+    return item.address.toLowerCase() === address.toLowerCase()
+  })
   // TODO 00: layer2
   // TODO 01: 校验通道状态
   const isGT = utils.toBN(channelBalance).gt(utils.toBN('0'))
@@ -88,25 +98,26 @@ export async function preWithdraw ({ commit, rootState }, payload) {
     Notify.create({ message: '余额不足', position: 'top', color: 'red', timeout: duration })
     return
   }
-  await confirmWithdraw({ rootState }, payload)
+  commit('updateShowWithdrawModel', { open: true })
 }
 
 /**
  *【确认提现】
  */
-async function confirmWithdraw ({ rootState }, payload) {
+export async function confirmWithdraw ({ commit, rootState }, payload) {
   console.log('===============【确认提现】=====================')
-  // TODO 01: 锁定通道
-  const { config: { tokens, selected } } = rootState
-  const { channelBalance, address } = tokens[selected]
+  const { config: { tokens, selected, duration } } = rootState
+  const { address, status, channelBalance } = tokens[selected]
   try {
+    commit('update', { channel: { address, status: 2 } })
     const txHex = await Vue.prototype.$layer2.withdraw(channelBalance, address)
     console.log('============withdraw========================')
     console.log(txHex)
     console.log('============withdraw========================')
   } catch (error) {
-    // TODO 02:解锁通道
-    const { config: { duration } } = rootState
+    commit('update', { channel: { address, status, isUpdate: true } })
+    // 获取签名 => 解锁
+    // 提现 => 锁定1分钟
     Notify.create({ message: getErrMsg(error), position: 'top', color: 'red', timeout: duration })
   }
 }
