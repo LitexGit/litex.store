@@ -36,3 +36,45 @@ export function updatePrice (state, { price }) {
   price < 0 && (price = 0)
   state.price = price
 }
+
+export function updateOnchainBalance (state, { list }) {
+  const { tokens } = state
+  for (const token of tokens) {
+    const t = list.find(item => {
+      return item.address.toLowerCase() === token.address.toLowerCase()
+    })
+    token.balance = t.balance
+  }
+}
+
+export function updateBalance (state, { list }) {
+  const { tokens } = state
+  for (const token of tokens) {
+    const t = list.find(item => {
+      return item.address.toLowerCase() === token.address.toLowerCase()
+    })
+    token.channelBalance = t.channelBalance
+  }
+}
+
+export function updateChannelStatus (state, { list }) {
+  const { tokens } = state
+  for (const token of tokens) {
+    const t = list.find(item => {
+      return item.address.toLowerCase() === token.address.toLowerCase()
+    })
+    token.status = t.status
+    token.loading = t.loading
+  }
+}
+
+export function syncChannelStatus (state, { channel }) {
+  // address: '0x0000000000000000000000000000000000000000'
+  // status: 2
+  const { tokens } = state
+  const token = tokens.find(item => {
+    return item.address.toLowerCase() === channel.address.toLowerCase()
+  })
+  token.status = channel.status
+  token.loading = channel.loading
+}

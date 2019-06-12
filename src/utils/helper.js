@@ -1,4 +1,5 @@
 import * as utils from 'web3-utils'
+import { Preferences, PrefKeys } from '../utils/preferences'
 
 /**
  * 获取账户信息
@@ -44,6 +45,19 @@ export function getNetwork () {
 }
 
 /**
+ * toWei
+ * @param {*} input      输入值
+ * @param {*} decimal    decimal
+ * @param {*} pos        小数点位数
+ */
+export function toWei ({ input, decimal = 18, pos = 4 }) {
+  let value = input * Math.pow(10, pos).toString()
+  value = utils.toBN(value).mul(utils.toBN(Math.pow(10, decimal - pos)))
+  value = value.toString()
+  return value
+}
+
+/**
  * wei to decimal
  * @param {*} amount     wei
  * @param {*} decimal    decimal
@@ -74,7 +88,13 @@ export function weiToDecimal (x, n, fixed) {
     decimal = decimal.substring(0, fixed)
   }
   // const str = dm.div + '.' + dm.mod.toString(10, n);
-  const str = dm.div.toString() + '.' + decimal
+  let str = ''
+  if (fixed > 0) {
+    str = dm.div.toString() + '.' + decimal
+  } else {
+    str = dm.div.toString()
+  }
+
   // fixed = fixed ? fixed : 2;
   // return new Decimal(str).toFixed(fixed).replace(/\d(?=(\d{3})+\.)/g, '$&,');
   // return parseFloat(str).toFixed(fixed)
@@ -160,11 +180,124 @@ export function mathCeil({decimal, float}) {
 
 /**
  * 校验订单支付是否超时
- * @param {*} decimal 小数
- * @param {*} float 保留小数位数
+ * @param {*} timeout 超时时刻
  */
 export function timeoutCheck(timeout) {
   const moment = require('moment')
   const otime = moment(timeout).format()
   return moment().isSameOrAfter(otime)
+}
+
+
+/**
+ * 解析异常提示
+ * @param {*} error
+ */
+export function getErrMsg(error) {
+  const {code, message} = error
+  let msg = ''
+  if (code) {
+    msg = 'code:'+code
+  }
+  if (message) {
+    const array = message.split('.')
+    const Ramda = require('ramda')
+    const errMsg = Ramda.head(array)
+    msg = msg + errMsg + '.'
+  }
+  return msg
+}
+
+/**
+ * 校验是否为当前用户
+ * @param {*} user msg 用户地址
+ */
+export function isCurrentUser (user) {
+  const account = Preferences.getItem(PrefKeys.USER_ACCOUNT)
+  if (user.toLowerCase() === account.toLowerCase()) return true
+  return false
+}
+
+/**
+ * 获取授权 token
+ * @param {*} address
+ * @param {*} tokens
+ */
+export function getShowToken (address, tokens) {
+  const token = tokens.find(token => {
+    return token.address.toLowerCase() === address.toLowerCase()
+  });
+  return token
+}
+
+/**
+ * 获取通道状态
+ * @param {*} status
+ * 0:已关闭 1:可支付 2:等待中
+ */
+export function getChannelStatus ({ status, tokens, address }) {
+  switch (parseInt(status)) {
+    case 0:       // 默认初始化状态
+    case 3:       // 已关闭
+    case 4:
+      return 0
+    case 1:        // 通道打开
+      return 1
+    case 10001:  {
+      const token = tokens.find(token => {
+        return token.address.toLowerCase() === address.toLowerCase()
+      });
+      const isGT = utils.toBN(token.channelBalance).gt(utils.toBN('0'))
+      return isGT ? 1 : 0
+    }
+    case 2:        // 强关中
+    case 10000:    // 授权中
+    case 10002:    // 开通道
+    case 10003:    // 充值
+    case 10004:
+    case 10005:
+    case 10006:
+    case 10007:
+      return 2
+    default:
+      return 0
+  }
+}
+
+/**
+ * 获取通道状态描述
+ * @param {*} status
+ * 0:不可用 1:可用 2:准备中
+ */
+export function getChannelStatusDes (status) {
+  switch (parseInt(status)) {
+    case 0:
+      return '已关闭'
+    case 1:
+      return '可支付'
+    case 2:
+      return '等待中'
+
+    default:
+      return '已关闭'
+  }
+}
+
+/**
+ * 获取通道状态描述
+ * @param {*} status
+ * 0:不可用 1:可用 2:准备中
+ */
+export function getChannelStatusStyle(status) {
+  switch (parseInt(this.token.status)) {
+    case 0:
+      return { color: '#C10015' }
+    case 1:
+      return { color: '#21BA45' }
+    case 2:
+      return { color: '#F2C037' }
+
+    default:
+      return { color: '#C10015' }
+  }
 }

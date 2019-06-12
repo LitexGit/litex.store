@@ -1,11 +1,11 @@
 <template>
-  <q-dialog v-model="isShowConfirmPay" position='bottom'
+  <q-dialog v-model="isShowOrderDModel"
     @hide="hide()" @cancel="clickCancel()">
     <div class="container">
       <div class="bg-primary q-pa-sm">
         <q-btn class="absolute-top-left" color="white" round outline flat size="md" icon="close" @click="clickClose()"/>
           <center>
-            <span class="text-subtitle1 text-white">确认支付</span>
+            <span class="text-subtitle1 text-white">支付成功</span>
           </center>
       </div>
       <div class="q-pa-md bg-white">
@@ -18,7 +18,7 @@
           <span>付款方式：</span><span>{{symbol}}</span>
         </div>
         <center>
-          <q-btn class="q-px-xl" color="primary" label="支付" @click="clickConfirm()"/>
+          <q-btn class="q-px-xl" color="primary" label="确认" @click="clickConfirm()"/>
         </center>
       </div>
     </div>
@@ -31,7 +31,7 @@ import { mapState, mapGetters } from 'vuex'
 import { toDecimal, mathCeil } from '../../utils/helper'
 
 export default {
-  name: 'ConfirmPayModel',
+  name: 'OrderDetailsModel',
   data () {
     return {}
   },
@@ -42,12 +42,12 @@ export default {
     ...mapState('config', {
       tokens: 'tokens'
     }),
-    isShowConfirmPay: {
+    isShowOrderDModel: {
       get () {
-        return this.$store.state.order.isShowConfirmPay
+        return this.$store.state.order.isShowOrderDModel
       },
       set (open) {
-        this.$store.commit('order/updateShowConfirmPay', { open })
+        this.$store.commit('order/updateShowOrderDModel', { open })
       }
     },
     amount: function () {
@@ -82,18 +82,18 @@ export default {
     ]),
     clickConfirm: function () {
       console.log('=============【确认支付】=======================')
-      this.$store.commit('order/updateShowConfirmPay', { open: false })
-      this.$store.dispatch('channel/transfer', {})
+      this.$store.commit('order/updateShowOrderDModel', { open: false })
     },
     hide: function () {
-      this.$store.commit('order/updateShowConfirmPay', { open: false })
+      this.$store.commit('order/updateShowOrderDModel', { open: false })
+      const info = { phone: null }
+      const selectGoods = { goodsId: null, productId: null }
+      this.$store.commit('sku/update', { info, selectGoods, remind: '请输入手机号' })
+      this.$store.dispatch('pn/updatePrice')
     },
     clickClose: function () {
-      this.$store.commit('order/updateOrderStatus', { status: 0 })
-      this.$store.commit('order/updateShowConfirmPay', { open: false })
+      this.$store.commit('order/updateShowOrderDModel', { open: false })
     }
-  },
-  mounted: function () {
   }
 }
 </script>

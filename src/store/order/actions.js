@@ -9,22 +9,38 @@ import * as utils from 'web3-utils'
  */
 export async function placeOrder ({ commit, rootState }, payload) {
   console.log('===============【下单】=====================')
+  const { config: { tokens, selected, duration } } = rootState
+  // 01:校验 手机号码
   const { phone } = payload
-  if (!isPoneAvailable(phone)) { // color: 'red',
-    Notify.create({ message: '请输入正确的手机号码', position: 'top', type: 'negative', timeout: rootState.config.duration })
+  if (!isPoneAvailable(phone)) {
+    Notify.create({ message: '请输入正确的手机号码', position: 'top', color: 'red', timeout: duration })
     return
   }
-  const { tokens, selected } = rootState.config
-  const { type: tokenType, decimal, channelBalance } = tokens[selected]
+  // 02:校验 商品
+  const { sku: { selectGoods } } = rootState
+  const { productId, goodsId } = selectGoods
+  if (!productId || !goodsId) {
+    Notify.create({ message: '请先选择下单商品', position: 'top', color: 'red', timeout: duration })
+    return
+  }
+  const { type: tokenType, decimal, channelBalance, status } = tokens[selected]
+  // 校验通道状态
+  if (parseInt(status) !== 1) {
+    Notify.create({ message: '余额不足,请及时充值...', position: 'top', color: 'red', timeout: duration })
+    return
+  }
+
+  // 03:校验 余额
+
   let { price } = rootState.pn
   price = price * Math.pow(10, decimal)
   const isGte = utils.toBN(price).gte(utils.toBN(channelBalance))
   if (isGte) {
-    Notify.create({ message: '余额不足,请及时充值', position: 'top', type: 'negative', timeout: rootState.config.duration })
+    Notify.create({ message: '余额不足,请及时充值', position: 'top', color: 'red', timeout: duration })
     return
   }
+  // 04:下单
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
-  const { selectGoods: { productId, goodsId } } = rootState.sku
   commit('updateLoading', true)
   const order = await api.placeOrder({ address, accountNum: phone, tokenType, productId, goodsId })
   commit('updateLoading', false)

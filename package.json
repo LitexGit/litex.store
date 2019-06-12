@@ -12,13 +12,13 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "date-fns": "^1.30.1",
+    "l2.js": "git+https://github.com/litexio/litex.store.pay.git",
     "moment": "^2.24.0",
     "quasar": "^1.0.0-beta.0",
     "ramda": "^0.26.1",
-    "vue-i18n": "^7.3.3",
-    "web3": "^1.0.0-beta.53"
+    "vue-i18n": "^7.3.3"
   },
   "devDependencies": {
     "@quasar/app": "^1.0.0-beta.0",

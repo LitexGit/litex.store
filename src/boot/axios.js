@@ -29,7 +29,7 @@ axios.interceptors.response.use(response => {
     if (!code) {
       return Promise.resolve(res)
     }
-    Notify.create({ message: msg, position: 'top', type: 'negative', timeout: config.duration })
+    Notify.create({ message: msg, position: 'top', color: 'red', timeout: config.duration })
   } else {
     return Promise.reject(response)
   }
@@ -40,10 +40,10 @@ axios.interceptors.response.use(response => {
     case 402:
     case 403:
     case 404:
-      Notify.create({ message: '网络请求不存在', position: 'top', type: 'negative', timeout: config.duration })
+      Notify.create({ message: '网络请求不存在', position: 'top', color: 'red', timeout: config.duration })
       break
     default:
-      Notify.create({ message: error.response.data.message, position: 'top', type: 'negative', timeout: config.duration })
+      Notify.create({ message: error.response.data.message, position: 'top', color: 'red', timeout: config.duration })
       break
   }
   return Promise.reject(error.response)

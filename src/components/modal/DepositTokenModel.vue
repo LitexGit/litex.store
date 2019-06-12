@@ -1,6 +1,6 @@
 <template>
   <q-dialog minimized no-backdrop-dismiss content-classes="flex justify-center items-center" position='standard'
-    v-model="isShowDERC20Model" @hide="clickClose()" @cancel="clickCancel()">
+    v-model="isShowDERC20Model" @show="show()" @hide="clickClose()" @cancel="clickCancel()">
     <div class="container bg-white">
       <div class="bg-primary q-pa-sm row">
         <q-btn class="col-1 q-pb-lg" color="white" dense flat size="md" icon="close" @click="clickClose()"/>
@@ -15,9 +15,9 @@
         <div class="q-mt-md text-subtitle1">
           <center class="text-black">充值金额</center>
           <center>
+            <!-- <center>{{allowance}}</center> -->
             <balance-view class="text-primary text-subtitle1" :symbol="symbol" :decimal="decimal" :amount="allowance" :symbolStyle="symbolStyle"/>
           </center>
-          <!-- <center class="text-primary">{{allowance}}&nbsp;<span class="text-black text-subtitle2">{{symbol}}</span></center> -->
           <div class="q-mt-md text-caption text-weight-light">
             1.<span>您的充值安全由<span class="text-weight-regular">以太坊状态通道</span>保障，游戏运营方无法操纵用户充值的代币，且您可以随时提现。</span><br/>
             2.<span>抢红包之前请先充值，以保证有相应场次足够的代币。</span><br/>
@@ -74,6 +74,9 @@ export default {
     ...mapGetters('config', [
       'getSelectedToken'
     ]),
+    show: function () {
+      this.$store.commit('channel/updateAuthInput', { depInput: '' })
+    },
     clickClose: function () {
       this.$store.commit('channel/updateShowDERC20Model', { open: false })
     },

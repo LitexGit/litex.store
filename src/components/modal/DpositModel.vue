@@ -5,15 +5,14 @@
       <div class="bg-primary q-pa-sm row">
         <q-btn class="col-1" color="white" dense flat size="md" icon="close" @click="clickClose()"/>
         <div class="row col-11 q-pr-md justify-center items-center text-white ">
-          <span>充值</span>&nbsp;<span>{{symbol}}</span>
+          <span>充值</span>&nbsp;<span>{{token.symbol}}</span>
         </div>
       </div>
       <div class="bg-white q-px-md q-pb-md q-pt-sm">
-          <!-- @blur="updateInputValue(input)" -->
           <q-input filled type='number' v-model="depInput" label="请输入数量"/>
           <div class="q-mt-md">
             <span>钱包余额：</span>
-            <balance-view :symbol="symbol" :decimal="decimal" :amount="balance"/>
+            <balance-view :symbol="token.symbol" :decimal="token.decimal" :amount="token.balance"/>
             <div class="q-mt-md text-caption text-weight-light">
               1.<span>您的充值安全由<span class="text-weight-regular">以太坊状态通道</span>保障，游戏运营方无法操纵用户充值的代币，且您可以随时提现。</span><br/>
               2.<span>抢红包之前请先充值，以保证有相应场次足够的代币。</span><br/>
@@ -31,14 +30,14 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import { BalanceView } from '../../components/view'
-import { isAvailableFormat } from '../../utils/helper'
+import { isAvailableFormat, toWei } from '../../utils/helper'
+import * as utils from 'web3-utils'
 
 export default {
   name: 'DpositModel',
   components: { BalanceView },
   data () {
     return {
-      balance: '10101010010100101000'
     }
   },
   computed: {
@@ -61,14 +60,12 @@ export default {
         this.$store.commit('channel/updateShowDpositModel', { open })
       }
     },
-    symbol: function () {
-      return this.getSelectedToken().symbol.toUpperCase()
-    },
-    decimal: function () {
-      return this.getSelectedToken().decimal
+    token: function () {
+      return this.getSelectedToken()
     }
   },
   methods: {
+    toWei,
     isAvailableFormat,
     ...mapGetters('config', [
       'getSelectedToken'
@@ -85,15 +82,18 @@ export default {
         this.$q.notify({ message: '请输入有效的充值金额', position: 'top', type: 'negative', timeout: this.duration })
         return false
       }
-      // 校验 02:banlance
-
-      return true
+      // TODO 校验 02:通道状态
+      // 校验 03:banlance
+      const amount = this.toWei({ input: this.depInput, decimal: this.token.decimal, pos: this.token.float })
+      const isGT = utils.toBN(this.token.balance).gt(utils.toBN(amount))
+      return isGT
     },
     clickConfirm: function () {
       blur()
       if (!this.checkInput(this.depInput)) return
       this.$store.commit('channel/updateShowDpositModel', { open: false })
-      this.$store.dispatch('channel/confirmDeposit', { amount: '1000000000000', address: '' })
+      const amount = this.toWei({ input: this.depInput, decimal: this.token.decimal, pos: this.token.float })
+      this.$store.dispatch('channel/confirmDeposit', { amount, address: this.token.address })
     }
   }
 }

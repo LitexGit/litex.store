@@ -24,7 +24,8 @@
 
         <q-btn-dropdown class="col" flat :label="tokens[selected].symbol || '选择币种'">
           <q-list separator>
-            <q-item class="q-pa-none" v-for="(token, index) in tokens" :clickable="token.enable" v-close-popup
+            <!-- :clickable="token.status === 1" -->
+            <q-item class="q-pa-none" v-for="(token, index) in tokens" clickable v-close-popup
               :key="index"  :active="index === selected"
               @click="selectToken(index)">
               <token-item :key="index" :token = "token" @deposit="deposit(token)" @withdraw="withdraw(token)"/>
@@ -46,6 +47,7 @@
     <withdraw-model/>
     <w-remind-model/>
     <deposit-token-model/>
+    <order-details-model/>
 
   </q-layout>
 </template>
@@ -54,16 +56,16 @@
 import { mapState } from 'vuex'
 // import OrderStatusBar from '../components/OrderStatusBar.vue'
 import { TokenItem } from '../components/item'
-import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel } from '../components/modal'
+import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel } from '../components/modal'
 import MenuBtn from '../components/menu/MenuBtn'
-import { getAccount, getNetwork, getRouter } from '../utils/helper'
+import { getAccount, getNetwork, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil } from '../utils/helper'
 import { Preferences, PrefKeys } from '../utils/preferences'
 
 // OrderStatusBar
 export default {
   name: 'MyLayout',
   components: {
-    MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel
+    MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel
   },
   data () {
     return {}
@@ -73,7 +75,8 @@ export default {
       duration: 'duration',
       tokens: 'tokens',
       selected: 'selected',
-      categorys: 'categorys'
+      categorys: 'categorys',
+      isInitL2: 'isInitL2'
     }),
     ...mapState('sku', {
       info: 'info',
@@ -86,41 +89,50 @@ export default {
     ...mapState('order', {
       current: 'current'
     }),
+    ...mapState('channel', {
+      channel: 'channel'
+    }),
     phone: function () {
       return this.info.phone
+    }
+  },
+  watch: {
+    isInitL2: function (newValue, oldValue) {
+      if (!this.isInitL2) return
+      this.$store.dispatch('config/getOnchainBalance')
+      this.$store.dispatch('config/getBalance')
+      this.$store.dispatch('config/getChannelInfo')
+    },
+    channel: function (newValue, oldValue) {
+      const { isUpdate = false } = this.channel
+      if (isUpdate) {
+        this.$store.dispatch('config/getChannelInfo')
+      } else {
+        this.$store.commit('config/syncChannelStatus', { channel: this.channel })
+      }
     }
   },
   methods: {
     getRouter,
     getAccount,
     getNetwork,
-    isCanPress: function () {
-      const { productId, goodsId } = this.selectGoods
-      if (!productId || !goodsId) {
-        return false
-      }
-      return true
-    },
+    isCurrentUser,
+    getShowToken,
+    toDecimal,
+    mathCeil,
     goback: function () {
       this.$router.go(-1)
     },
     selectToken: function (index) {
       this.$store.commit('config/updateSelected', { index })
+      if (!this.isInitL2) return
       this.$store.dispatch('pn/updatePrice')
     },
     placeOrder: function () {
-      if (!this.isCanPress()) {
-        this.$q.notify({ message: '请先选择下单商品', position: 'top', type: 'negative', timeout: this.duration })
-        return
-      }
       this.$store.dispatch('order/placeOrder', { phone: this.phone })
-    },
-    pay: async function () {
-      console.log('=============【layer1 支付】=======================')
     },
     deposit: function (token) {
       console.log('=============【deposit】=======================')
-      // 01: 同步钱包余额
       const { address, symbol } = token
       this.$store.dispatch('channel/preDeposit', { address, symbol })
     },
@@ -131,12 +143,13 @@ export default {
     }
   },
   created: function () {
+    this.$store.dispatch('config/getConfigs')
+
     window.addEventListener('load', async () => {
       const account = await this.getAccount()
       Preferences.setItem(PrefKeys.USER_ACCOUNT, account)
-      console.log('=================getAccount===================')
-      console.log(account)
-      console.log('=================getAccount===================')
+      this.$store.dispatch('config/initLayer2')
+
       window.ethereum.on('accountsChanged', (accounts) => {
         console.log('=============【切换 账号】=======================')
         window.location.reload(true)
@@ -145,131 +158,117 @@ export default {
         console.log('=============【切换 netId】=======================')
       })
     })
-    this.$store.dispatch('config/getConfigs')
   },
   mounted: async function () {
-    this.selectToken(0)
+    this.$layer2.on('TokenApproval', (err, res) => {
+      console.log('===========TokenApproval=========================')
+      console.log('TokenApproval from L2', err, res)
+      console.log('===========TokenApproval=========================')
+      // amount: BigNumber {_hex: "0x02ba7def3000", _ethersType: "BigNumber"}
+      // token: "0x3052c3104c32e666666fbef3a5ead4603747ea83"
+      // txhash: "0x2c9e8309fdb0a6f20a740ce738b325fa9cebc8da6116626ce289bb4fcf27d8c2"
+      // user: "0xb5538753F2641A83409D2786790b42aC857C5340"
+      const { user, token } = res
+      let { amount } = res
+      amount = amount.toString()
+      if (!this.isCurrentUser(user)) return
+      this.$store.dispatch('config/getBalance')
+
+      const cToken = this.getShowToken(token, this.tokens)
+      const { symbol, decimal, float } = cToken
+      let value = this.toDecimal({ amount, decimal })
+      value = this.mathCeil({ decimal: value, float })
+      const message = '成功授权' + ' ' + value + ' ' + symbol
+      this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
+      this.$store.dispatch('channel/confirmDeposit', { amount, address: token })
+
+      // this.$store.dispatch('config/getChannelInfo')
+    })
+    this.$layer2.on('Deposit', (err, res) => {
+      console.log('===========Deposit=========================')
+      console.log('Deposit from L2', err, res)
+      console.log('===========Deposit=========================')
+      // amount: '3000000000000'
+      // channelID: '0xb06dff751b64958cccbefbfe3b8055b19c865c9e7e478b29d7c81570d4db649e'
+      // token: '0x3052c3104c32e666666fBEf3A5EAd4603747eA83'
+      // totalDeposit: '3000000000000'
+      // user: '0xb5538753F2641A83409D2786790b42aC857C5340'
+      const { user, amount, token } = res
+      if (!this.isCurrentUser(user)) return
+      this.$store.dispatch('config/getOnchainBalance')
+      this.$store.dispatch('config/getBalance')
+
+      const cToken = this.getShowToken(token, this.tokens)
+      const { symbol, decimal, float } = cToken
+      let value = this.toDecimal({ amount, decimal })
+      value = this.mathCeil({ decimal: value, float })
+      const message = '成功充值' + ' ' + value + ' ' + symbol
+      this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
+
+      this.$store.dispatch('config/getChannelInfo')
+    })
+    this.$layer2.on('Withdraw', (err, res) => {
+      console.log('===========Withdraw=========================')
+      console.log('Withdraw from L2', err, res)
+      console.log('============Withdraw========================')
+      // amount: '30000000000000'
+      // balance: '0'
+      // token: '0x3052c3104c32e666666fBEf3A5EAd4603747eA83'
+      // totalWithdraw: ''
+      // txhash: '0xc7a7ab6913676db5b2dfc6ec4989c2cace63c0bf3ad6f9a37def85c589f39c41'
+      // user: '0xb5538753F2641A83409D2786790b42aC857C5340'
+      const { user, amount, token } = res
+      if (!this.isCurrentUser(user)) return
+      this.$store.dispatch('config/getOnchainBalance')
+      this.$store.dispatch('config/getBalance')
+
+      const cToken = this.getShowToken(token, this.tokens)
+      const { symbol, decimal, float } = cToken
+      let value = this.toDecimal({ amount, decimal })
+      value = this.mathCeil({ decimal: value, float })
+      const message = '成功提现' + ' ' + value + ' ' + symbol
+      this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
+
+      this.$store.dispatch('config/getChannelInfo')
+    })
+    this.$layer2.on('WithdrawUnlocked', (err, res) => {
+      console.log('=============WithdrawUnlocked=======================')
+      console.log('WithdrawUnlocked from L2', err, res)
+      console.log('=============WithdrawUnlocked=======================')
+      // amount: '3000000000000'
+      // token: '0x3052c3104c32e666666fBEf3A5EAd4603747eA83'
+      // user: '0xb5538753F2641A83409D2786790b42aC857C5340'
+      const { user, amount, token } = res
+      if (!this.isCurrentUser(user)) return
+      const cToken = this.getShowToken(token, this.tokens)
+      const { symbol, decimal, float } = cToken
+      let value = this.toDecimal({ amount, decimal })
+      value = this.mathCeil({ decimal: value, float })
+      const message = '提现' + ' ' + value + ' ' + symbol + '请求已取消'
+      this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
+
+      this.$store.dispatch('config/getChannelInfo')
+    })
+    this.$layer2.on('Transfer', (err, res) => {
+      console.log('===========Transfer=========================')
+      console.log('Transfer from L2', err, res)
+      console.log('===========Transfer=========================')
+      this.$store.dispatch('config/getBalance')
+      this.$store.commit('order/updateShowOrderDModel', { open: true })
+      // TODO 更新通道余额
+      // TODO 更新钱包余额
+      // additionalHash: '0xf569983d1df7db3e9b14014373e7db838cc7c564cae929d9e0afd8b3f7da9ea1'
+      // amount: '57900111191373532'
+      // channelID: '0x1cd3a84f17cd16723d7de8baa7295fe4fe02bdc3c6143c12f2bf055ed71b2a8e'
+      // nonce: '1'
+      // token: '0x0000000000000000000000000000000000000000'
+      // user: '0xb5538753f2641a83409d2786790b42ac857c5340'
+      // userSignature: '0x58f687a2211b4bef1a30921d9f69eb2aac695773f8dd1c392422b880fb2cb46a1b3134a723a4ec5ce1755f2ae410d9748fce1580df55565aad20b1add45b978e1b'
+      // userTransferAmount: '57900111191373532'
+    })
   }
 }
 </script>
 
 <style>
 </style>
-
-<q-dialog v-model="placingOrder" position='bottom'>
-  <q-layout view="Lhh lpR fff" container class="bg-white">
-    <q-header class="bg-primary">
-      <q-toolbar>
-        <q-toolbar-title>订单详情</q-toolbar-title>
-      </q-toolbar>
-    </q-header>
-    <q-footer class="bg-transparent q-pa-sm text-white">
-      <q-btn stretch color="secondary" class="full-width" label="支付" @click="pay()" />
-      <q-separator spaced />
-      <q-btn stretch color="red" class="full-width" label="取消" @click="cancelOrder()" />
-    </q-footer>
-    <q-page-container>
-      <q-page padding>
-        <p>{{ cates[sku.cate] + ' ' + sku.label }}</p>
-        <p>{{ '手机号：' + info.phone }}</p>
-        <p>{{ '价值：' + sku.value }}元</p>
-        <p>{{ finalPrice + ' ' + supportedPnList[selected].symbol}}</p>
-      </q-page>
-    </q-page-container>
-  </q-layout>
-</q-dialog>
-
-placingOrder: {
-  get () {
-    return this.$store.state.order.placing
-  },
-  set (val) {
-    this.$store.commit('order/update', { placing: val })
-  }
-},
-...mapState('pn', {
-  supportedPnList: 'supported',
-  // selected: 'selected',
-  // price: 'price',
-  loading: 'loading'
-}),
-...mapState('sku', {
-  skuId: 'selected',
-  cates: 'cates',
-  info: 'info'
-}),
-...mapState('order', {
-  orders: 'orders',
-  currentOrder: 'current'
-}),
-...mapGetters('sku', [
-  'getSkuById'
-]),
-sku: function () {
-  return this.getSkuById(this.skuId) || {}
-},
-finalPrice: function () {
-  let { sku, price } = this
-  if (sku) {
-    return (sku.value / price).toFixed(4)
-  }
-  return 0
-}
-
-refreshOrder: function () {},
-orderDetail: function () {}
-
-layer1支付
-
-pay: async function () {
-  const { dispatch } = this.$store
-  if (!window.web3) {
-    alert('Web3 not ready')
-  } else {
-    const { currentOrder: { id, from, to, amount } } = this
-    const { toWei, toHex } = window.web3.utils
-
-    let tx = {
-      to,
-      data: toHex(`orderId: ${id}`)
-    }
-
-    const gas = await web3.eth.estimateGas(tx)
-
-    tx = {
-      from,
-      ...tx,
-      value: toWei(amount),
-      gas
-    }
-
-    web3.eth.sendTransaction(tx).on('transactionHash', function (txhash) {
-      console.log('HX: ', txhash)
-      dispatch('order/updateOrder', { id, txhash })
-    }).on('receipt', function (receipt) {
-      console.log('RP: ', receipt)
-    }).on('confirmation', function (confirmationNumber, receipt) {
-      console.log('CF: ', confirmationNumber)
-      confirmationNumber === 1 && dispatch('order/confirmPayment', { id })
-    }).on('error', console.error) // If a out of gas error, the second parameter is the receipt.
-  }
-}
-
-cancelOrder: function () {
-  const { id } = this.currentOrder
-  this.$store.dispatch('order/cancelOrder', { id })
-},
-
-// 下单接口
-placeOrder: function () {
-  /**
-    * 01: token
-    * 02: goods
-    * 03: api
-    * */
-  const { dispatch } = this.$store
-  const { user, info, selected, supportedPnList, sku } = this
-  const pn = supportedPnList[selected].symbol
-  dispatch('order/placeOrder', { user, info, pn, sku: sku.id })
-  this.$q.loading.show()
-},

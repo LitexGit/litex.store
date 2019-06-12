@@ -2,8 +2,7 @@
   <q-page padding class="flex">
     <q-card class="q-pa-sm container">
       <q-card-section>
-        <!-- autofocus -->
-        <q-input filled counter maxlength="11" type='tel' :label="remind" v-model="phone" @blur="updateInfo({phone})">
+        <q-input filled counter maxlength="11" type='tel' :label="remind" v-model="phone" @blur="blur({phone})" @input="inputValue">
           <template v-slot:prepend>
             <q-icon name="smartphone" />
           </template>
@@ -15,7 +14,7 @@
       <q-card-section v-for="(product, index) in skus" :key="index" class="q-gutter-sm">
         <div>{{product.productDes}}</div>
         <q-btn v-for="(goods, index) in product.goodsList" :key="index" color="primary" :label="goods.goodsDes"
-          :outline="goods.goodsId!=selectGoods.goodsId" @click="clickGoods(goods, product.productId)"/>
+          :disable="disable" :outline="goods.goodsId!=selectGoods.goodsId" @click="clickGoods(goods, product.productId)"/>
       </q-card-section>
     </q-card>
     <q-inner-loading :showing="loading001 || loading002">
@@ -26,6 +25,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { isPoneAvailable } from '../utils/helper'
 
 export default {
   name: 'PageIndex',
@@ -44,6 +44,7 @@ export default {
       remind: 'remind',
       skus: 'skus',
       info: 'info',
+      disable: 'disable',
       selectGoods: 'selectGoods'
     }),
     phone: {
@@ -56,7 +57,21 @@ export default {
     }
   },
   methods: {
-    updateInfo: function (info) {
+    isPoneAvailable,
+    // phone ==> goodList
+    inputValue: function (input) {
+      if (!this.isPoneAvailable(input)) {
+        const selectGoods = { goodsId: null, productId: null }
+        this.$store.commit('sku/update', { selectGoods })
+        this.$store.dispatch('pn/updatePrice')
+        this.$store.commit('sku/update', { disable: true })
+      } else {
+        this.$store.dispatch('sku/getGoodsList', { accountNum: input })
+        this.$store.commit('sku/update', { disable: false })
+      }
+    },
+    // 更新提示
+    blur: function (info) {
       this.$store.commit('sku/update', { info })
       this.$store.commit('sku/updatePhoneRemind', info)
     },
@@ -66,8 +81,10 @@ export default {
       this.$store.dispatch('pn/updatePrice')
     }
   },
+  // 默认商品列表
   created () {
-    this.$store.dispatch('sku/getGoodsList')
+    const { phone } = this.info
+    this.$store.dispatch('sku/getGoodsList', { accountNum: phone })
   },
   mounted () {}
 }

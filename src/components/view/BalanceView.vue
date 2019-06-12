@@ -8,7 +8,7 @@
 <script>
 
 import { mapGetters } from 'vuex'
-import { toDecimal, mathCeil } from '../../utils/helper'
+import { toDecimal } from '../../utils/helper'
 
 export default {
   name: 'BalanceView',
@@ -47,8 +47,8 @@ export default {
       if (!decimal) {
         decimal = this.getSelectedToken().decimal
       }
-      let value = this.toDecimal({ amount: this.amount, decimal })
-      return mathCeil({ decimal: value, float: this.float })
+      return this.toDecimal({ amount: this.amount, decimal, pos: this.float })
+      // return mathCeil({ decimal: value, float: this.float })
     }
   },
   methods: {
