@@ -47,6 +47,7 @@
     <withdraw-model/>
     <w-remind-model/>
     <deposit-token-model/>
+    <order-details-model/>
 
   </q-layout>
 </template>
@@ -55,7 +56,7 @@
 import { mapState } from 'vuex'
 // import OrderStatusBar from '../components/OrderStatusBar.vue'
 import { TokenItem } from '../components/item'
-import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel } from '../components/modal'
+import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel } from '../components/modal'
 import MenuBtn from '../components/menu/MenuBtn'
 import { getAccount, getNetwork, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil } from '../utils/helper'
 import { Preferences, PrefKeys } from '../utils/preferences'
@@ -64,7 +65,7 @@ import { Preferences, PrefKeys } from '../utils/preferences'
 export default {
   name: 'MyLayout',
   components: {
-    MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel
+    MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel
   },
   data () {
     return {}
@@ -181,7 +182,7 @@ export default {
       this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
       this.$store.dispatch('channel/confirmDeposit', { amount, address: token })
 
-      this.$store.dispatch('config/getChannelInfo')
+      // this.$store.dispatch('config/getChannelInfo')
     })
     this.$layer2.on('Deposit', (err, res) => {
       console.log('===========Deposit=========================')
@@ -253,6 +254,7 @@ export default {
       console.log('Transfer from L2', err, res)
       console.log('===========Transfer=========================')
       this.$store.dispatch('config/getBalance')
+      this.$store.commit('order/updateShowOrderDModel', { open: true })
       // TODO 更新通道余额
       // TODO 更新钱包余额
       // additionalHash: '0xf569983d1df7db3e9b14014373e7db838cc7c564cae929d9e0afd8b3f7da9ea1'

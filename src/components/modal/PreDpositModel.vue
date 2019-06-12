@@ -1,6 +1,6 @@
 <template>
   <q-dialog minimized no-backdrop-dismiss content-classes="flex justify-center items-center" position='standard'
-    v-model="isShowDRemindModel" @hide="clickClose()" @cancel="clickCancel()">
+    v-model="isShowDRemindModel" @show="show()" @hide="clickClose()" @cancel="clickCancel()">
     <div class="container bg-white">
       <div class="bg-primary q-pa-sm row">
         <q-btn class="col-1 q-pb-lg" color="white" dense flat size="md" icon="close" @click="clickClose()"/>
@@ -73,6 +73,9 @@ export default {
     ...mapGetters('config', [
       'getSelectedToken'
     ]),
+    show: function () {
+      this.$store.commit('channel/updateAuthInput', { authInput: '' })
+    },
     clickClose: function () {
       this.$store.commit('channel/updateShowPreDpositModel', { open: false })
     },

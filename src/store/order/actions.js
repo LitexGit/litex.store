@@ -23,9 +23,15 @@ export async function placeOrder ({ commit, rootState }, payload) {
     Notify.create({ message: '请先选择下单商品', position: 'top', color: 'red', timeout: duration })
     return
   }
+  const { type: tokenType, decimal, channelBalance, status } = tokens[selected]
+  // 校验通道状态
+  if (parseInt(status) !== 1) {
+    Notify.create({ message: '余额不足,请及时充值', position: 'top', color: 'red', timeout: duration })
+    return
+  }
+
   // 03:校验 余额
 
-  const { type: tokenType, decimal, channelBalance } = tokens[selected]
   let { price } = rootState.pn
   price = price * Math.pow(10, decimal)
   const isGte = utils.toBN(price).gte(utils.toBN(channelBalance))

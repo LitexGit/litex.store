@@ -22,3 +22,7 @@ export function updateLoading (state, loading) {
 export function updateOrderStatus (state, { status }) {
   Object.assign(state.current, { status })
 }
+
+export function updateShowOrderDModel (state, { open }) {
+  state.isShowOrderDModel = open
+}

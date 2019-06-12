@@ -236,7 +236,6 @@ export function getShowToken (address, tokens) {
  * 0:已关闭 1:可支付 2:等待中
  */
 export function getChannelStatus ({ status, tokens, address }) {
-
   switch (parseInt(status)) {
     case 0:       // 默认初始化状态
     case 3:       // 已关闭

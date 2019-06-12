@@ -35,7 +35,14 @@ export function preDeposit ({ commit, rootState }, payload) {
   console.log('===============【准备充值】=====================')
   const { address, symbol } = payload
   // TODO 01:layer2 init
-  // TODO 02:status 通道状态
+  const { config: { tokens, duration } } = rootState
+  const { status } = tokens.find(item => {
+    return item.address.toLowerCase() === address.toLowerCase()
+  })
+  if (status === 2) {
+    Notify.create({ message: '请稍后', position: 'top', color: 'red', timeout: duration })
+    return
+  }
   if (symbol === 'ETH') {
     commit('updateShowDpositModel', { open: true })
   } else {
@@ -88,11 +95,13 @@ export async function preWithdraw ({ commit, rootState }, payload) {
   console.log('===============【准备提现】=====================')
   const { address } = payload
   const { config: { tokens, duration } } = rootState
-  const { channelBalance } = tokens.find(item => {
+  const { status, channelBalance } = tokens.find(item => {
     return item.address.toLowerCase() === address.toLowerCase()
   })
-  // TODO 00: layer2
-  // TODO 01: 校验通道状态
+  if (status !== 1) {
+    Notify.create({ message: '请稍后', position: 'top', color: 'red', timeout: duration })
+    return
+  }
   const isGT = utils.toBN(channelBalance).gt(utils.toBN('0'))
   if (!isGT) {
     Notify.create({ message: '余额不足', position: 'top', color: 'red', timeout: duration })
