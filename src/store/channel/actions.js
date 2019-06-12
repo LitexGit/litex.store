@@ -40,7 +40,7 @@ export function preDeposit ({ commit, rootState }, payload) {
     return item.address.toLowerCase() === address.toLowerCase()
   })
   if (status === 2) {
-    Notify.create({ message: '请稍后', position: 'top', color: 'red', timeout: duration })
+    Notify.create({ message: '请稍后...', position: 'top', color: 'red', timeout: duration })
     return
   }
   if (symbol === 'ETH') {
@@ -99,7 +99,7 @@ export async function preWithdraw ({ commit, rootState }, payload) {
     return item.address.toLowerCase() === address.toLowerCase()
   })
   if (status !== 1) {
-    Notify.create({ message: '请稍后', position: 'top', color: 'red', timeout: duration })
+    Notify.create({ message: '请稍后...', position: 'top', color: 'red', timeout: duration })
     return
   }
   const isGT = utils.toBN(channelBalance).gt(utils.toBN('0'))
