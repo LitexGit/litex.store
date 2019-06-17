@@ -27,41 +27,45 @@
 
     <q-page-container>
       <q-page padding>
-        <q-markup-table separator="horizontal" flat dense>
-          <thead>
-            <tr>
-              <th class="text-center">时间</th>
-              <th class="text-center">用途</th>
-              <th class="text-center">金额</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr
+        <div class="row text-weight-thin text-center" style="font-size:90%">
+          <div class="col q-pa-xs">时间</div>
+          <div class="col q-pa-xs">金额</div>
+          <div class="col q-pa-xs">用途</div>
+        </div>
+        <div v-if="!records || records.length < 1">
+          <q-separator/>
+          <div class="text-center q-mt-md">
+            暂无记录
+          </div>
+        </div>
+        <div v-else >
+          <div
               v-for="record in records"
               :key="record.index"
-              class="text-center"
             >
-              <td class="td-tbody" style="font-size:80%">
-                <div class="column">
-                  <!-- <div class="col">{{ dateFormat(record.date) }}</div> -->
-                  <div class="col">
+            <q-separator/>
+            <div class="row justify-around q-pa-xs">
+            <div class="col">
+              <div class="column">
+                  <div class="col text-center">
                     {{ format(new Date(record.stamp), "DD/MM/YYYY") }}
                   </div>
-                  <div class="col">
+                  <div class="col text-center">
                     {{ format(new Date(record.stamp), "HH:mm:ss") }}
                   </div>
                 </div>
-              </td>
-              <td style="font-size:80%">{{ getAssetUse(record.reason) }}</td>
-              <td style="font-size:80%">
-                <div class="column">
-                  <div class="col">
+            </div>
+            <div class="col text-center" style="margin:auto">
+                {{ getAssetUse(record.reason) }}
+            </div>
+            <div class="col">
+              <div class="column">
+                  <div class="col text-center">
                     <span v-if="record.direction < 1">-</span>
                     <span v-else>+</span>
                     ¥{{ Math.abs(record.fiatAmount / 100) }}
                   </div>
-                  <div class="col">
+                  <div class="col text-center">
                     <span v-if="record.direction < 1">-</span>
                     <span v-else>+</span>
                     {{
@@ -73,12 +77,10 @@
                     }}{{ record.token.symbol }}
                   </div>
                 </div>
-              </td>
-            </tr>
-          </tbody>
-        </q-markup-table>
-        <div v-if="!records || records.length < 1" class="text-center q-mt-md">
-          暂无记录
+            </div>
+            </div>
+            </div>
+            <!-- <q-separator/> -->
         </div>
         <q-inner-loading :showing="loading">
           <q-spinner-bars size="50px" color="primary" />
@@ -136,7 +138,4 @@ export default {
 </script>
 
 <style >
-.td-tbody {
-  font-size: 1px;
-}
 </style>
