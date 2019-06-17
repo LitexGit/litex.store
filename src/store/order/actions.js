@@ -49,13 +49,6 @@ export async function placeOrder ({ commit, rootState }, payload) {
   // 04:下单
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   commit('updateLoading', true)
-  console.log('=============placeOrder=======================')
-  console.log(address)
-  console.log(phone)
-  console.log(tokenType)
-  console.log(productId)
-  console.log(goodsId)
-  console.log('============placeOrder========================')
   const order = await api.placeOrder({ address, accountNum: phone, tokenType, productId, goodsId })
   commit('updateLoading', false)
   commit('update', { current: Object.assign(order, { status: 1 }) })

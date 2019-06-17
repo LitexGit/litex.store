@@ -26,7 +26,7 @@ export default {
       type: 0
     },
     {
-      address: '0x9ac78c85A0d3a86a8BE1e08Bea6Ef2EE1687bE18',
+      address: '0x641f543E76cD0Dfe81717d91Ab532831468FA3CE',
       symbol: 'USDT',
       decimal: 6,
       float: 2,
@@ -37,7 +37,7 @@ export default {
       type: 0
     },
     {
-      address: '0x3052c3104c32e666666fbef3a5ead4603747ea83',
+      address: '0x801217Bc9ac5ef2fA1669bc4B0B82cb9263bD883',
       symbol: 'LXT',
       decimal: 18,
       float: 0,
