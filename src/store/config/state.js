@@ -23,7 +23,7 @@ export default {
       channelBalance: '0',
       status: 0,
       balance: '0',
-      type: 0
+      type: 1
     },
     {
       address: '0x9ac78c85A0d3a86a8BE1e08Bea6Ef2EE1687bE18',
@@ -34,7 +34,7 @@ export default {
       channelBalance: '0',
       status: 0,
       balance: '0',
-      type: 0
+      type: 2
     },
     {
       address: '0x3052c3104c32e666666fbef3a5ead4603747ea83',
@@ -45,7 +45,7 @@ export default {
       channelBalance: '0',
       status: 0,
       balance: '0',
-      type: 0
+      type: 3
     }
   ],
 

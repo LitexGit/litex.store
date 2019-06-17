@@ -62,6 +62,8 @@
                     ¥{{ Math.abs(record.fiatAmount / 100) }}
                   </div>
                   <div class="col">
+                    <span v-if="record.direction < 1">-</span>
+                    <span v-else>+</span>
                     {{
                       roundFun(
                         record.token.amount /
@@ -75,7 +77,7 @@
             </tr>
           </tbody>
         </q-markup-table>
-        <div v-if="records.length < 1" class="text-center q-mt-md">
+        <div v-if="!records || records.length < 1" class="text-center q-mt-md">
           暂无记录
         </div>
         <q-inner-loading :showing="loading">
@@ -113,6 +115,7 @@ export default {
     'menu-btn': MenuBtn
   },
   created () {
+    this.$store.dispatch('config/getConfigs')
     this.$store.dispatch('fund/updateFundRecords', { type: this.tokens[this.selected].type, account: Preferences.getItem(PrefKeys.USER_ACCOUNT) })
   },
   methods: {
