@@ -92,6 +92,7 @@ import format from 'date-fns/format'
 import { roundFun } from '../utils/math'
 import { mapState } from 'vuex'
 import { ASSET_STATE } from '../constants/state'
+import { Preferences, PrefKeys } from '../utils/preferences'
 
 export default {
   name: 'Funds',
@@ -112,7 +113,7 @@ export default {
     'menu-btn': MenuBtn
   },
   created () {
-    this.$store.dispatch('fund/updateFundRecords', { type: this.tokens[this.selected].type, account: 1 })
+    this.$store.dispatch('fund/updateFundRecords', { type: this.tokens[this.selected].type, account: Preferences.getItem(PrefKeys.USER_ACCOUNT) })
   },
   methods: {
     format,
@@ -121,7 +122,7 @@ export default {
       window.history.back(-1)
     },
     selectToken (index, type) {
-      this.$store.dispatch('fund/updateFundRecords', { type, account: 1 })
+      this.$store.dispatch('fund/updateFundRecords', { type, account: Preferences.getItem(PrefKeys.USER_ACCOUNT) })
       this.$store.commit('config/updateSelected', { index })
     },
     getAssetUse: reason => {

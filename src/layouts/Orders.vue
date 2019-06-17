@@ -75,6 +75,7 @@ import MenuBtn from '../components/menu/MenuBtn'
 import { roundFun } from '../utils/math'
 import { mapState } from 'vuex'
 import { ORDER_STATE } from '../constants/state'
+import { Preferences, PrefKeys } from '../utils/preferences'
 
 export default {
   name: 'Orders',
@@ -96,7 +97,7 @@ export default {
     'menu-btn': MenuBtn
   },
   created () {
-    this.$store.dispatch('order/updateOrderRecords', { account: 1 })
+    this.$store.dispatch('order/updateOrderRecords', { account: Preferences.getItem(PrefKeys.USER_ACCOUNT) })
   },
   methods: {
     format,
