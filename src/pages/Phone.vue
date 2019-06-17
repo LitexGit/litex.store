@@ -60,6 +60,9 @@ export default {
     isPoneAvailable,
     // phone ==> goodList
     inputValue: function (input) {
+      console.log('==========input==========================')
+      console.log(input)
+      console.log('==========input==========================')
       if (!this.isPoneAvailable(input)) {
         const selectGoods = { goodsId: null, productId: null }
         this.$store.commit('sku/update', { selectGoods })
@@ -72,6 +75,17 @@ export default {
     },
     // 更新提示
     blur: function (info) {
+      const { phone } = info
+      if (!this.isPoneAvailable(phone)) {
+        const selectGoods = { goodsId: null, productId: null }
+        this.$store.commit('sku/update', { selectGoods })
+        this.$store.dispatch('pn/updatePrice')
+        this.$store.commit('sku/update', { disable: true })
+      } else {
+        this.$store.dispatch('sku/getGoodsList', { accountNum: phone })
+        this.$store.commit('sku/update', { disable: false })
+      }
+
       this.$store.commit('sku/update', { info })
       this.$store.commit('sku/updatePhoneRemind', info)
     },
