@@ -3,6 +3,12 @@ import { getNetwork, getChannelStatus } from '../../utils/helper'
 import { Preferences, PrefKeys } from '../../utils/preferences'
 import Vue from 'vue'
 
+export async function register ({ commit }, payload) {
+  const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
+  await api.register({ address })
+  // userId
+}
+
 export async function getConfigs ({ commit }, payload) {
   commit('loading', true)
   const netId = getNetwork()

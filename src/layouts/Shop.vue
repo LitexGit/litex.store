@@ -147,7 +147,8 @@ export default {
 
     window.addEventListener('load', async () => {
       const account = await this.getAccount()
-      Preferences.setItem(PrefKeys.USER_ACCOUNT, account)
+      Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
+      this.$store.dispatch('config/register')
       this.$store.dispatch('config/initLayer2')
 
       window.ethereum.on('accountsChanged', (accounts) => {

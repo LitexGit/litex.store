@@ -13,7 +13,7 @@
       </q-card-section>
       <q-card-section v-for="(product, index) in skus" :key="index" class="q-gutter-sm">
         <div>{{product.productDes}}</div>
-        <q-btn v-for="(goods, index) in product.goodsList" :key="index" color="primary" :label="goods.goodsDes"
+        <q-btn v-for="(goods, index) in product.goodsList" :key="index" :color="disable ? 'grey-6' : 'primary'" :label="goods.goodsDes"
           :disable="disable" :outline="goods.goodsId!=selectGoods.goodsId" @click="clickGoods(goods, product.productId)"/>
       </q-card-section>
     </q-card>
@@ -85,8 +85,7 @@ export default {
   created () {
     const { phone } = this.info
     this.$store.dispatch('sku/getGoodsList', { accountNum: phone })
-  },
-  mounted () {}
+  }
 }
 </script>
 

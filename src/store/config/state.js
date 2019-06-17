@@ -28,7 +28,7 @@ export default {
     {
       address: '0x9ac78c85A0d3a86a8BE1e08Bea6Ef2EE1687bE18',
       symbol: 'USDT',
-      decimal: 18,
+      decimal: 6,
       float: 2,
       icon: 'statics/tokens/usdt.svg',
       channelBalance: '0',
