@@ -60,6 +60,9 @@ import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawMod
 import MenuBtn from '../components/menu/MenuBtn'
 import { getAccount, getNetwork, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil } from '../utils/helper'
 import { Preferences, PrefKeys } from '../utils/preferences'
+import VConsole from 'vconsole'
+// eslint-disable-next-line no-new
+new VConsole()
 
 // OrderStatusBar
 export default {

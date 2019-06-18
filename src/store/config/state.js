@@ -1,7 +1,7 @@
 export default {
-  ethPNAddress: '0x3edc24F911151aC605340170aC961154F1F8d833',
+  ethPNAddress: '0xcc7d77DEF5cace6d57058286FDaeA27bC084baB4',
   appRpcUrl: 'http://39.106.71.164:1337',
-  appPNAddress: '0x8306AA644fa900f901f7494b163C865ECe4c4e65',
+  appPNAddress: '0xcDab9A75Faf7c9c1619521965fd535680182715b',
   isInitL2: false,
   loading: false,
   duration: 1500,
