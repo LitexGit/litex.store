@@ -17,14 +17,19 @@
           <div class="col q-pa-xs">订单状态</div>
         </div>
         <div v-if="!orders || orders.length < 1">
-          <q-separator/>
+          <q-separator />
           <div class="text-center q-mt-md">
             暂无记录
           </div>
         </div>
         <div v-else>
-          <div v-for="order in orders" :key="order.index" class="text-center" style="font-size:90%">
-            <q-separator/>
+          <div
+            v-for="order in orders"
+            :key="order.index"
+            class="text-center"
+            style="font-size:90%"
+          >
+            <q-separator />
             <div class="row">
               <div class="col column q-pa-xs">
                 <div class="col">
@@ -44,7 +49,7 @@
                     order.token.amount / Math.pow(10, order.token.decimal),
                     order.token.symbol
                   )
-                 }}{{ order.token.symbol }}
+                }}{{ order.token.symbol }}
               </div>
               <div class="col q-pa-xs" style="margin:auto">
                 {{ getOrderState(order.status) }}

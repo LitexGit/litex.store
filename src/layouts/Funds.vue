@@ -33,20 +33,17 @@
           <div class="col q-pa-xs">用途</div>
         </div>
         <div v-if="!records || records.length < 1">
-          <q-separator/>
+          <q-separator />
           <div class="text-center q-mt-md">
             暂无记录
           </div>
         </div>
-        <div v-else >
-          <div
-              v-for="record in records"
-              :key="record.index"
-            >
-            <q-separator/>
+        <div v-else>
+          <div v-for="record in records" :key="record.index">
+            <q-separator />
             <div class="row justify-around q-pa-xs">
-            <div class="col">
-              <div class="column">
+              <div class="col">
+                <div class="column">
                   <div class="col text-center">
                     {{ format(new Date(record.stamp), "DD/MM/YYYY") }}
                   </div>
@@ -54,12 +51,12 @@
                     {{ format(new Date(record.stamp), "HH:mm:ss") }}
                   </div>
                 </div>
-            </div>
-            <div class="col text-center" style="margin:auto">
+              </div>
+              <div class="col text-center" style="margin:auto">
                 {{ getAssetUse(record.reason) }}
-            </div>
-            <div class="col">
-              <div class="column">
+              </div>
+              <div class="col">
+                <div class="column">
                   <div class="col text-center">
                     <span v-if="record.direction < 1">-</span>
                     <span v-else>+</span>
@@ -77,10 +74,10 @@
                     }}{{ record.token.symbol }}
                   </div>
                 </div>
+              </div>
             </div>
-            </div>
-            </div>
-            <!-- <q-separator/> -->
+          </div>
+          <!-- <q-separator/> -->
         </div>
         <q-inner-loading :showing="loading">
           <q-spinner-bars size="50px" color="primary" />
