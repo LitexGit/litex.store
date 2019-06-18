@@ -35,7 +35,8 @@ export default {
   },
   computed: {
     ...mapState('order', {
-      loading001: 'loading'
+      loading001: 'loading',
+      isShowOrderDModel: 'isShowOrderDModel'
     }),
     ...mapState('channel', {
       loading002: 'loading'
@@ -56,13 +57,16 @@ export default {
       }
     }
   },
+  watch: {
+    isShowOrderDModel: function (newValue, oldValue) {
+      if (!newValue) return
+      this.$store.commit('sku/update', { disable: true })
+    }
+  },
   methods: {
     isPoneAvailable,
     // phone ==> goodList
     inputValue: function (input) {
-      console.log('==========input==========================')
-      console.log(input)
-      console.log('==========input==========================')
       if (!this.isPoneAvailable(input)) {
         const selectGoods = { goodsId: null, productId: null }
         this.$store.commit('sku/update', { selectGoods })
@@ -82,12 +86,11 @@ export default {
         this.$store.dispatch('pn/updatePrice')
         this.$store.commit('sku/update', { disable: true })
       } else {
-        this.$store.dispatch('sku/getGoodsList', { accountNum: phone })
         this.$store.commit('sku/update', { disable: false })
-      }
 
-      this.$store.commit('sku/update', { info })
-      this.$store.commit('sku/updatePhoneRemind', info)
+        this.$store.commit('sku/update', { info })
+        this.$store.commit('sku/updatePhoneRemind', info)
+      }
     },
     clickGoods: function (goods, productId) {
       goods.productId = productId
