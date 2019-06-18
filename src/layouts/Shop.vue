@@ -100,6 +100,23 @@ export default {
     }
   },
   watch: {
+    $route: {
+      deep: true,
+      handler: function (newVal, oldVal) {
+        const { path } = newVal
+        switch (path) {
+          case '/shop/phone':
+            break
+          case '/shop/gas':
+            break
+          case '/shop/vip':
+            break
+
+          default:
+            break
+        }
+      }
+    },
     isInitL2: function (newValue, oldValue) {
       if (!this.isInitL2) return
       this.$store.dispatch('config/getOnchainBalance')
