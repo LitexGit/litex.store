@@ -80,13 +80,26 @@ export default {
   computed: {
     ...mapState('order', [
       'orders'
-    ])
+    ]),
+    ...mapState('config', [
+      'tokens', 'selected'
+    ]),
+    channelBalance: {
+      get: function () {
+        return this.tokens[this.selected].channelBalance
+      }
+    }
   },
   components: {
     'menu-btn': MenuBtn
   },
   created () {
-    this.$store.dispatch('order/updateOrderRecords', { account: Preferences.getItem(PrefKeys.USER_ACCOUNT) })
+    this.updateOrderRecords()
+  },
+  watch: {
+    channelBalance: () => {
+      this.updateOrderRecords()
+    }
   },
   methods: {
     format,
@@ -96,6 +109,9 @@ export default {
     },
     back: () => {
       window.history.back(-1)
+    },
+    updateOrderRecords () {
+      this.$store.dispatch('order/updateOrderRecords', { account: Preferences.getItem(PrefKeys.USER_ACCOUNT) })
     }
 
   }
