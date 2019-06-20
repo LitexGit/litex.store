@@ -108,14 +108,24 @@ export default {
     ]),
     ...mapState('fund', [
       'records', 'loading'
-    ])
+    ]),
+    channelBalance: {
+      get: function () {
+        return this.tokens[this.selected].channelBalance
+      }
+    }
   },
   components: {
     'menu-btn': MenuBtn
   },
+  watch: {
+    channelBalance: function () {
+      this.updateFundRecords()
+    }
+  },
   created () {
     this.$store.dispatch('config/getConfigs')
-    this.$store.dispatch('fund/updateFundRecords', { type: this.tokens[this.selected].type, account: Preferences.getItem(PrefKeys.USER_ACCOUNT) })
+    this.updateFundRecords()
   },
   methods: {
     format,
@@ -129,6 +139,9 @@ export default {
     },
     getAssetUse: reason => {
       return ASSET_STATE[reason]
+    },
+    updateFundRecords () {
+      this.$store.dispatch('fund/updateFundRecords', { type: this.tokens[this.selected].type, account: Preferences.getItem(PrefKeys.USER_ACCOUNT) })
     }
   }
 }
