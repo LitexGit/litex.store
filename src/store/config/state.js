@@ -6,7 +6,7 @@ export default {
   loading: false,
   duration: 1500,
   // baseURL: 'http://a1.litex.fun:7777',
-  baseURL: 'http://192.168.51.73:7777',
+  baseURL: 'http://a1.litex.fun:7001',
   timeout: 5000,
   categorys: [],
   telegramURL: '',
@@ -26,7 +26,7 @@ export default {
       type: 1
     },
     {
-      address: '0x641f543E76cD0Dfe81717d91Ab532831468FA3CE',
+      address: '0x801217Bc9ac5ef2fA1669bc4B0B82cb9263bD883',
       symbol: 'USDT',
       decimal: 6,
       float: 2,
@@ -37,7 +37,7 @@ export default {
       type: 2
     },
     {
-      address: '0x801217Bc9ac5ef2fA1669bc4B0B82cb9263bD883',
+      address: '0x641f543E76cD0Dfe81717d91Ab532831468FA3CE',
       symbol: 'LXT',
       decimal: 18,
       float: 0,
