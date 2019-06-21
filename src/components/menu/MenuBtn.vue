@@ -1,7 +1,7 @@
 <template>
   <q-btn flat round dense icon="menu" id="menuBtn" @click="click">
     <q-menu>
-      <q-list dense>
+      <q-list dense style="width:90px">
         <q-item
           clickable
           v-close-popup
