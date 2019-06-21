@@ -60,9 +60,9 @@ import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawMod
 import MenuBtn from '../components/menu/MenuBtn'
 import { getAccount, getNetwork, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil } from '../utils/helper'
 import { Preferences, PrefKeys } from '../utils/preferences'
-import VConsole from 'vconsole'
-// eslint-disable-next-line no-new
-new VConsole()
+// import VConsole from 'vconsole'
+// // eslint-disable-next-line no-new
+// new VConsole()
 
 // OrderStatusBar
 export default {
@@ -108,8 +108,9 @@ export default {
           case '/shop/phone':
             break
           case '/shop/gas':
-            break
           case '/shop/vip':
+            this.$router.go(-1)
+            this.$q.notify({ message: '即将上线, 敬请期待...', position: 'top', color: 'positive', timeout: this.duration })
             break
 
           default:

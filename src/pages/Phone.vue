@@ -13,8 +13,16 @@
       </q-card-section>
       <q-card-section v-for="(product, index) in skus" :key="index" class="q-gutter-sm">
         <div>{{product.productDes}}</div>
-        <q-btn v-for="(goods, index) in product.goodsList" :key="index" :color="disable ? 'grey-6' : 'primary'" :label="goods.goodsDes"
-          :disable="disable" :outline="goods.goodsId!=selectGoods.goodsId" @click="clickGoods(goods, product.productId)"/>
+        <!-- :label="" -->
+        <q-btn v-for="(goods, index) in product.goodsList" :key="index" :color="disable ? 'grey-6' : 'primary'"
+          :disable="disable" :outline="goods.goodsId!=selectGoods.goodsId" @click="clickGoods(goods, product.productId)">
+          <div>
+            <div>{{goods.goodsDes}}</div>
+            <small>
+              售价:<span>{{(goods.price / 100).toFixed(2)}}</span>元
+            </small>
+          </div>
+          </q-btn>
       </q-card-section>
     </q-card>
     <q-inner-loading :showing="loading001 || loading002">
