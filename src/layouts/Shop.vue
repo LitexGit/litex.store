@@ -181,6 +181,14 @@ export default {
       })
     })
   },
+  sockets: {
+    connect: function () {
+      console.log('==============connect======================')
+    },
+    reconnect: function () {
+      console.log('==============reconnect======================')
+    }
+  },
   mounted: async function () {
     this.$layer2.on('TokenApproval', (err, res) => {
       console.log('===========TokenApproval=========================')
