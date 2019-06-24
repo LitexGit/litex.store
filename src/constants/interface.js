@@ -7,6 +7,8 @@ export default {
   POST_ASSET_RECORDS: '/api/v1/asset/records',
   POST_ORDER_RECORDS: '/api/v1/order/records',
 
+  SOCKET_CONNECT: 'login',
+
   GET_ORDER: '/orders',
   GET_SKU: '/config',
   GET_PRICE: '/price'

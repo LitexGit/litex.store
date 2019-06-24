@@ -1,5 +1,6 @@
 export default {
-  socketURL: 'https://code.yamen.co',
+  account: undefined,
+  socketURL: 'http://192.168.51.73:7777',
   ethPNAddress: '0xcc7d77DEF5cace6d57058286FDaeA27bC084baB4',
   appRpcUrl: 'http://39.106.71.164:1337',
   appPNAddress: '0xcDab9A75Faf7c9c1619521965fd535680182715b',
@@ -7,7 +8,7 @@ export default {
   loading: false,
   duration: 1500,
   // baseURL: 'http://a1.litex.fun:7777',
-  baseURL: 'http://a1.litex.fun:7001',
+  baseURL: 'http://192.168.51.73:7777',
   timeout: 5000,
   categorys: [],
   telegramURL: '',

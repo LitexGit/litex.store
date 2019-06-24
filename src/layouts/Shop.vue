@@ -60,6 +60,8 @@ import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawMod
 import MenuBtn from '../components/menu/MenuBtn'
 import { getAccount, getNetwork, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil } from '../utils/helper'
 import { Preferences, PrefKeys } from '../utils/preferences'
+import Api from '../constants/interface'
+
 // import VConsole from 'vconsole'
 // // eslint-disable-next-line no-new
 // new VConsole()
@@ -79,7 +81,8 @@ export default {
       tokens: 'tokens',
       selected: 'selected',
       categorys: 'categorys',
-      isInitL2: 'isInitL2'
+      isInitL2: 'isInitL2',
+      account: 'account'
     }),
     ...mapState('sku', {
       info: 'info',
@@ -131,6 +134,15 @@ export default {
       } else {
         this.$store.commit('config/syncChannelStatus', { channel: this.channel })
       }
+    },
+    account: function (newValue, oldValue) {
+      if (!newValue) return
+      console.log('====================================')
+      console.log(this.$socket)
+      console.log(Api.SOCKET_CONNECT)
+      console.log(this.account)
+      console.log('====================================')
+      this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: this.account }))
     }
   },
   methods: {
@@ -167,7 +179,9 @@ export default {
     this.$store.dispatch('config/getConfigs')
 
     window.addEventListener('load', async () => {
+      console.log('=============load=======================')
       const account = await this.getAccount()
+      this.$store.commit('config/update', { account: account.toLowerCase() })
       Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
       this.$store.dispatch('config/register')
       this.$store.dispatch('config/initLayer2')
@@ -183,10 +197,22 @@ export default {
   },
   sockets: {
     connect: function () {
-      console.log('==============connect======================')
+      this.account && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: this.account }))
     },
     reconnect: function () {
       console.log('==============reconnect======================')
+    },
+    test1: function (data) {
+      console.log('==============test1======================')
+      console.log(data)
+      console.log('==============test1======================')
+    },
+    test2: function (data) {
+      // orderId ==> order details
+      // type => msg =>(账户 100￥话费 已到账)
+      console.log('==============test2======================')
+      console.log(data)
+      console.log('==============test2======================')
     }
   },
   mounted: async function () {

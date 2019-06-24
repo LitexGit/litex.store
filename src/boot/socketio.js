@@ -6,7 +6,7 @@ export default ({ app, Vue }) => {
   const options = { transports: ['websocket'] }
   const { socketURL } = state
   Vue.use(new VueSocketIO({
-    debug: false,
+    // debug: false,
     connection: socketURL,
     options,
     vuex: {
