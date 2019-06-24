@@ -94,6 +94,7 @@ import { roundFun } from '../utils/math'
 import { mapState } from 'vuex'
 import { ASSET_STATE } from '../constants/state'
 import { Preferences, PrefKeys } from '../utils/preferences'
+import { getAccount } from '../utils/helper'
 
 export default {
   name: 'Funds',
@@ -104,7 +105,7 @@ export default {
   },
   computed: {
     ...mapState('config', [
-      'tokens', 'selected'
+      'tokens', 'selected', 'isInitL2'
     ]),
     ...mapState('fund', [
       'records', 'loading'
@@ -121,15 +122,31 @@ export default {
   watch: {
     channelBalance: function () {
       this.updateFundRecords()
+    },
+    isInitL2: function (newValue, oldValue) {
+      if (!this.isInitL2) return
+      this.$store.dispatch('config/getOnchainBalance')
+      this.$store.dispatch('config/getBalance')
+      this.$store.dispatch('config/getChannelInfo')
     }
   },
   created () {
     this.$store.dispatch('config/getConfigs')
     this.updateFundRecords()
+    window.addEventListener('load', async () => {
+      const account = await this.getAccount()
+      Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
+      this.$store.dispatch('config/register')
+      this.$store.dispatch('config/initLayer2')
+      window.ethereum.on('accountsChanged', (accounts) => {
+        window.location.reload(true)
+      })
+    })
   },
   methods: {
     format,
     roundFun,
+    getAccount,
     back: () => {
       window.history.back(-1)
     },

@@ -69,6 +69,7 @@ import { roundFun } from '../utils/math'
 import { mapState } from 'vuex'
 import { ORDER_STATE } from '../constants/state'
 import { Preferences, PrefKeys } from '../utils/preferences'
+import { getAccount } from '../utils/helper'
 
 export default {
   name: 'Orders',
@@ -82,7 +83,7 @@ export default {
       'orders'
     ]),
     ...mapState('config', [
-      'tokens', 'selected'
+      'isInitL2', 'tokens', 'selected'
     ]),
     channelBalance: {
       get: function () {
@@ -95,22 +96,38 @@ export default {
   },
   created () {
     this.updateOrderRecords()
+    window.addEventListener('load', async () => {
+      const account = await this.getAccount()
+      Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
+      this.$store.dispatch('config/register')
+      this.$store.dispatch('config/initLayer2')
+      window.ethereum.on('accountsChanged', (accounts) => {
+        window.location.reload(true)
+      })
+    })
   },
   watch: {
-    channelBalance: () => {
+    channelBalance: function () {
       this.updateOrderRecords()
+    },
+    isInitL2: function (newValue, oldValue) {
+      if (!this.isInitL2) return
+      this.$store.dispatch('config/getOnchainBalance')
+      this.$store.dispatch('config/getBalance')
+      this.$store.dispatch('config/getChannelInfo')
     }
   },
   methods: {
     format,
     roundFun,
+    getAccount,
     getOrderState: (state) => {
       return ORDER_STATE[state]
     },
     back: () => {
       window.history.back(-1)
     },
-    updateOrderRecords () {
+    updateOrderRecords: function () {
       this.$store.dispatch('order/updateOrderRecords', { account: Preferences.getItem(PrefKeys.USER_ACCOUNT) })
     }
 
