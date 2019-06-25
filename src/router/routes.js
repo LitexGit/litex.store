@@ -2,6 +2,7 @@ import Shop from 'layouts/Shop'
 import Orders from 'layouts/Orders'
 import Phone from 'pages/Phone'
 import Gas from 'pages/Gas'
+import AddCard from 'pages/AddCard'
 
 const routes = [{
   path: '/',
@@ -14,6 +15,7 @@ const routes = [{
     { path: '', redirect: 'phone' },
     { path: 'phone', component: Phone },
     { path: 'gas', component: Gas },
+    { path: 'addcard', component: AddCard },
     {
       path: '*',
       component: () =>

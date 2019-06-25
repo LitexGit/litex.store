@@ -1,16 +1,25 @@
 <template>
   <q-page padding class="flex">
     <q-card class="q-pa-sm container">
-      <q-card-section class="">
 
-        <q-btn-dropdown split icon='close' color="primary" label="1000110123456789012">
+      <q-card-section class="row items-center">
+        <div class="row items-center bg-grey-4" style="flex: 1">
+          <q-input class="" style="flex: 1" type='number' readonly hide-underline label="1000110123456789012">
+            <template v-slot:prepend>
+              <img class="q-ml-sm" style="width: 25px" src="../statics/gas/oilbarrel.png" />
+            </template>
+          </q-input>
+          <q-btn-dropdown flat dense round size="md" text-color='white'>
             <q-list link>
               <q-item v-for="card in cards" :key="card.gameUserid" close-overlay>
                <span>{{card}}</span>
               </q-item>
             </q-list>
           </q-btn-dropdown>
-
+        </div>
+        <q-btn flat dense round fab-mini text-color='white' @click="addCard">
+          <img class="q-ml-sm" style="width: 25px" src="../statics/gas/addfiles.png" />
+        </q-btn>
       </q-card-section>
 
       <q-card-section class="bg-red">
@@ -20,6 +29,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'Gas',
   data () {
@@ -41,6 +51,12 @@ export default {
     }
   },
   computed: {
+  },
+  methods: {
+    addCard: function () {
+      this.$router.push('/shop/AddCard')
+      console.log('==============addCard======================')
+    }
   }
 }
 </script>
@@ -48,5 +64,8 @@ export default {
 <style scoped>
 .container {
   flex: 1
+}
+.dropdown {
+
 }
 </style>
