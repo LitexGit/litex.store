@@ -8,6 +8,7 @@ export default {
   POST_ORDER_RECORDS: '/api/v1/order/records',
 
   SOCKET_CONNECT: 'login',
+  SOCKET_PRIVATE_MSG: 'privateMsg',
 
   GET_ORDER: '/orders',
   GET_SKU: '/config',

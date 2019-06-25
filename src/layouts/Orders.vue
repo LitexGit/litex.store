@@ -70,6 +70,7 @@ import { mapState } from 'vuex'
 import { ORDER_STATE } from '../constants/state'
 import { Preferences, PrefKeys } from '../utils/preferences'
 import { getAccount } from '../utils/helper'
+import Api from '../constants/interface'
 
 export default {
   name: 'Orders',
@@ -83,7 +84,7 @@ export default {
       'orders'
     ]),
     ...mapState('config', [
-      'isInitL2', 'tokens', 'selected'
+      'isInitL2', 'tokens', 'selected', 'account'
     ]),
     channelBalance: {
       get: function () {
@@ -98,6 +99,9 @@ export default {
     this.updateOrderRecords()
     window.addEventListener('load', async () => {
       const account = await this.getAccount()
+      this.$store.commit('config/update', { account: account.toLowerCase() })
+
+      this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
       Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
       this.$store.dispatch('config/register')
       this.$store.dispatch('config/initLayer2')
@@ -130,7 +134,14 @@ export default {
     updateOrderRecords: function () {
       this.$store.dispatch('order/updateOrderRecords', { account: Preferences.getItem(PrefKeys.USER_ACCOUNT) })
     }
-
+  },
+  sockets: {
+    connect: function () {
+      this.account && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: this.account }))
+    },
+    privateMsg: function (res) {
+      this.$store.commit('order/depositRes', res)
+    }
   }
 }
 </script>
