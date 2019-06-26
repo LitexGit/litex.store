@@ -19,7 +19,7 @@ module.exports = function (ctx) {
 
     framework: {
       // all: true, // --- includes everything; for dev only!
-      directives: ['CloseOverlay'],
+
       components: [
         'QLayout',
         'QHeader',
@@ -49,6 +49,7 @@ module.exports = function (ctx) {
         'QBanner',
         'QDrawer',
         'QScrollArea',
+        'QBtnDropdown',
         'QTabs',
         'QTab',
         'QRouteTab',
