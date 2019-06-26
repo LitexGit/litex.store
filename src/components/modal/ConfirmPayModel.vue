@@ -54,7 +54,7 @@ export default {
       let amount = this.orderinfo.amount || '0'
       const decimal = this.getSelectedToken().decimal
       const float = this.getSelectedToken().float
-      amount = toDecimal({ amount, decimal })
+      amount = toDecimal({ amount, decimal, pos: float + 1 })
       return mathCeil({ decimal: amount, float })
     },
     orderinfo: function () {

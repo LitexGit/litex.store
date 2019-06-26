@@ -10,59 +10,52 @@
 
     <q-page-container>
       <q-page padding>
-        <q-markup-table separator="horizontal" flat dense>
-          <thead>
-            <tr>
-              <th class="text-center q-px-xs">时间</th>
-              <th class="text-center q-px-sm">商品</th>
-              <th class="text-center q-px-sm">金额</th>
-              <th class="text-center q-px-sm">订单状态</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="order in orders" :key="order.index" class="text-center">
-              <td class=" q-px-sm" style="font-size:80%">
-                <div class="column">
-                  <div class="col">
-                    {{ format(new Date(order.stamp), "DD/MM/YYYY") }}
-                  </div>
-                  <div class="col">
-                    {{ format(new Date(order.stamp), "HH:mm:ss") }}
-                  </div>
+        <div class="row text-center text-weight-thin" style="font-size:90%">
+          <div class="col q-pa-xs">时间</div>
+          <div class="col q-pa-xs">商品</div>
+          <div class="col q-pa-xs">金额</div>
+          <div class="col q-pa-xs">订单状态</div>
+        </div>
+        <div v-if="!orders || orders.length < 1">
+          <q-separator />
+          <div class="text-center q-mt-md">
+            暂无记录
+          </div>
+        </div>
+        <div v-else>
+          <div
+            v-for="order in orders"
+            :key="order.index"
+            class="text-center"
+            style="font-size:90%"
+          >
+            <q-separator />
+            <div class="row">
+              <div class="col column q-pa-xs">
+                <div class="col">
+                  {{ format(new Date(order.stamp), "DD/MM/YYYY") }}
                 </div>
-              </td>
-
-              <td class=" q-px-sm" style="font-size:80%">
-                <div class="column">
-                  <div class="col">{{ order.orderInfo.orderDes }}</div>
-                  <div class="col">{{ order.orderInfo.accountNum }}</div>
+                <div class="col">
+                  {{ format(new Date(order.stamp), "HH:mm:ss") }}
                 </div>
-              </td>
-              <td class=" q-px-sm" style="font-size:85%">
-                <div class="column">
-                  <!-- <div class="col">
-                    <span v-if="order.fiatAmount < 0">-</span>
-                    <span v-else>+</span>
-                    ¥{{ Math.abs(order.fiatAmount) }}
-                  </div> -->
-                  <div class="col">
-                    {{
-                      roundFun(
-                        order.token.amount / Math.pow(10, order.token.decimal),
-                        order.token.symbol
-                      )
-                    }}{{ order.token.symbol }}
-                  </div>
-                </div>
-              </td>
-              <td class=" q-px-sm" style="font-size:90%">
+              </div>
+              <div class="col column  q-pa-xs">
+                <div class="col">{{ order.orderInfo.orderDes }}</div>
+                <div class="col">{{ order.orderInfo.accountNum }}</div>
+              </div>
+              <div class="col q-pa-xs" style="margin:auto">
+                {{
+                  roundFun(
+                    order.token.amount / Math.pow(10, order.token.decimal),
+                    order.token.symbol
+                  )
+                }}{{ order.token.symbol }}
+              </div>
+              <div class="col q-pa-xs" style="margin:auto">
                 {{ getOrderState(order.status) }}
-              </td>
-            </tr>
-          </tbody>
-        </q-markup-table>
-        <div v-if="orders.length < 1" class="text-center q-mt-md">
-          暂无记录
+              </div>
+            </div>
+          </div>
         </div>
       </q-page>
     </q-page-container>
@@ -75,39 +68,80 @@ import MenuBtn from '../components/menu/MenuBtn'
 import { roundFun } from '../utils/math'
 import { mapState } from 'vuex'
 import { ORDER_STATE } from '../constants/state'
+import { Preferences, PrefKeys } from '../utils/preferences'
+import { getAccount } from '../utils/helper'
+import Api from '../constants/interface'
 
 export default {
   name: 'Orders',
 
   data () {
     return {
-      // pagination: {
-      //   page: 2,
-      //   rowsPerPage: 5
-      // }
     }
   },
   computed: {
     ...mapState('order', [
       'orders'
-    ])
+    ]),
+    ...mapState('config', [
+      'isInitL2', 'tokens', 'selected', 'account'
+    ]),
+    channelBalance: {
+      get: function () {
+        return this.tokens[this.selected].channelBalance
+      }
+    }
   },
   components: {
     'menu-btn': MenuBtn
   },
   created () {
-    this.$store.dispatch('order/updateOrderRecords', { account: 1 })
+    this.updateOrderRecords()
+    window.addEventListener('load', async () => {
+      const account = await this.getAccount()
+      this.$store.commit('config/update', { account: account.toLowerCase() })
+
+      this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
+      Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
+      this.$store.dispatch('config/register')
+      this.$store.dispatch('config/initLayer2')
+      window.ethereum.on('accountsChanged', (accounts) => {
+        window.location.reload(true)
+      })
+    })
+  },
+  watch: {
+    channelBalance: function () {
+      this.updateOrderRecords()
+    },
+    isInitL2: function (newValue, oldValue) {
+      if (!this.isInitL2) return
+      this.$store.dispatch('config/getOnchainBalance')
+      this.$store.dispatch('config/getBalance')
+      this.$store.dispatch('config/getChannelInfo')
+    }
   },
   methods: {
     format,
     roundFun,
+    getAccount,
     getOrderState: (state) => {
       return ORDER_STATE[state]
     },
     back: () => {
       window.history.back(-1)
+    },
+    updateOrderRecords: function () {
+      this.$store.dispatch('order/updateOrderRecords', { account: Preferences.getItem(PrefKeys.USER_ACCOUNT) })
     }
-
+  },
+  sockets: {
+    connect: function () {
+      this.account && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: this.account }))
+    },
+    privateMsg: function (res) {
+      this.$store.commit('order/depositRes', res)
+    }
   }
 }
 </script>

@@ -60,6 +60,11 @@ import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawMod
 import MenuBtn from '../components/menu/MenuBtn'
 import { getAccount, getNetwork, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil } from '../utils/helper'
 import { Preferences, PrefKeys } from '../utils/preferences'
+import Api from '../constants/interface'
+
+// import VConsole from 'vconsole'
+// // eslint-disable-next-line no-new
+// new VConsole()
 
 // OrderStatusBar
 export default {
@@ -76,7 +81,8 @@ export default {
       tokens: 'tokens',
       selected: 'selected',
       categorys: 'categorys',
-      isInitL2: 'isInitL2'
+      isInitL2: 'isInitL2',
+      account: 'account'
     }),
     ...mapState('sku', {
       info: 'info',
@@ -97,6 +103,24 @@ export default {
     }
   },
   watch: {
+    $route: {
+      deep: true,
+      handler: function (newVal, oldVal) {
+        const { path } = newVal
+        switch (path) {
+          case '/shop/phone':
+            break
+          case '/shop/gas':
+          case '/shop/vip':
+            this.$router.go(-1)
+            this.$q.notify({ message: '即将上线, 敬请期待...', position: 'top', color: 'positive', timeout: this.duration })
+            break
+
+          default:
+            break
+        }
+      }
+    },
     isInitL2: function (newValue, oldValue) {
       if (!this.isInitL2) return
       this.$store.dispatch('config/getOnchainBalance')
@@ -146,8 +170,13 @@ export default {
     this.$store.dispatch('config/getConfigs')
 
     window.addEventListener('load', async () => {
+      console.log('=============load=======================')
       const account = await this.getAccount()
-      Preferences.setItem(PrefKeys.USER_ACCOUNT, account)
+      this.$store.commit('config/update', { account: account.toLowerCase() })
+
+      this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
+      Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
+      this.$store.dispatch('config/register')
       this.$store.dispatch('config/initLayer2')
 
       window.ethereum.on('accountsChanged', (accounts) => {
@@ -158,6 +187,14 @@ export default {
         console.log('=============【切换 netId】=======================')
       })
     })
+  },
+  sockets: {
+    connect: function () {
+      this.account && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: this.account }))
+    },
+    privateMsg: function (res) {
+      this.$store.commit('order/depositRes', res)
+    }
   },
   mounted: async function () {
     this.$layer2.on('TokenApproval', (err, res) => {
@@ -272,3 +309,16 @@ export default {
 
 <style>
 </style>
+
+  // test1: function (data) {
+  //   console.log('==============test1======================')
+  //   console.log(data)
+  //   console.log('==============test1======================')
+  // },
+  // test2: function (data) {
+  //   // orderId ==> order details
+  //   // type => msg =>(账户 100￥话费 已到账)
+  //   console.log('==============test2======================')
+  //   console.log(data)
+  //   console.log('==============test2======================')
+  // }

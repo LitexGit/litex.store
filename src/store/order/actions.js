@@ -25,8 +25,15 @@ export async function placeOrder ({ commit, rootState }, payload) {
   }
   const { type: tokenType, decimal, channelBalance, status } = tokens[selected]
   // 校验通道状态
-  if (parseInt(status) !== 1) {
+  console.log('=======placeOrder=====status========================')
+  console.log(status)
+  console.log('=======placeOrder=====status========================')
+  if (parseInt(status) === 0) {
     Notify.create({ message: '余额不足,请及时充值...', position: 'top', color: 'red', timeout: duration })
+    return
+  }
+  if (parseInt(status) === 2) {
+    Notify.create({ message: '状态恢复中,请稍后...', position: 'top', color: 'red', timeout: duration })
     return
   }
 

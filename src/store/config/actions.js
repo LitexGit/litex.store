@@ -3,6 +3,12 @@ import { getNetwork, getChannelStatus } from '../../utils/helper'
 import { Preferences, PrefKeys } from '../../utils/preferences'
 import Vue from 'vue'
 
+export async function register ({ commit }, payload) {
+  const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
+  await api.register({ address })
+  // userId
+}
+
 export async function getConfigs ({ commit }, payload) {
   commit('loading', true)
   const netId = getNetwork()
@@ -16,8 +22,8 @@ export async function initLayer2 ({ commit, state }, payload) {
   process.versions = { node: '11.2.0' }
   const account = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   const { ethPNAddress, appRpcUrl, appPNAddress } = state
-  await Vue.prototype.$layer2.init(account, window.web3, ethPNAddress, appRpcUrl, appPNAddress)
   Vue.prototype.$layer2.setDebug(false)
+  await Vue.prototype.$layer2.init(account, window.web3, ethPNAddress, appRpcUrl, appPNAddress)
   commit('update', { isInitL2: true })
 }
 

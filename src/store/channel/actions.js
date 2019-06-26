@@ -1,4 +1,3 @@
-
 import * as utils from 'web3-utils'
 import { timeoutCheck, getErrMsg } from '../../utils/helper'
 import { Notify, Loading } from 'quasar'
@@ -149,11 +148,7 @@ export async function transfer ({ commit, rootState }, payload) {
   const { address } = token
   Loading.show()
   try {
-    const res = await Vue.prototype.$layer2.transfer(amount, address, ordered, timeout)
-    console.log('=================transfer===================')
-    console.log(res)
-    console.log('=================transfer===================')
-    Notify.create({ message: '订单支付成功', position: 'top', color: 'positive', timeout: duration })
+    await Vue.prototype.$layer2.transfer(amount, address, ordered, timeout)
   } catch (error) {
     Notify.create({ message: getErrMsg(error), position: 'top', color: 'red', timeout: duration })
   } finally {

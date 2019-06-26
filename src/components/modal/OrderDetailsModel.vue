@@ -1,14 +1,14 @@
 <template>
-  <q-dialog v-model="isShowOrderDModel"
-    @hide="hide()" @cancel="clickCancel()">
-    <div class="container">
-      <div class="bg-primary q-pa-sm">
-        <q-btn class="absolute-top-left" color="white" round outline flat size="md" icon="close" @click="clickClose()"/>
-          <center>
-            <span class="text-subtitle1 text-white">支付成功</span>
-          </center>
+  <q-dialog minimized no-backdrop-dismiss content-classes="flex justify-center items-center" position='standard'
+    v-model="isShowOrderDModel" @hide="hide()" @cancel="clickCancel()">
+    <div class="container bg-white">
+      <div class="bg-primary q-pa-sm row">
+        <q-btn class="col-1 q-pb-sm" color="white" dense flat size="md" icon="close" @click="clickClose()"/>
+        <div class="col-11 q-pr-md text-white">
+          <center class="text-h6">支付成功</center>
+        </div>
       </div>
-      <div class="q-pa-md bg-white">
+      <div class="bg-white q-px-md q-pb-md q-pt-sm">
         <center class="text-subtitle1">
           <span>{{amount}}</span>&nbsp;<span>{{symbol}}</span>
         </center>
@@ -100,6 +100,7 @@ export default {
 
 <style scoped>
 .container {
-  width: 100%;
+  border:2px solid #2ca6e0;
+  width: 100%
 }
 </style>

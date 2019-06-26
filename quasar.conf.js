@@ -4,7 +4,7 @@ module.exports = function (ctx) {
   return {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
-    boot: ['i18n', 'axios', 'layer2'],
+    boot: ['i18n', 'axios', 'layer2', 'socketio'],
 
     css: ['app.styl'],
 
@@ -79,15 +79,13 @@ module.exports = function (ctx) {
       // gzip: true,
       // analyze: true,
       // extractCSS: false,
-      env: ctx.dev
-        ? {
-          // API: JSON.stringify('http://localhost:7001'),
-          // TO: JSON.stringify('0x85435801556be27ED7767bBc208B347012dDC91d')
-          API: JSON.stringify('http://api.yamen.co:7001')
-        }
-        : {
-          API: JSON.stringify('http://api.yamen.co:7001')
-        },
+      env: ctx.dev ? {
+        // API: JSON.stringify('http://localhost:7001'),
+        // TO: JSON.stringify('0x85435801556be27ED7767bBc208B347012dDC91d')
+        API: JSON.stringify('http://api.yamen.co:7001')
+      } : {
+        API: JSON.stringify('http://api.yamen.co:7001')
+      },
       extendWebpack (cfg) {
         cfg.module.rules.push({
           enforce: 'pre',
@@ -122,32 +120,31 @@ module.exports = function (ctx) {
         orientation: 'portrait',
         background_color: '#ffffff',
         theme_color: '#027be3',
-        icons: [
-          {
-            src: 'statics/icons/icon-128x128.png',
-            sizes: '128x128',
-            type: 'image/png'
-          },
-          {
-            src: 'statics/icons/icon-192x192.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: 'statics/icons/icon-256x256.png',
-            sizes: '256x256',
-            type: 'image/png'
-          },
-          {
-            src: 'statics/icons/icon-384x384.png',
-            sizes: '384x384',
-            type: 'image/png'
-          },
-          {
-            src: 'statics/icons/icon-512x512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          }
+        icons: [{
+          src: 'statics/icons/icon-128x128.png',
+          sizes: '128x128',
+          type: 'image/png'
+        },
+        {
+          src: 'statics/icons/icon-192x192.png',
+          sizes: '192x192',
+          type: 'image/png'
+        },
+        {
+          src: 'statics/icons/icon-256x256.png',
+          sizes: '256x256',
+          type: 'image/png'
+        },
+        {
+          src: 'statics/icons/icon-384x384.png',
+          sizes: '384x384',
+          type: 'image/png'
+        },
+        {
+          src: 'statics/icons/icon-512x512.png',
+          sizes: '512x512',
+          type: 'image/png'
+        }
         ]
       }
     },
