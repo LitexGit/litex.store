@@ -72,12 +72,11 @@ export async function getChannelInfo ({ commit, state }, payload) {
   for (const token of tokens) {
     const { address } = token
     const info = await Vue.prototype.$layer2.getChannelInfo(address)
-    const { status } = info
+    const { status, userBalance } = info
     // console.log('===============getChannelInfo=====================')
-    // console.log(address)
-    // console.log(status)
+    // console.log(info)
     // console.log('===============getChannelInfo=====================')
-    const channelStatus = getChannelStatus({ status, tokens, address })
+    const channelStatus = getChannelStatus({ status, tokens, address, userBalance })
     list.push({ address, status: channelStatus })
   }
   commit('updateChannelStatus', { list })

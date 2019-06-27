@@ -129,24 +129,24 @@ export function formattedInput (input) {
   value = value.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.')
   // 只能输入4个小数
   /* eslint-disable */
-  value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/, '$1$2.$3')
-  /* eslint-disable */
-  // 以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
-  if (value.indexOf('.') < 0 && value !== '') {
-    value = parseFloat(value)
-  }
-  return value
+    value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/, '$1$2.$3')
+        /* eslint-disable */
+        // 以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
+    if (value.indexOf('.') < 0 && value !== '') {
+        value = parseFloat(value)
+    }
+    return value
 }
 
 /**
  * 校验 input format
  * @param {*} input
  */
-export function isAvailableFormat (input) {
-  if (!input) return false
-  const reg = /^(0|[1-9]\d*|[1-9]\d*\.\d+|0\.\d*[1-9]\d*)$/
-  if (!reg.test(input)) return false
-  return true
+export function isAvailableFormat(input) {
+    if (!input) return false
+    const reg = /^(0|[1-9]\d*|[1-9]\d*\.\d+|0\.\d*[1-9]\d*)$/
+    if (!reg.test(input)) return false
+    return true
 }
 
 /**
@@ -154,17 +154,17 @@ export function isAvailableFormat (input) {
  * @param {*} categoryId
  */
 export function getRouter(categoryId) {
-  switch (categoryId) {
-    case 0:
-      return 'phone'
-    case 1:
-      return 'gas'
-    case 2:
-      return 'vip'
+    switch (categoryId) {
+        case 0:
+            return 'phone'
+        case 1:
+            return 'gas'
+        case 2:
+            return 'vip'
 
-    default:
-      break;
-  }
+        default:
+            break;
+    }
 }
 
 /**
@@ -172,10 +172,10 @@ export function getRouter(categoryId) {
  * @param {*} decimal 小数
  * @param {*} float 保留小数位数
  */
-export function mathCeil({decimal, float}) {
-  let value = decimal * Math.pow(10, float)
-  value = Math.ceil(value) / Math.pow(10, float)
-  return value
+export function mathCeil({ decimal, float }) {
+    let value = decimal * Math.pow(10, float)
+    value = Math.ceil(value) / Math.pow(10, float)
+    return value
 }
 
 /**
@@ -183,9 +183,9 @@ export function mathCeil({decimal, float}) {
  * @param {*} timeout 超时时刻
  */
 export function timeoutCheck(timeout) {
-  const moment = require('moment')
-  const otime = moment(timeout).format()
-  return moment().isSameOrAfter(otime)
+    const moment = require('moment')
+    const otime = moment(timeout).format()
+    return moment().isSameOrAfter(otime)
 }
 
 
@@ -194,28 +194,28 @@ export function timeoutCheck(timeout) {
  * @param {*} error
  */
 export function getErrMsg(error) {
-  const {code, message} = error
-  let msg = ''
-  if (code) {
-    msg = 'code:'+code
-  }
-  if (message) {
-    const array = message.split('.')
-    const Ramda = require('ramda')
-    const errMsg = Ramda.head(array)
-    msg = msg + errMsg + '.'
-  }
-  return msg
+    const { code, message } = error
+    let msg = ''
+    if (code) {
+        msg = 'code:' + code
+    }
+    if (message) {
+        const array = message.split('.')
+        const Ramda = require('ramda')
+        const errMsg = Ramda.head(array)
+        msg = msg + errMsg + '.'
+    }
+    return msg
 }
 
 /**
  * 校验是否为当前用户
  * @param {*} user msg 用户地址
  */
-export function isCurrentUser (user) {
-  const account = Preferences.getItem(PrefKeys.USER_ACCOUNT)
-  if (user.toLowerCase() === account.toLowerCase()) return true
-  return false
+export function isCurrentUser(user) {
+    const account = Preferences.getItem(PrefKeys.USER_ACCOUNT)
+    if (user.toLowerCase() === account.toLowerCase()) return true
+    return false
 }
 
 /**
@@ -223,11 +223,11 @@ export function isCurrentUser (user) {
  * @param {*} address
  * @param {*} tokens
  */
-export function getShowToken (address, tokens) {
-  const token = tokens.find(token => {
-    return token.address.toLowerCase() === address.toLowerCase()
-  });
-  return token
+export function getShowToken(address, tokens) {
+    const token = tokens.find(token => {
+        return token.address.toLowerCase() === address.toLowerCase()
+    });
+    return token
 }
 
 /**
@@ -235,33 +235,31 @@ export function getShowToken (address, tokens) {
  * @param {*} status
  * 0:已关闭 1:可支付 2:等待中
  */
-export function getChannelStatus ({ status, tokens, address }) {
-  switch (parseInt(status)) {
-    case 0:       // 默认初始化状态
-    case 3:       // 已关闭
-    case 4:
-      return 0
-    case 1:        // 通道打开
-      return 1
-    case 10001:  {
-      const token = tokens.find(token => {
-        return token.address.toLowerCase() === address.toLowerCase()
-      });
-      const isGT = utils.toBN(token.channelBalance).gt(utils.toBN('0'))
-      return isGT ? 1 : 0
+export function getChannelStatus({ status, tokens, address, userBalance }) {
+    switch (parseInt(status)) {
+        case 0: // 默认初始化状态
+        case 3: // 已关闭
+        case 4:
+            return 0
+        case 1: // 通道打开
+            return 1
+        case 10001:
+            {
+                const isGT = utils.toBN(userBalance).gt(utils.toBN('0'))
+                return isGT ? 1 : 0
+            }
+        case 2: // 强关中
+        case 10000: // 授权中
+        case 10002: // 开通道
+        case 10003: // 充值
+        case 10004:
+        case 10005:
+        case 10006:
+        case 10007:
+            return 2
+        default:
+            return 0
     }
-    case 2:        // 强关中
-    case 10000:    // 授权中
-    case 10002:    // 开通道
-    case 10003:    // 充值
-    case 10004:
-    case 10005:
-    case 10006:
-    case 10007:
-      return 2
-    default:
-      return 0
-  }
 }
 
 /**
@@ -269,18 +267,18 @@ export function getChannelStatus ({ status, tokens, address }) {
  * @param {*} status
  * 0:不可用 1:可用 2:准备中
  */
-export function getChannelStatusDes (status) {
-  switch (parseInt(status)) {
-    case 0:
-      return '已关闭'
-    case 1:
-      return '可支付'
-    case 2:
-      return '等待中'
+export function getChannelStatusDes(status) {
+    switch (parseInt(status)) {
+        case 0:
+            return '已关闭'
+        case 1:
+            return '可支付'
+        case 2:
+            return '等待中'
 
-    default:
-      return '已关闭'
-  }
+        default:
+            return '已关闭'
+    }
 }
 
 /**
@@ -289,15 +287,15 @@ export function getChannelStatusDes (status) {
  * 0:不可用 1:可用 2:准备中
  */
 export function getChannelStatusStyle(status) {
-  switch (parseInt(this.token.status)) {
-    case 0:
-      return { color: '#C10015' }
-    case 1:
-      return { color: '#21BA45' }
-    case 2:
-      return { color: '#F2C037' }
+    switch (parseInt(this.token.status)) {
+        case 0:
+            return { color: '#C10015' }
+        case 1:
+            return { color: '#21BA45' }
+        case 2:
+            return { color: '#F2C037' }
 
-    default:
-      return { color: '#C10015' }
-  }
+        default:
+            return { color: '#C10015' }
+    }
 }
