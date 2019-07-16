@@ -1,17 +1,17 @@
 export default {
   // dev
-  ethPNAddress: '0xcc7d77DEF5cace6d57058286FDaeA27bC084baB4',
-  appPNAddress: '0xcDab9A75Faf7c9c1619521965fd535680182715b',
-  appRpcUrl: 'https://cita.milewan.com:9191',
-  socketURL: 'http://a1.litex.fun:7001',
-  baseURL: 'http://a1.litex.fun:7001',
+  // ethPNAddress: '0xcc7d77DEF5cace6d57058286FDaeA27bC084baB4',
+  // appPNAddress: '0xcDab9A75Faf7c9c1619521965fd535680182715b',
+  // appRpcUrl: 'https://cita.milewan.com:9191',
+  // socketURL: 'http://a1.litex.fun:7001',
+  // baseURL: 'http://a1.litex.fun:7001',
 
   // pro
-  // ethPNAddress: '0x51dabc47e4f17f24b4d3504471c901deb5c45226',
-  // appPNAddress: '0x52a709ed5bC0fb7479E6Ca410371b85aDe079E2A',
-  // appRpcUrl: 'https://cita.milewan.com:9191',
-  // socketURL: 'https://api.litex.store',
-  // baseURL: 'https://api.litex.store',
+  ethPNAddress: '0x51dabc47e4f17f24b4d3504471c901deb5c45226',
+  appPNAddress: '0x52a709ed5bC0fb7479E6Ca410371b85aDe079E2A',
+  appRpcUrl: 'https://cita.milewan.com:9191',
+  socketURL: 'https://storeapi.bykernel.com',
+  baseURL: 'https://storeapi.bykernel.com',
 
   account: undefined,
   isInitL2: false,
@@ -80,7 +80,9 @@ export default {
     key: 'contactUS',
     label: '联系我们'
   }
-  ]
+  ],
+  showDepositDialog: false,
+  showSelectDropdown: false
 
 }
 

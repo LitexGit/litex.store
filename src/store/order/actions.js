@@ -29,7 +29,8 @@ export async function placeOrder ({ commit, rootState }, payload) {
   console.log(status)
   console.log('=======placeOrder=====status========================')
   if (parseInt(status) === 0) {
-    Notify.create({ message: '余额不足,请及时充值...', position: 'top', color: 'red', timeout: duration })
+    // Notify.create({ message: '余额不足,请及时充值...', position: 'top', color: 'red', timeout: duration })
+    commit('config/update', { showDepositDialog: true }, { root: true })
     return
   }
   if (parseInt(status) === 2) {
@@ -43,7 +44,8 @@ export async function placeOrder ({ commit, rootState }, payload) {
   price = price * Math.pow(10, decimal)
   const isGte = utils.toBN(price).gte(utils.toBN(channelBalance))
   if (isGte) {
-    Notify.create({ message: '余额不足,请及时充值', position: 'top', color: 'red', timeout: duration })
+    // Notify.create({ message: '余额不足,请及时充值', position: 'top', color: 'red', timeout: duration })
+    commit('config/update', { showDepositDialog: true }, { root: true })
     return
   }
   // 04:下单

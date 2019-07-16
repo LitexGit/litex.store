@@ -20,7 +20,7 @@
           <div class="q-mt-md text-caption text-weight-light">
             1.<span>您的充值安全由<span class="text-weight-regular">以太坊状态通道</span>保障，游戏运营方无法操纵用户充值的代币，且您可以随时提现。</span><br/>
             2.<span>抢红包之前请先充值，以保证有相应场次足够的代币。</span><br/>
-            3.<span>充值涉及与以太坊的链上交互，请确保有足够的Gas费。成功的操作可以在“资金记录中查看”。</span><br/>
+            3.<span>充值涉及与以太坊的链上交互，请确保有足够的Gas费。成功的操作可以在“资金记录”中查看。</span><br/>
           </div>
           <center class="q-mt-md">
             <q-btn class="q-px-xl" dense color="primary" label="确认授权" @click="clickAuthorize()"/>

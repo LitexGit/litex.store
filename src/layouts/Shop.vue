@@ -22,7 +22,7 @@
         </q-toolbar-title>
         <q-separator dark vertical inset />
 
-        <q-btn-dropdown class="col" flat :label="tokens[selected].symbol || '选择币种'">
+        <q-btn-dropdown class="col" flat :label="tokens[selected].symbol || '选择币种'" v-model="showSelectDropdown">
           <q-list separator>
             <!-- :clickable="token.status === 1" -->
             <q-item class="q-pa-none" v-for="(token, index) in tokens" clickable v-close-popup
@@ -48,6 +48,7 @@
     <w-remind-model/>
     <deposit-token-model/>
     <order-details-model/>
+    <deposit-dialog/>
 
   </q-layout>
 </template>
@@ -57,6 +58,7 @@ import { mapState } from 'vuex'
 // import OrderStatusBar from '../components/OrderStatusBar.vue'
 import { TokenItem } from '../components/item'
 import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel } from '../components/modal'
+import { DepositDialog } from '../components/dialog'
 import MenuBtn from '../components/menu/MenuBtn'
 import { getAccount, getNetwork, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil } from '../utils/helper'
 import { Preferences, PrefKeys } from '../utils/preferences'
@@ -70,7 +72,7 @@ import Api from '../constants/interface'
 export default {
   name: 'MyLayout',
   components: {
-    MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel
+    MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel, DepositDialog
   },
   data () {
     return {}
@@ -100,6 +102,14 @@ export default {
     }),
     phone: function () {
       return this.info.phone
+    },
+    showSelectDropdown: {
+      set: function (val) {
+        this.$store.commit('config/update', { showSelectDropdown: val })
+      },
+      get: function () {
+        return this.$store.state.config.showSelectDropdown
+      }
     }
   },
   watch: {
