@@ -77,7 +77,9 @@ export default {
     key: 'contactUS',
     label: '联系我们'
   }
-  ]
+  ],
+  showDepositDialog: false,
+  showSelectDropdown: false
 
 }
 
