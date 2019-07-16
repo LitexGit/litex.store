@@ -13,7 +13,7 @@
         <div class="text-caption text-weight-light">
           <span>ERC20 token的充值需要2步：</span><br/>
           1.<span>授权想要充值的token金额。</span><br/>
-          2.<span>充值授权金额的token</span><br/>
+          2.<span>充值授权金额的token。</span><br/>
           <span>以上两步分别需要一次签名过程</span>
         </div>
         <center class="q-mt-md">
