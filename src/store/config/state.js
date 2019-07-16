@@ -1,22 +1,21 @@
 export default {
-  // dev
   // ethPNAddress: '0xcc7d77DEF5cace6d57058286FDaeA27bC084baB4',
-  // appPNAddress: '0xcDab9A75Faf7c9c1619521965fd535680182715b',
   // appRpcUrl: 'https://cita.milewan.com:9191',
-  // socketURL: 'http://a1.litex.fun:7001',
-  // baseURL: 'http://a1.litex.fun:7001',
+  // appPNAddress: '0xcDab9A75Faf7c9c1619521965fd535680182715b',
 
-  // pro
   ethPNAddress: '0x51dabc47e4f17f24b4d3504471c901deb5c45226',
   appPNAddress: '0x52a709ed5bC0fb7479E6Ca410371b85aDe079E2A',
   appRpcUrl: 'https://cita.milewan.com:9191',
-  socketURL: 'https://storeapi.bykernel.com',
-  baseURL: 'https://storeapi.bykernel.com',
 
   account: undefined,
+  // socketURL: 'https://api.litex.store',
+  socketURL: 'https://storeapi.bykernel.com',
   isInitL2: false,
   loading: false,
   duration: 1500,
+  // baseURL: 'https://api.litex.store',
+  baseURL: 'https://storeapi.bykernel.com',
+  // baseURL: 'http://192.168.51.73:7777',
   timeout: 5000,
   categorys: [],
   telegramURL: '',
