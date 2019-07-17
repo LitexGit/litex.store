@@ -10,10 +10,13 @@ export function loading (state, loading) {
 }
 
 export function updateConfigs (state, config) {
-  const { baseUrl, categorys, telegramUrl, tokens } = config
+  const { baseUrl, categorys, telegramUrl, tokens, contractAddress: { ethPNAddress, appRpcUrl, appPNAddress } } = config
   state.baseURL = baseUrl
   state.categorys = categorys
   state.telegramURL = telegramUrl
+  state.ethPNAddress = ethPNAddress
+  state.appPNAddress = appPNAddress
+  state.appRpcUrl = appRpcUrl
 
   let list = []
   for (const token of tokens) {
