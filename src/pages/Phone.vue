@@ -39,6 +39,7 @@ export default {
   name: 'PageIndex',
   data () {
     return {
+      debug: undefined
     }
   },
   computed: {
@@ -81,7 +82,7 @@ export default {
         this.$store.dispatch('pn/updatePrice')
         this.$store.commit('sku/update', { disable: true })
       } else {
-        this.$store.dispatch('sku/getGoodsList', { accountNum: input })
+        this.$store.dispatch('sku/getGoodsList', { accountNum: input, debug: this.debug })
         this.$store.commit('sku/update', { disable: false })
       }
     },
@@ -109,7 +110,9 @@ export default {
   // 默认商品列表
   created () {
     const { phone } = this.info
-    this.$store.dispatch('sku/getGoodsList', { accountNum: phone })
+    this.debug = this.$route.query.debug
+    this.debug = !(this.debug === undefined || this.debug === null)
+    this.$store.dispatch('sku/getGoodsList', { accountNum: phone, debug: this.debug })
   }
 }
 </script>
