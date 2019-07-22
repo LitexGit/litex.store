@@ -8,7 +8,7 @@
         </q-toolbar-title>
         <MenuBtn></MenuBtn>
       </q-toolbar>
-      <!-- <OrderStatusBar :status="current.status" pay="pay()" cancel="cancelOrder()" refresh="" /> -->
+      <ChannelStatusBar :status="channelStatus"/>
       <q-tabs>
         <q-route-tab v-for="(category, index) in categorys" :key="index" exact
            :name="getRouter(category.categoryId)" :to="getRouter(category.categoryId)" :label="category.categoryDes" />
@@ -55,7 +55,7 @@
 
 <script>
 import { mapState } from 'vuex'
-// import OrderStatusBar from '../components/OrderStatusBar.vue'
+import ChannelStatusBar from '../components/ChannelStatusBar.vue'
 import { TokenItem } from '../components/item'
 import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel } from '../components/modal'
 import { DepositDialog } from '../components/dialog'
@@ -68,11 +68,10 @@ import Api from '../constants/interface'
 // // eslint-disable-next-line no-new
 // new VConsole()
 
-// OrderStatusBar
 export default {
   name: 'MyLayout',
   components: {
-    MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel, DepositDialog
+    MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel, DepositDialog, ChannelStatusBar
   },
   data () {
     return {}
@@ -110,6 +109,11 @@ export default {
       get: function () {
         return this.$store.state.config.showSelectDropdown
       }
+    },
+    // 0:不可用 1:可用 2:准备中
+    channelStatus: function () {
+      const { status } = this.tokens[this.selected]
+      return status
     }
   },
   watch: {
