@@ -9,7 +9,7 @@
         </div>
       </div>
       <div class="bg-white q-px-md q-pb-md q-pt-sm">
-          <q-input filled type='number' v-model="depInput" label="请输入数量"/>
+          <q-input filled type='number' v-model="depInput" label="请输入数量" @blur="blur()" @focus="focus()"/>
           <div class="q-mt-md">
             <span>钱包余额：</span>
             <balance-view :symbol="token.symbol" :decimal="token.decimal" :amount="token.balance"/>
@@ -38,6 +38,8 @@ export default {
   components: { BalanceView },
   data () {
     return {
+      isScroll: false,
+      timer: null
     }
   },
   computed: {
@@ -94,6 +96,19 @@ export default {
       this.$store.commit('channel/updateShowDpositModel', { open: false })
       const amount = this.toWei({ input: this.depInput, decimal: this.token.decimal, pos: this.token.float })
       this.$store.dispatch('channel/confirmDeposit', { amount, address: this.token.address })
+    },
+    blur () {
+      this.isScroll = true
+      clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
+        if (this.isScroll) {
+          window.scrollTo(0, 0)
+          clearTimeout(this.timer)
+        }
+      }, 300)
+    },
+    focus () {
+      this.isScroll = false
     }
   }
 }

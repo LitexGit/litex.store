@@ -3,12 +3,9 @@ export default {
   // appRpcUrl: 'https://cita.milewan.com:9191',
   // appPNAddress: '0xcDab9A75Faf7c9c1619521965fd535680182715b',
 
-  // ethPNAddress: '0x11d0B2243739656F54C0277Ed0EEcDe46658a537',
-  // appPNAddress: '0x52a709ed5bC0fb7479E6Ca410371b85aDe079E2A',
-  // appRpcUrl: 'https://cita.milewan.com:9191',
-  ethPNAddress: '',
-  appPNAddress: '',
-  appRpcUrl: '',
+  ethPNAddress: '0x11d0B2243739656F54C0277Ed0EEcDe46658a537',
+  appPNAddress: '0x2Af6F1411b6CF6284a60B3FdAB56E76B7f1F709b',
+  appRpcUrl: 'https://cita.milewan.com:9191',
 
   account: undefined,
   // socketURL: 'https://api.litex.store',
