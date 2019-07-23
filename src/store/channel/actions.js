@@ -74,16 +74,26 @@ export async function submitERC20Approval ({ commit, rootState }, payload) {
 async function getERC20Allowance ({ commit, rootState }, { address }) {
   commit('update', { allowance: '0' })
   const owner = Preferences.getItem(PrefKeys.USER_ACCOUNT)
-  const { config: { ethPNAddress: spender } } = rootState
-  let allowance = await Vue.prototype.$layer2.getERC20Allowance(owner, spender, address)
-  // debugger
-  allowance = allowance.toString()
-  const isLTE = utils.toBN(allowance).lte(utils.toBN('0'))
-  if (isLTE) {
-    commit('updateShowDRemindModel', { open: true })
-  } else {
-    commit('update', { allowance })
-    commit('updateShowDERC20Model', { open: true })
+
+  try {
+    const { config: { ethPNAddress: spender } } = rootState
+    console.log('============getERC20Allowance========================')
+    let allowance = await Vue.prototype.$layer2.getERC20Allowance(owner, spender, address)
+    console.log(allowance)
+    console.log('============getERC20Allowance========================')
+    // debugger
+    allowance = allowance.toString()
+    const isLTE = utils.toBN(allowance).lte(utils.toBN('0'))
+    if (isLTE) {
+      commit('updateShowDRemindModel', { open: true })
+    } else {
+      commit('update', { allowance })
+      commit('updateShowDERC20Model', { open: true })
+    }
+  } catch (error) {
+    console.log('=========getERC20Allowance===========================')
+    console.log(error)
+    console.log('=========getERC20Allowance===========================')
   }
 }
 

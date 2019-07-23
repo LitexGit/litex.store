@@ -88,7 +88,8 @@ export default {
     ]),
     channelBalance: {
       get: function () {
-        return this.tokens[this.selected].channelBalance
+        const { balance = '0' } = this.tokens[this.selected] || {}
+        return balance
       }
     }
   },

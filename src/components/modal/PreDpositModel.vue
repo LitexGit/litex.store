@@ -87,7 +87,7 @@ export default {
       }
       // TODO 校验 02:通道状态
       // 校验 03:banlance
-      const amount = this.toWei({ input: this.authInput, decimal: this.token.decimal, pos: this.token.round })
+      const amount = this.toWei({ input: this.authInput, decimal: this.token.decimal })
       const isGTE = utils.toBN(this.token.balance).gt(utils.toBN(amount))
       // TODO 校验 04: 异常提示
       return isGTE
@@ -95,7 +95,7 @@ export default {
     clickAuthorize: function () {
       blur()
       if (!this.checkInput(this.authInput)) return
-      const amount = this.toWei({ input: this.authInput, decimal: this.token.decimal, pos: this.token.round })
+      const amount = this.toWei({ input: this.authInput, decimal: this.token.decimal })
       this.$store.commit('channel/updateShowPreDpositModel', { open: false })
       this.$store.dispatch('channel/submitERC20Approval', { amount, address: this.token.address })
     }

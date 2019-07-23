@@ -7,7 +7,7 @@
         <menu-btn></menu-btn>
       </q-toolbar>
       <q-tabs
-        v-model="tokens[selected].type"
+        v-model="type"
         dense
         class="bg-primary text-white row"
         indicator-bg-color="primary"
@@ -113,8 +113,13 @@ export default {
     ]),
     channelBalance: {
       get: function () {
-        return this.tokens[this.selected].channelBalance
+        const { balance = '0' } = this.tokens[this.selected] || {}
+        return balance
       }
+    },
+    type: function () {
+      const { type = 1 } = this.tokens[this.selected] || {}
+      return type
     }
   },
   components: {
@@ -162,7 +167,8 @@ export default {
       return ASSET_STATE[reason]
     },
     updateFundRecords () {
-      this.$store.dispatch('fund/updateFundRecords', { type: this.tokens[this.selected].type, account: Preferences.getItem(PrefKeys.USER_ACCOUNT) })
+      const { type = 1 } = this.tokens[this.selected] || {}
+      this.$store.dispatch('fund/updateFundRecords', { type, account: Preferences.getItem(PrefKeys.USER_ACCOUNT) })
     }
   },
   sockets: {

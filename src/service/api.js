@@ -19,7 +19,7 @@ export default {
   /**
    * 查询App配置接口
    */
-  getConfigs: async netId => get(Api.GET_CONFIGS, { netId }),
+  getConfigs: async params => get(Api.GET_CONFIGS, params),
 
   /**
    * 查询汇率接口

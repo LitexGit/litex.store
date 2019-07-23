@@ -30,7 +30,7 @@ export function updateConfigs (state, config) {
   state.appPNAddress = appPNAddress
   state.appRpcUrl = appRpcUrl
 
-  const completion = { status: 0, channelBalance: '0', balance: '0', icon: 'https://l2wallet.oss-cn-beijing.aliyuncs.com/tokens/eth.svg' }
+  const completion = { status: 0, channelBalance: '0', balance: '0' }
 
   let list = []
   for (const token of tokens) {

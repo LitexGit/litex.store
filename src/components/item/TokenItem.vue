@@ -2,7 +2,7 @@
   <div class="container q-ma-none row items-center">
     <center class="col-2">
       <q-avatar square size="24px">
-        <img :src="token.icon">
+        <img :src="icon">
       </q-avatar>
     </center>
     <div class="col-3 q-pl-sm">
@@ -37,6 +37,14 @@ export default {
   },
   data () {
     return {}
+  },
+  computed: {
+    icon: function () {
+      if (!this.token || !this.token.icon || !this.token.icon.length) {
+        return 'statics/tokens/erc20_icon.png'
+      }
+      return this.token.icon
+    }
   },
   methods: {
     getChannelStatusDes,

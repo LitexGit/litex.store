@@ -47,7 +47,7 @@ export default {
       if (!decimal) {
         decimal = this.getSelectedToken().decimal
       }
-      return this.toDecimal({ amount: this.amount, decimal, pos: this.round })
+      return this.toDecimal({ amount: this.amount, decimal, pos: this.float })
     }
   },
   methods: {

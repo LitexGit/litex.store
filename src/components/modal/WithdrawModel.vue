@@ -11,7 +11,7 @@
       <div class="bg-white q-pa-md">
         <center>可提现金额</center>
         <center>
-          <balance-view class="text-primary text-subtitle1" :symbol="token.symbol" :decimal="token.decimal" :amount="token.channelBalance" :symbolStyle="symbolStyle"/>
+          <balance-view class="text-primary text-subtitle1" :symbol="token.symbol" :decimal="token.decimal" :amount="token.channelBalance" :float="token.round"  :symbolStyle="symbolStyle"/>
         </center>
         <div class="q-mt-sm text-caption text-weight-light">
           1.<span>您提现的代币将直接进入您的数字钱包账户。</span><br/>

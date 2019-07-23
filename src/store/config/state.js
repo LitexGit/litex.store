@@ -11,8 +11,12 @@ export default {
   // ethPNAddress: '0x11d0B2243739656F54C0277Ed0EEcDe46658a537',
   // appPNAddress: '0x2Af6F1411b6CF6284a60B3FdAB56E76B7f1F709b',
   // appRpcUrl: 'https://cita.milewan.com:9191',
+
   baseURL: 'https://storeapi.bykernel.com',
   socketURL: 'https://storeapi.bykernel.com',
+
+  // baseURL: 'http://192.168.51.73:7777',
+  // socketURL: 'http://192.168.51.73:7777',
 
   // config
   ethPNAddress: undefined,

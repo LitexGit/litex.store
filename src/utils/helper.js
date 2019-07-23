@@ -48,17 +48,23 @@ export function getNetwork () {
  * 获取钱包类型
  */
 export function getWalletInfo () {
-  console.log('===========getWalletInfo=========================')
-  console.log(window.web3.currentProvider)
-  console.log('===========getWalletInfo=========================')
+  // console.log('===========getWalletInfo=========================')
+  // console.log(window.web3.currentProvider)
+  // console.log('===========getWalletInfo=========================')
   if (window.web3.currentProvider.isMetaMask) {
     return 'MetaMask'
   }
-  if (window.web3.currentProvider.isTrust) {
-    return 'Trust'
+  if (window.web3.currentProvider.isImToken) {
+    return 'imToken'
   }
   if (window.web3.currentProvider.isCoinbaseWallet) {
     return 'Coinbase'
+  }
+  if (window.web3.currentProvider.isTrust) {
+    if (navigator.userAgent.includes('Kcash')) {
+      return 'Kcash'
+    }
+    return 'Trust'
   }
   if (window.web3.currentProvider.isAlphaWallet) {
     return 'AlphaWallet'
@@ -66,7 +72,7 @@ export function getWalletInfo () {
   if (navigator.userAgent.includes('TokenPocket')) {
     return 'TokenPocket'
   }
-  return undefined
+  return ''
 }
 
 /**

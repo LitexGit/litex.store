@@ -12,17 +12,19 @@ export async function register ({ commit }, payload) {
 export async function getConfigs ({ commit }, payload) {
   commit('loading', true)
   const netId = getNetwork()
-  const wallet = getWalletInfo()
-  console.log('============window.web3========================')
-  console.log(wallet)
-  console.log('============window.web3========================')
-  const data = await api.getConfigs({ netId, wallet })
+  const walletName = getWalletInfo()
+  // console.log('============window.web3========================')
+  // console.log(walletName)
+  // console.log('============window.web3========================')
+  // : 'Kcash'
+  const data = await api.getConfigs({ netId, walletName })
   commit('updateConfigs', data)
   commit('loading', false)
 }
 
 export async function initLayer2 ({ commit, state }, payload) {
   commit('update', { isInitL2: false })
+  Vue.prototype.$layer2.setDebug(false)
 
   process.versions = { node: '11.2.0' }
   const account = Preferences.getItem(PrefKeys.USER_ACCOUNT)
@@ -48,7 +50,6 @@ export async function initLayer2 ({ commit, state }, payload) {
     await Vue.prototype.$layer2.init(account, window.web3, ethPNAddress, appRpcUrl, appPNAddress)
   }
   commit('update', { isInitL2: true })
-  Vue.prototype.$layer2.setDebug(false)
 }
 
 export async function getOnchainBalance ({ commit, state }, payload) {
