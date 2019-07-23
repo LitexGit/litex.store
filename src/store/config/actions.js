@@ -19,12 +19,30 @@ export async function getConfigs ({ commit }, payload) {
 
 export async function initLayer2 ({ commit, state }, payload) {
   commit('update', { isInitL2: false })
+
   process.versions = { node: '11.2.0' }
   const account = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   const { ethPNAddress, appRpcUrl, appPNAddress } = state
-  Vue.prototype.$layer2.setDebug(false)
-  await Vue.prototype.$layer2.init(account, window.web3, ethPNAddress, appRpcUrl, appPNAddress)
+
+  console.log('==============state======================')
+  console.log(ethPNAddress)
+  console.log(appPNAddress)
+  console.log(appRpcUrl)
+  console.log('==============state======================')
+
+  if (!ethPNAddress || !appRpcUrl || !appPNAddress) {
+    const netId = getNetwork()
+    const config = await api.getConfigs({ netId })
+    const { contractAddress: { ethPNAddress, appRpcUrl, appPNAddress } } = config
+    console.log('============getconfig========================')
+    await Vue.prototype.$layer2.init(account, window.web3, ethPNAddress, appRpcUrl, appPNAddress)
+    console.log('============initLayer2========================')
+  } else {
+    console.log('============initLayer2========================')
+    await Vue.prototype.$layer2.init(account, window.web3, ethPNAddress, appRpcUrl, appPNAddress)
+  }
   commit('update', { isInitL2: true })
+  Vue.prototype.$layer2.setDebug(false)
 }
 
 export async function getOnchainBalance ({ commit, state }, payload) {
