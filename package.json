@@ -25,6 +25,7 @@
     },
     "devDependencies": {
         "@quasar/app": "^1.0.0-beta.0",
+        "@quasar/quasar-app-extension-icon-genie": "^1.0.1",
         "@vue/eslint-config-standard": "^4.0.0",
         "babel-eslint": "^10.0.1",
         "cz-conventional-changelog": "^2.1.0",

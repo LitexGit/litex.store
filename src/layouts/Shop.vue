@@ -22,7 +22,7 @@
         </q-toolbar-title>
         <q-separator dark vertical inset />
 
-        <q-btn-dropdown class="col" flat :label="tokens[selected].symbol || '选择币种'" v-model="showSelectDropdown">
+        <q-btn-dropdown class="col" flat :label="symbol || '选择币种'" v-model="showSelectDropdown">
           <q-list separator>
             <!-- :clickable="token.status === 1" -->
             <q-item class="q-pa-none" v-for="(token, index) in tokens" clickable v-close-popup
@@ -110,9 +110,13 @@ export default {
         return this.$store.state.config.showSelectDropdown
       }
     },
+    symbol: function () {
+      const { symbol = '' } = this.tokens[this.selected] || {}
+      return symbol
+    },
     // 0:不可用 1:可用 2:准备中
     channelStatus: function () {
-      const { status } = this.tokens[this.selected]
+      const { status = 0 } = this.tokens[this.selected] || {}
       return status
     }
   },
@@ -226,9 +230,9 @@ export default {
       this.$store.dispatch('config/getBalance')
 
       const cToken = this.getShowToken(token, this.tokens)
-      const { symbol, decimal, float } = cToken
+      const { symbol, decimal, round } = cToken
       let value = this.toDecimal({ amount, decimal })
-      value = this.mathCeil({ decimal: value, float })
+      value = this.mathCeil({ decimal: value, round })
       const message = '成功授权' + ' ' + value + ' ' + symbol
       this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
       this.$store.dispatch('channel/confirmDeposit', { amount, address: token })
@@ -250,9 +254,9 @@ export default {
       this.$store.dispatch('config/getBalance')
 
       const cToken = this.getShowToken(token, this.tokens)
-      const { symbol, decimal, float } = cToken
+      const { symbol, decimal, round } = cToken
       let value = this.toDecimal({ amount, decimal })
-      value = this.mathCeil({ decimal: value, float })
+      value = this.mathCeil({ decimal: value, round })
       const message = '成功充值' + ' ' + value + ' ' + symbol
       this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
 
@@ -274,9 +278,9 @@ export default {
       this.$store.dispatch('config/getBalance')
 
       const cToken = this.getShowToken(token, this.tokens)
-      const { symbol, decimal, float } = cToken
+      const { symbol, decimal, round } = cToken
       let value = this.toDecimal({ amount, decimal })
-      value = this.mathCeil({ decimal: value, float })
+      value = this.mathCeil({ decimal: value, round })
       const message = '成功提现' + ' ' + value + ' ' + symbol
       this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
 
@@ -292,9 +296,9 @@ export default {
       const { user, amount, token } = res
       if (!this.isCurrentUser(user)) return
       const cToken = this.getShowToken(token, this.tokens)
-      const { symbol, decimal, float } = cToken
+      const { symbol, decimal, round } = cToken
       let value = this.toDecimal({ amount, decimal })
-      value = this.mathCeil({ decimal: value, float })
+      value = this.mathCeil({ decimal: value, round })
       const message = '提现' + ' ' + value + ' ' + symbol + '请求已取消'
       this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
 

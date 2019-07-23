@@ -86,7 +86,7 @@ export default {
       }
       // TODO 校验 02:通道状态
       // 校验 03:banlance
-      const amount = this.toWei({ input: this.depInput, decimal: this.token.decimal, pos: this.token.float })
+      const amount = this.toWei({ input: this.depInput, decimal: this.token.decimal, pos: this.token.round })
       const isGT = utils.toBN(this.token.balance).gt(utils.toBN(amount))
       return isGT
     },
@@ -94,7 +94,7 @@ export default {
       blur()
       if (!this.checkInput(this.depInput)) return
       this.$store.commit('channel/updateShowDpositModel', { open: false })
-      const amount = this.toWei({ input: this.depInput, decimal: this.token.decimal, pos: this.token.float })
+      const amount = this.toWei({ input: this.depInput, decimal: this.token.decimal, pos: this.token.round })
       this.$store.dispatch('channel/confirmDeposit', { amount, address: this.token.address })
     },
     blur () {

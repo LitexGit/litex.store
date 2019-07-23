@@ -30,18 +30,17 @@ export function updateConfigs (state, config) {
   state.appPNAddress = appPNAddress
   state.appRpcUrl = appRpcUrl
 
+  const completion = { status: 0, channelBalance: '0', balance: '0', icon: 'https://l2wallet.oss-cn-beijing.aliyuncs.com/tokens/eth.svg' }
+
   let list = []
   for (const token of tokens) {
-    for (const t of state.tokens) {
-      const { symbol } = token
-      const { symbol: s } = t
-      if (s === symbol) {
-        list.push(Object.assign(t, token))
-      }
-    }
+    list.push(Object.assign(token, completion))
   }
-
   state.tokens = list
+
+  // console.log('=============config=======================')
+  // console.log(state)
+  // console.log('=============config=======================')
 }
 
 export function updateSelected (state, { index }) {

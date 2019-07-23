@@ -1,5 +1,5 @@
 import api from '../../service/api'
-import { getNetwork, getChannelStatus } from '../../utils/helper'
+import { getNetwork, getChannelStatus, getWalletInfo } from '../../utils/helper'
 import { Preferences, PrefKeys } from '../../utils/preferences'
 import Vue from 'vue'
 
@@ -12,7 +12,11 @@ export async function register ({ commit }, payload) {
 export async function getConfigs ({ commit }, payload) {
   commit('loading', true)
   const netId = getNetwork()
-  const data = await api.getConfigs({ netId })
+  const wallet = getWalletInfo()
+  console.log('============window.web3========================')
+  console.log(wallet)
+  console.log('============window.web3========================')
+  const data = await api.getConfigs({ netId, wallet })
   commit('updateConfigs', data)
   commit('loading', false)
 }
@@ -24,15 +28,17 @@ export async function initLayer2 ({ commit, state }, payload) {
   const account = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   const { ethPNAddress, appRpcUrl, appPNAddress } = state
 
-  console.log('==============state======================')
-  console.log(ethPNAddress)
-  console.log(appPNAddress)
-  console.log(appRpcUrl)
-  console.log('==============state======================')
+  // console.log('==============state======================')
+  // console.log(ethPNAddress)
+  // console.log(appPNAddress)
+  // console.log(appRpcUrl)
+  // console.log('==============state======================')
 
   if (!ethPNAddress || !appRpcUrl || !appPNAddress) {
     const netId = getNetwork()
-    const config = await api.getConfigs({ netId })
+    const wallet = getWalletInfo()
+    const config = await api.getConfigs({ netId, wallet })
+
     const { contractAddress: { ethPNAddress, appRpcUrl, appPNAddress } } = config
     console.log('============getconfig========================')
     await Vue.prototype.$layer2.init(account, window.web3, ethPNAddress, appRpcUrl, appPNAddress)

@@ -45,6 +45,31 @@ export function getNetwork () {
 }
 
 /**
+ * 获取钱包类型
+ */
+export function getWalletInfo () {
+  console.log('===========getWalletInfo=========================')
+  console.log(window.web3.currentProvider)
+  console.log('===========getWalletInfo=========================')
+  if (window.web3.currentProvider.isMetaMask) {
+    return 'MetaMask'
+  }
+  if (window.web3.currentProvider.isTrust) {
+    return 'Trust'
+  }
+  if (window.web3.currentProvider.isCoinbaseWallet) {
+    return 'Coinbase'
+  }
+  if (window.web3.currentProvider.isAlphaWallet) {
+    return 'AlphaWallet'
+  }
+  if (navigator.userAgent.includes('TokenPocket')) {
+    return 'TokenPocket'
+  }
+  return undefined
+}
+
+/**
  * toWei
  * @param {*} input      输入值
  * @param {*} decimal    decimal
@@ -170,11 +195,11 @@ export function getRouter(categoryId) {
 /**
  * 向上取整保留小数
  * @param {*} decimal 小数
- * @param {*} float 保留小数位数
+ * @param {*} round 保留小数位数
  */
-export function mathCeil({ decimal, float }) {
-    let value = decimal * Math.pow(10, float)
-    value = Math.ceil(value) / Math.pow(10, float)
+export function mathCeil({ decimal, round }) {
+    let value = decimal * Math.pow(10, round)
+    value = Math.ceil(value) / Math.pow(10, round)
     return value
 }
 
