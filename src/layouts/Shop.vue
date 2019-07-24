@@ -64,9 +64,9 @@ import { getAccount, getNetwork, getRouter, isCurrentUser, getShowToken, toDecim
 import { Preferences, PrefKeys } from '../utils/preferences'
 import Api from '../constants/interface'
 
-// import VConsole from 'vconsole'
-// // eslint-disable-next-line no-new
-// new VConsole()
+import VConsole from 'vconsole'
+// eslint-disable-next-line no-new
+new VConsole()
 
 export default {
   name: 'MyLayout',
@@ -215,6 +215,10 @@ export default {
     }
   },
   mounted: async function () {
+    this.$store.dispatch('config/getChannelInfo')
+    this.$store.dispatch('config/getOnchainBalance')
+    this.$store.dispatch('config/getBalance')
+
     this.$layer2.on('TokenApproval', (err, res) => {
       console.log('===========TokenApproval=========================')
       console.log('TokenApproval from L2', err, res)

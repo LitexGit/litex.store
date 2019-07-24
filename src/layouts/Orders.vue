@@ -97,6 +97,7 @@ export default {
     'menu-btn': MenuBtn
   },
   created () {
+    this.$store.dispatch('config/getConfigs')
     this.updateOrderRecords()
     window.addEventListener('load', async () => {
       const account = await this.getAccount()
