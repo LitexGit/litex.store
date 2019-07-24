@@ -84,7 +84,7 @@ export default {
       'orders'
     ]),
     ...mapState('config', [
-      'isInitL2', 'tokens', 'selected', 'account'
+      'tokens', 'selected', 'account'
     ]),
     channelBalance: {
       get: function () {
@@ -96,30 +96,9 @@ export default {
   components: {
     'menu-btn': MenuBtn
   },
-  created () {
-    this.updateOrderRecords()
-    window.addEventListener('load', async () => {
-      const account = await this.getAccount()
-      this.$store.commit('config/update', { account: account.toLowerCase() })
-
-      this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
-      Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
-      this.$store.dispatch('config/register')
-      this.$store.dispatch('config/initLayer2')
-      window.ethereum.on('accountsChanged', (accounts) => {
-        window.location.reload(true)
-      })
-    })
-  },
   watch: {
     channelBalance: function () {
       this.updateOrderRecords()
-    },
-    isInitL2: function (newValue, oldValue) {
-      if (!this.isInitL2) return
-      this.$store.dispatch('config/getOnchainBalance')
-      this.$store.dispatch('config/getBalance')
-      this.$store.dispatch('config/getChannelInfo')
     }
   },
   methods: {

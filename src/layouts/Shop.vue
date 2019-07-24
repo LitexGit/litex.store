@@ -188,7 +188,7 @@ export default {
     this.$store.dispatch('config/getConfigs')
 
     window.addEventListener('load', async () => {
-      console.log('=============load=======================')
+      console.log('======shop=======load=======================')
       const account = await this.getAccount()
       this.$store.commit('config/update', { account: account.toLowerCase() })
 
@@ -215,6 +215,10 @@ export default {
     }
   },
   mounted: async function () {
+    this.$layer2.initialized && this.$store.dispatch('config/getChannelInfo')
+    this.$layer2.initialized && this.$store.dispatch('config/getOnchainBalance')
+    this.$layer2.initialized && this.$store.dispatch('config/getBalance')
+
     this.$layer2.on('TokenApproval', (err, res) => {
       console.log('===========TokenApproval=========================')
       console.log('TokenApproval from L2', err, res)
@@ -236,8 +240,6 @@ export default {
       const message = '成功授权' + ' ' + value + ' ' + symbol
       this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
       this.$store.dispatch('channel/confirmDeposit', { amount, address: token })
-
-      // this.$store.dispatch('config/getChannelInfo')
     })
     this.$layer2.on('Deposit', (err, res) => {
       console.log('===========Deposit=========================')
@@ -327,16 +329,3 @@ export default {
 
 <style>
 </style>
-
-  // test1: function (data) {
-  //   console.log('==============test1======================')
-  //   console.log(data)
-  //   console.log('==============test1======================')
-  // },
-  // test2: function (data) {
-  //   // orderId ==> order details
-  //   // type => msg =>(账户 100￥话费 已到账)
-  //   console.log('==============test2======================')
-  //   console.log(data)
-  //   console.log('==============test2======================')
-  // }
