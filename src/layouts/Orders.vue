@@ -84,7 +84,7 @@ export default {
       'orders'
     ]),
     ...mapState('config', [
-      'isInitL2', 'tokens', 'selected', 'account'
+      'tokens', 'selected', 'account'
     ]),
     channelBalance: {
       get: function () {
@@ -115,12 +115,6 @@ export default {
   watch: {
     channelBalance: function () {
       this.updateOrderRecords()
-    },
-    isInitL2: function (newValue, oldValue) {
-      if (!this.isInitL2) return
-      this.$store.dispatch('config/getOnchainBalance')
-      this.$store.dispatch('config/getBalance')
-      this.$store.dispatch('config/getChannelInfo')
     }
   },
   methods: {
