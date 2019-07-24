@@ -84,7 +84,7 @@ export default {
       'orders'
     ]),
     ...mapState('config', [
-      'tokens', 'selected', 'account'
+      'tokens', 'selected', 'isInitL2', 'account'
     ]),
     channelBalance: {
       get: function () {
@@ -98,7 +98,7 @@ export default {
   },
   created () {
     this.$store.dispatch('config/getConfigs')
-    this.updateOrderRecords()
+
     window.addEventListener('load', async () => {
       const account = await this.getAccount()
       this.$store.commit('config/update', { account: account.toLowerCase() })
@@ -138,6 +138,9 @@ export default {
     privateMsg: function (res) {
       this.$store.commit('order/depositRes', res)
     }
+  },
+  mounted: function () {
+    this.updateOrderRecords()
   }
 }
 </script>

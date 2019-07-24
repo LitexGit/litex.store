@@ -138,7 +138,7 @@ export default {
   },
   created () {
     this.$store.dispatch('config/getConfigs')
-    this.updateFundRecords()
+
     window.addEventListener('load', async () => {
       const account = await this.getAccount()
       this.$store.commit('config/update', { account: account.toLowerCase() })
@@ -178,6 +178,9 @@ export default {
     privateMsg: function (res) {
       this.$store.commit('order/depositRes', res)
     }
+  },
+  mounted: function () {
+    this.updateFundRecords()
   }
 }
 </script>

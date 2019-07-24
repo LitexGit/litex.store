@@ -64,9 +64,9 @@ import { getAccount, getNetwork, getRouter, isCurrentUser, getShowToken, toDecim
 import { Preferences, PrefKeys } from '../utils/preferences'
 import Api from '../constants/interface'
 
-import VConsole from 'vconsole'
+// import VConsole from 'vconsole'
 // eslint-disable-next-line no-new
-new VConsole()
+// new VConsole()
 
 export default {
   name: 'MyLayout',
