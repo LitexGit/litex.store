@@ -83,11 +83,11 @@ export default {
       'orders'
     ]),
     ...mapState('config', [
-      'isInitL2', 'tokens', 'selected', 'account'
+      'tokens', 'selected', 'account'
     ]),
     channelBalance: {
       get: function () {
-        return this.tokens[this.selected].channelBalance
+        return this.$store.state.config.tokens[this.$store.state.config.selected].channelBalance
       }
     }
   },
@@ -101,11 +101,11 @@ export default {
   destroyed: function () {
     this.$store.commit('config/update', { isShowRoot: true })
   },
-  watch: {
-    channelBalance: function () {
-      this.updateOrderRecords()
-    }
-  },
+  // watch: {
+  //   channelBalance: function () {
+  //     this.updateOrderRecords()
+  //   }
+  // },
   methods: {
     format,
     roundFun,

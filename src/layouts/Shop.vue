@@ -16,7 +16,7 @@
         <q-route-tab v-for="(category, index) in categorys" :key="index" exact
            :name="getRouter(category.categoryId)" :to="getRouter(category.categoryId)" :label="category.categoryDes" />
       </q-tabs>
-      <fund-tabs v-show="isShowFund"></fund-tabs>
+      <fund-tabs v-if="isShowFund"></fund-tabs>
     </q-header>
     <q-footer v-show="isShowRoot">
       <q-toolbar class="bg-secondary text-white row">
@@ -133,6 +133,7 @@ export default {
           case '/shop/phone':
             break
           case '/shop/gas':
+            break
           case '/shop/vip':
             this.$router.go(-1)
             this.$q.notify({ message: '即将上线, 敬请期待...', position: 'top', color: 'positive', timeout: this.duration })
