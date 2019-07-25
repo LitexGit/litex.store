@@ -146,6 +146,19 @@ export function isPoneAvailable (pone) {
 }
 
 /**
+ * 校验是否为有效的加油号
+ * @param {*} pone
+ */
+export function verifyCardId (type, id) {
+  // 中国石油
+  const syReg = /^(\d){16}$/
+  // 中国石化
+  const shReg = /^(\d){19}$/
+  console.log(syReg, id, syReg.test(id))
+  return type === 1 ? syReg.test(id) : shReg.test(id)
+}
+
+/**
  * 格式化输入
  * @param {*} input
  */
@@ -329,4 +342,10 @@ export function getChannelStatusStyle(status) {
         default:
             return { color: '#C10015' }
     }
+}
+
+export async function sleep (time) {
+  return new Promise(resolve => {
+    setTimeout(resolve, time)
+  })
 }

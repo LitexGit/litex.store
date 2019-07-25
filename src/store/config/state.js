@@ -27,6 +27,9 @@ export default {
   tokens: [],
   // config
 
+  title: 'LITE X Store',
+  isShowRoot: true,
+  isShowFund: false,
   isInitL2: false,
   loading: false,
   duration: 1500,

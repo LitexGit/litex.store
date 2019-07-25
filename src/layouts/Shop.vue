@@ -2,19 +2,23 @@
   <q-layout view="lHh Lpr lFf">
     <q-header reveal elevated>
       <q-toolbar>
-        <q-btn round flat disable @click="goback"/>
-        <q-toolbar-title class="row justify-center">
+        <q-btn size="lg" flat dense round  :disable='isShowRoot' @click="$router.go(-1)">
+          <q-icon v-if="!isShowRoot" name="chevron_left" />
+        </q-btn>
+        <q-toolbar-title class="flex flex-center column">
           <span>LITE<b>X</b> Store</span>
+          <small class="text-caption">{{title}}</small>
         </q-toolbar-title>
-        <MenuBtn></MenuBtn>
+        <menu-btn/>
       </q-toolbar>
       <ChannelStatusBar :status="channelStatus"/>
-      <q-tabs>
+      <q-tabs v-show="isShowRoot">
         <q-route-tab v-for="(category, index) in categorys" :key="index" exact
            :name="getRouter(category.categoryId)" :to="getRouter(category.categoryId)" :label="category.categoryDes" />
       </q-tabs>
+      <fund-tabs v-show="isShowFund"></fund-tabs>
     </q-header>
-    <q-footer>
+    <q-footer v-show="isShowRoot">
       <q-toolbar class="bg-secondary text-white row">
         <q-toolbar-title class="col-6">
           <small> 金额：</small>
@@ -24,7 +28,7 @@
 
         <q-btn-dropdown class="col" flat :label="symbol || '选择币种'" v-model="showSelectDropdown">
           <q-list separator>
-            <!-- :clickable="token.status === 1" -->
+
             <q-item class="q-pa-none" v-for="(token, index) in tokens" clickable v-close-popup
               :key="index"  :active="index === selected"
               @click="selectToken(index)">
@@ -60,32 +64,32 @@ import { TokenItem } from '../components/item'
 import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel } from '../components/modal'
 import { DepositDialog } from '../components/dialog'
 import MenuBtn from '../components/menu/MenuBtn'
-import { getAccount, getNetwork, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil } from '../utils/helper'
+import { FundTabs } from '../components/tabs'
+import { getAccount, getNetwork, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil, sleep } from '../utils/helper'
 import { Preferences, PrefKeys } from '../utils/preferences'
 import Api from '../constants/interface'
-
-// import VConsole from 'vconsole'
-// eslint-disable-next-line no-new
-// new VConsole()
 
 export default {
   name: 'MyLayout',
   components: {
-    MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel, DepositDialog, ChannelStatusBar
+    MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel, DepositDialog, ChannelStatusBar, FundTabs
   },
   data () {
     return {}
   },
   computed: {
     ...mapState('config', {
+      title: 'title',
       duration: 'duration',
       tokens: 'tokens',
       selected: 'selected',
       categorys: 'categorys',
       isInitL2: 'isInitL2',
-      account: 'account'
+      account: 'account',
+      isShowRoot: 'isShowRoot',
+      isShowFund: 'isShowFund'
     }),
-    ...mapState('sku', {
+    ...mapState('phone', {
       info: 'info',
       selectGoods: 'selectGoods'
     }),
@@ -133,7 +137,6 @@ export default {
             this.$router.go(-1)
             this.$q.notify({ message: '即将上线, 敬请期待...', position: 'top', color: 'positive', timeout: this.duration })
             break
-
           default:
             break
         }
@@ -162,6 +165,7 @@ export default {
     getShowToken,
     toDecimal,
     mathCeil,
+    sleep,
     goback: function () {
       this.$router.go(-1)
     },
@@ -171,7 +175,7 @@ export default {
       this.$store.dispatch('pn/updatePrice')
     },
     placeOrder: function () {
-      this.$store.dispatch('order/placeOrder', { phone: this.phone })
+      this.$store.dispatch('order/placeOrder', { path: this.$route.path })
     },
     deposit: function (token) {
       console.log('=============【deposit】=======================')
@@ -186,10 +190,15 @@ export default {
   },
   created: function () {
     this.$store.dispatch('config/getConfigs')
+    this.$store.commit('gas/initCards')
 
     window.addEventListener('load', async () => {
-      console.log('======shop=======load=======================')
+      await sleep(500)
+      console.log('=============load=======================')
+      console.log('==============account======================')
       const account = await this.getAccount()
+      console.log(account)
+      console.log('==============account======================')
       this.$store.commit('config/update', { account: account.toLowerCase() })
 
       this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
@@ -215,6 +224,7 @@ export default {
     }
   },
   mounted: async function () {
+    console.log('==============mounted======================')
     this.$store.dispatch('config/getChannelInfo')
     this.$store.dispatch('config/getOnchainBalance')
     this.$store.dispatch('config/getBalance')

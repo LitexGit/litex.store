@@ -1,33 +1,33 @@
 import Shop from 'layouts/Shop'
 import Phone from 'pages/Phone'
+import Gas from 'pages/Gas'
+import AddCard from 'pages/AddCard'
+import Fund from 'pages/Fund'
+import Order from 'pages/Order'
+import CardList from 'pages/CardList'
 
-import Orders from 'layouts/Orders'
-
-const routes = [
-  {
-    path: '/',
-    redirect: '/shop'
-  },
-  {
-    path: '/shop',
-    component: Shop,
-    children: [
-      { path: '', redirect: 'phone' },
-      { path: 'phone', component: Phone },
-      {
-        path: '*',
-        component: () => import('pages/Error404.vue')
-      }
-    ]
-  },
-  {
-    path: '/orders',
-    component: Orders
-  },
-  {
-    path: '/funds',
-    component: () => import('layouts/Funds')
-  }
+const routes = [{
+  path: '/',
+  redirect: '/shop'
+},
+{
+  path: '/shop',
+  component: Shop,
+  children: [
+    { path: '', redirect: 'phone' },
+    { path: 'phone', component: Phone },
+    { path: 'gas', component: Gas },
+    { path: 'addcard', component: AddCard },
+    { path: 'fund', component: Fund },
+    { path: 'order', component: Order },
+    { path: 'cardList', component: CardList },
+    {
+      path: '*',
+      component: () =>
+        import('pages/Error404.vue')
+    }
+  ]
+}
 ]
 
 // Always leave this as last one

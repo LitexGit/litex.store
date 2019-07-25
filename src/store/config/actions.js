@@ -55,13 +55,17 @@ export async function initLayer2 ({ commit, state }, payload) {
 export async function getOnchainBalance ({ commit, state }, payload) {
   let list = []
   const { tokens } = state
-  for (const token of tokens) {
-    const { address } = token
-    let balance = await Vue.prototype.$layer2.getOnchainBalance(address)
-    balance = balance.toString()
-    list.push({ address, balance })
+  try {
+    for (const token of tokens) {
+      const { address } = token
+      let balance = await Vue.prototype.$layer2.getOnchainBalance(address)
+      balance = balance.toString()
+      list.push({ address, balance })
+    }
+    commit('updateOnchainBalance', { list })
+  } catch (error) {
+    console.log(error)
   }
-  commit('updateOnchainBalance', { list })
 }
 
 export async function getBalance ({ commit, state }, payload) {

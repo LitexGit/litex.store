@@ -70,10 +70,10 @@ export default {
           this.$router.push('/shop/phone')
           break
         case 'funds':
-          this.$router.push('/funds')
+          this.$router.push('/shop/fund')
           break
         case 'orders':
-          this.$router.push('/orders')
+          this.$router.push('/shop/order')
           break
         case 'introduction':
           this.showIntroduction = true

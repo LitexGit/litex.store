@@ -93,3 +93,9 @@ export function syncChannelStatus (state, { channel }) {
   token.status = channel.status
   token.loading = channel.loading
 }
+
+export function updateIsShowRoot (state, { isShowRoot, isShowFund, title }) {
+  state.isShowRoot = isShowRoot
+  state.isShowFund = isShowFund
+  state.title = title
+}

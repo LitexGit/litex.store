@@ -2,7 +2,10 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 // import createLogger from 'vuex/dist/logger'
 
-import sku from './sku'
+// import sku from './sku'
+import phone from './phone'
+import gas from './gas'
+import vip from './vip'
 import pn from './pn'
 import order from './order'
 import fund from './fund'
@@ -23,7 +26,10 @@ export default function (/* { ssrContext } */) {
     modules: {
       config,
       channel,
-      sku,
+      // sku,
+      phone,
+      gas,
+      vip,
       pn,
       order,
       fund
