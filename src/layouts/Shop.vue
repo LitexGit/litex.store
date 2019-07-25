@@ -132,8 +132,7 @@ export default {
         switch (path) {
           case '/shop/phone':
             break
-          case '/shop/gas':
-            break
+          case '/shop/gas': // break;
           case '/shop/vip':
             this.$router.go(-1)
             this.$q.notify({ message: '即将上线, 敬请期待...', position: 'top', color: 'positive', timeout: this.duration })
