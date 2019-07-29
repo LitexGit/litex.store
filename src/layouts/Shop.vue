@@ -180,22 +180,24 @@ export default {
     this.$store.dispatch('config/getConfigs')
 
     window.addEventListener('load', async () => {
-      console.log('=============load=======================')
-      const account = await this.getAccount()
-      this.$store.commit('config/update', { account: account.toLowerCase() })
+      setTimeout(async () => {
+        console.log('=============load=======================')
+        const account = await this.getAccount()
+        this.$store.commit('config/update', { account: account.toLowerCase() })
 
-      this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
-      Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
-      this.$store.dispatch('config/register')
-      this.$store.dispatch('config/initLayer2')
+        this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
+        Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
+        this.$store.dispatch('config/register')
+        this.$store.dispatch('config/initLayer2')
 
-      window.ethereum.on('accountsChanged', (accounts) => {
-        console.log('=============【切换 账号】=======================')
-        window.location.reload(true)
-      })
-      window.ethereum.on('networkChanged', function (netId) {
-        console.log('=============【切换 netId】=======================')
-      })
+        window.ethereum.on('accountsChanged', (accounts) => {
+          console.log('=============【切换 账号】=======================')
+          window.location.reload(true)
+        })
+        window.ethereum.on('networkChanged', function (netId) {
+          console.log('=============【切换 netId】=======================')
+        })
+      }, 1000)
     })
   },
   sockets: {
