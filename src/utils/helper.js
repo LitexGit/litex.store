@@ -72,6 +72,9 @@ export function getWalletInfo () {
   if (navigator.userAgent.includes('TokenPocket')) {
     return 'TokenPocket'
   }
+  if (window.web3.currentProvider.isHuobi) {
+    return 'isHuobi'
+  }
   return ''
 }
 

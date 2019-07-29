@@ -5,13 +5,14 @@ import Vue from 'vue'
 
 export async function register ({ commit }, payload) {
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
-  await api.register({ address })
+  const walletName = getWalletInfo()
+  await api.register({ address, walletName })
   // userId
 }
 
 export async function getConfigs ({ commit }, payload) {
   commit('loading', true)
-  const netId = getNetwork()
+  const netId = await getNetwork()
   const walletName = getWalletInfo()
   // console.log('============window.web3========================')
   // console.log(walletName)
@@ -37,7 +38,7 @@ export async function initLayer2 ({ commit, state }, payload) {
   // console.log('==============state======================')
 
   if (!ethPNAddress || !appRpcUrl || !appPNAddress) {
-    const netId = getNetwork()
+    const netId = await getNetwork()
     const wallet = getWalletInfo()
     const config = await api.getConfigs({ netId, wallet })
 
