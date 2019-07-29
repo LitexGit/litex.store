@@ -82,7 +82,8 @@ export default {
     ]),
     channelBalance: {
       get: function () {
-        return this.tokens[this.selected].channelBalance
+        const { channelBalance = '0' } = this.tokens[this.selected] || {}
+        return channelBalance
       }
     }
   },
@@ -109,7 +110,8 @@ export default {
       return ASSET_STATE[reason]
     },
     async updateFundRecords () {
-      this.$store.dispatch('fund/updateFundRecords', { type: this.tokens[this.selected].type, account: Preferences.getItem(PrefKeys.USER_ACCOUNT) })
+      const { type = 1 } = this.tokens[this.selected] || {}
+      this.$store.dispatch('fund/updateFundRecords', { type, account: Preferences.getItem(PrefKeys.USER_ACCOUNT) })
     }
   }
 }
