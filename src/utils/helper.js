@@ -7,6 +7,10 @@ import { Preferences, PrefKeys } from '../utils/preferences'
 export async function getAccount () {
   const getAccountPromise = new Promise((resolve, reject) => {
     window.web3.eth.getAccounts((err, result) => {
+      console.log('====================================')
+      console.log(err)
+      console.log(result)
+      console.log('====================================')
       err && reject(err)
       resolve(result)
     })
@@ -16,6 +20,7 @@ export async function getAccount () {
     if (typeof window.ethereum !== 'undefined') {
       try {
         await window.ethereum.enable()
+        console.log('============window.ethereum========================')
         const accounts = await getAccountPromise
         account = accounts[0]
         console.log('window.ethereum ==>' + account)
@@ -24,6 +29,7 @@ export async function getAccount () {
         reject(err)
       }
     } else if (window.web3) {
+      console.log('============window.web3========================')
       const accounts = await getAccountPromise
       account = accounts[0]
       console.log('window.web3 ==>' + account)
