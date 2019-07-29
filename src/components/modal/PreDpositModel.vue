@@ -13,7 +13,7 @@
       </div>
       <div class="bg-white q-px-md q-pb-md q-pt-sm">
         <!-- @blur="updateInputValue({input})" -->
-        <q-input filled type='number' v-model="authInput" label="请输入数量"/>
+        <q-input filled type='number' v-model="authInput" label="请输入数量" @blur="blur1()" @focus="focus()" />
         <div class="q-mt-md">
           <span>钱包余额：</span>
           <balance-view :symbol="token.symbol" :decimal="token.decimal" :amount="token.balance" :float="token.float"/>
@@ -41,7 +41,10 @@ export default {
   name: 'PreDpositModel',
   components: { BalanceView },
   data () {
-    return {}
+    return {
+      isScroll: false,
+      timer: null
+    }
   },
   computed: {
     ...mapState('config', {
@@ -98,6 +101,19 @@ export default {
       const amount = this.toWei({ input: this.authInput, decimal: this.token.decimal, pos: this.token.float })
       this.$store.commit('channel/updateShowPreDpositModel', { open: false })
       this.$store.dispatch('channel/submitERC20Approval', { amount, address: this.token.address })
+    },
+    blur1 () {
+      this.isScroll = true
+      clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
+        if (this.isScroll) {
+          window.scrollTo(0, 0)
+          clearTimeout(this.timer)
+        }
+      }, 300)
+    },
+    focus () {
+      this.isScroll = false
     }
   }
 }
