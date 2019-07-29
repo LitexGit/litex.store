@@ -190,6 +190,14 @@ export default {
         Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
         this.$store.dispatch('config/register')
         this.$store.dispatch('config/initLayer2')
+
+        window.ethereum.on('accountsChanged', (accounts) => {
+          console.log('=============【切换 账号】=======================')
+          window.location.reload(true)
+        })
+        window.ethereum.on('networkChanged', function (netId) {
+          console.log('=============【切换 netId】=======================')
+        })
       }, 1000)
     })
   },
@@ -202,14 +210,6 @@ export default {
     }
   },
   mounted: async function () {
-    window.ethereum.on('accountsChanged', (accounts) => {
-      console.log('=============【切换 账号】=======================')
-      window.location.reload(true)
-    })
-    window.ethereum.on('networkChanged', function (netId) {
-      console.log('=============【切换 netId】=======================')
-    })
-
     this.$layer2.on('TokenApproval', (err, res) => {
       console.log('===========TokenApproval=========================')
       console.log('TokenApproval from L2', err, res)
