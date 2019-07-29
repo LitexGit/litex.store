@@ -5,34 +5,18 @@ import { Preferences, PrefKeys } from '../utils/preferences'
  * 获取账户信息
  */
 export async function getAccount () {
-  window.web3.eth.getAccounts((err, result) => {
-    console.log('============window.web3.eth.getAccounts========================')
-    console.log(err)
-    console.log(result)
-    console.log('============window.web3.eth.getAccounts========================')
-  })
-
-  console.log('==============getAccount===001===================')
   const getAccountPromise = new Promise((resolve, reject) => {
     window.web3.eth.getAccounts((err, result) => {
-      console.log('====================================')
-      console.log(err)
-      console.log(result)
-      console.log('====================================')
       err && reject(err)
       resolve(result)
     })
   })
-  console.log('==========getAccount===002=======================')
 
   return new Promise(async (resolve, reject) => {
     let account = '0x'
     if (typeof window.ethereum !== 'undefined') {
       try {
-        console.log('==============window.ethereum.enable======================')
         await window.ethereum.enable()
-        console.log('============window.ethereum========================')
-        console.log('============getAccountPromise========================')
         const accounts = await getAccountPromise
         account = accounts[0]
         console.log('window.ethereum ==>' + account)
@@ -41,8 +25,6 @@ export async function getAccount () {
         reject(err)
       }
     } else if (window.web3) {
-      console.log('============window.web3========================')
-      console.log('==============await getAccountPromise======================')
       const accounts = await getAccountPromise
       account = accounts[0]
       console.log('window.web3 ==>' + account)
