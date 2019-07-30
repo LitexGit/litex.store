@@ -65,7 +65,7 @@ import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawMod
 import { DepositDialog } from '../components/dialog'
 import MenuBtn from '../components/menu/MenuBtn'
 import { FundTabs } from '../components/tabs'
-import { getAccount, getNetwork, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil, sleep } from '../utils/helper'
+import { getAccount, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil, sleep } from '../utils/helper'
 import { Preferences, PrefKeys } from '../utils/preferences'
 import Api from '../constants/interface'
 
@@ -160,7 +160,6 @@ export default {
   methods: {
     getRouter,
     getAccount,
-    getNetwork,
     isCurrentUser,
     getShowToken,
     toDecimal,
@@ -194,11 +193,11 @@ export default {
 
     window.addEventListener('load', async () => {
       setTimeout(async () => {
-        console.log('=============load=======================')
-        console.log('==============account======================')
+        // console.log('=============load=======================')
+        // console.log('==============account======================')
         const account = await this.getAccount()
-        console.log(account)
-        console.log('==============account======================')
+        // console.log(account)
+        // console.log('==============account======================')
         this.$store.commit('config/update', { account: account.toLowerCase() })
 
         this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
@@ -225,7 +224,7 @@ export default {
     }
   },
   mounted: async function () {
-    console.log('==============mounted======================')
+    // console.log('==============mounted======================')
     this.$store.dispatch('config/getChannelInfo')
     this.$store.dispatch('config/getOnchainBalance')
     this.$store.dispatch('config/getBalance')

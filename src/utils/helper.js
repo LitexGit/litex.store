@@ -15,18 +15,20 @@ export async function getAccount () {
     let account = '0x'
     if (typeof window.ethereum !== 'undefined') {
       try {
+        // console.log('==============window.ethereum======================')
         await window.ethereum.enable()
         const accounts = await getAccountPromise
         account = accounts[0]
-        console.log('window.ethereum ==>' + account)
+        // console.log('window.ethereum ==>' + account)
         resolve(account)
       } catch (err) {
         reject(err)
       }
     } else if (window.web3) {
+      // console.log('==============window.web3======================')
       const accounts = await getAccountPromise
       account = accounts[0]
-      console.log('window.web3 ==>' + account)
+      // console.log('window.web3 ==>' + account)
       resolve(account)
     }
   })

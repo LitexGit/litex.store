@@ -25,7 +25,7 @@ export async function getConfigs ({ commit }, payload) {
 
 export async function initLayer2 ({ commit, state }, payload) {
   commit('update', { isInitL2: false })
-  // Vue.prototype.$layer2.setDebug(false)
+  Vue.prototype.$layer2.setDebug(false)
 
   process.versions = { node: '11.2.0' }
   const account = Preferences.getItem(PrefKeys.USER_ACCOUNT)
@@ -103,9 +103,9 @@ export async function getChannelInfo ({ commit, state }, payload) {
     const { address } = token
     const info = await Vue.prototype.$layer2.getChannelInfo(address)
     const { status, userBalance } = info
-    console.log('===============getChannelInfo=====================')
-    console.log(' status==> ' + status)
-    console.log('===============getChannelInfo=====================')
+    // console.log('===============getChannelInfo=====================')
+    // console.log(' status==> ' + status)
+    // console.log('===============getChannelInfo=====================')
     const channelStatus = getChannelStatus({ status, tokens, address, userBalance })
     list.push({ address, status: channelStatus })
   }
