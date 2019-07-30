@@ -213,7 +213,7 @@ export default {
         window.ethereum.on('networkChanged', function (netId) {
           console.log('=============【切换 netId】=======================')
         })
-      }, 500)
+      }, 1000)
     })
   },
   sockets: {
