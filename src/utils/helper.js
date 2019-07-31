@@ -1,6 +1,20 @@
 import * as utils from 'web3-utils'
 import { Preferences, PrefKeys } from '../utils/preferences'
 
+export function getPlatformOS () {
+  const user = navigator.userAgent
+  const isiOS = !!user.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+  console.log('isiOS => ' + isiOS)
+  if (isiOS) {
+    return 'iOS'
+  }
+  const isAndroid = user.indexOf('Android') > -1 || user.indexOf('Adr') > -1
+  console.log('isAndroid => ' + isAndroid)
+  if (isAndroid) {
+    return 'Android'
+  }
+}
+
 /**
  * 获取账户信息
  */
@@ -15,20 +29,20 @@ export async function getAccount () {
     let account = '0x'
     if (typeof window.ethereum !== 'undefined') {
       try {
-        // console.log('==============window.ethereum======================')
+        console.log('==============window.ethereum======================')
         await window.ethereum.enable()
         const accounts = await getAccountPromise
         account = accounts[0]
-        // console.log('window.ethereum ==>' + account)
+        console.log('window.ethereum ==>' + account)
         resolve(account)
       } catch (err) {
         reject(err)
       }
     } else if (window.web3) {
-      // console.log('==============window.web3======================')
+      console.log('==============window.web3======================')
       const accounts = await getAccountPromise
       account = accounts[0]
-      // console.log('window.web3 ==>' + account)
+      console.log('window.web3 ==>' + account)
       resolve(account)
     }
   })

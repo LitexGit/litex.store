@@ -13,12 +13,15 @@ export async function register ({ commit }, payload) {
 export async function getConfigs ({ commit }, payload) {
   commit('loading', true)
   const netId = await getNetwork()
+  console.log('============getNetwork========================')
+  console.log(netId)
+  console.log('============getNetwork========================')
   const walletName = getWalletInfo()
-  // console.log('============window.web3========================')
-  // console.log(walletName)
-  // console.log('============window.web3========================')
   // : 'Kcash'
   const data = await api.getConfigs({ netId, walletName })
+  console.log('============getConfigs========================')
+  console.log(data)
+  console.log('============getConfigs========================')
   commit('updateConfigs', data)
   commit('loading', false)
 }
@@ -31,11 +34,11 @@ export async function initLayer2 ({ commit, state }, payload) {
   const account = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   const { ethPNAddress, appRpcUrl, appPNAddress } = state
 
-  // console.log('==============state======================')
-  // console.log(ethPNAddress)
-  // console.log(appPNAddress)
-  // console.log(appRpcUrl)
-  // console.log('==============state======================')
+  console.log('==============state======================')
+  console.log(ethPNAddress)
+  console.log(appPNAddress)
+  console.log(appRpcUrl)
+  console.log('==============state======================')
 
   if (!ethPNAddress || !appRpcUrl || !appPNAddress) {
     const netId = await getNetwork()

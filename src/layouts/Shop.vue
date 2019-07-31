@@ -65,7 +65,7 @@ import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawMod
 import { DepositDialog } from '../components/dialog'
 import MenuBtn from '../components/menu/MenuBtn'
 import { FundTabs } from '../components/tabs'
-import { getAccount, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil, sleep } from '../utils/helper'
+import { getAccount, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil, sleep, getPlatformOS } from '../utils/helper'
 import { Preferences, PrefKeys } from '../utils/preferences'
 import Api from '../constants/interface'
 
@@ -165,6 +165,7 @@ export default {
     toDecimal,
     mathCeil,
     sleep,
+    getPlatformOS,
     goback: function () {
       this.$router.go(-1)
     },
@@ -188,16 +189,14 @@ export default {
     }
   },
   created: function () {
-    this.$store.dispatch('config/getConfigs')
-    this.$store.commit('gas/initCards')
-
     window.addEventListener('load', async () => {
+      console.log('============getPlatformOS========================')
+
+      console.log('============getPlatformOS========================')
+      const wait = this.getPlatformOS() === 'Android' ? 2500 : 500
       setTimeout(async () => {
-        // console.log('=============load=======================')
-        // console.log('==============account======================')
+        console.log('=============load=======================')
         const account = await this.getAccount()
-        // console.log(account)
-        // console.log('==============account======================')
         this.$store.commit('config/update', { account: account.toLowerCase() })
 
         this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
@@ -212,7 +211,7 @@ export default {
         window.ethereum.on('networkChanged', function (netId) {
           console.log('=============【切换 netId】=======================')
         })
-      }, 1000)
+      }, wait)
     })
   },
   sockets: {
@@ -224,6 +223,9 @@ export default {
     }
   },
   mounted: async function () {
+    this.$store.dispatch('config/getConfigs')
+    this.$store.commit('gas/initCards')
+
     // console.log('==============mounted======================')
     this.$store.dispatch('config/getChannelInfo')
     this.$store.dispatch('config/getOnchainBalance')
