@@ -10,19 +10,14 @@ export async function register ({ commit }, payload) {
   // userId
 }
 
-export async function getConfigs ({ commit }, payload) {
+export async function getConfigs ({ commit, state }, payload) {
   commit('loading', true)
   const netId = await getNetwork()
-  console.log('============getNetwork========================')
-  console.log(netId)
-  console.log('============getNetwork========================')
   const walletName = getWalletInfo()
   // : 'Kcash'
   const data = await api.getConfigs({ netId, walletName })
-  console.log('============getConfigs========================')
-  console.log(data)
-  console.log('============getConfigs========================')
   commit('updateConfigs', data)
+  await initLayer2({ commit, state })
   commit('loading', false)
 }
 

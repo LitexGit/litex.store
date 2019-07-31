@@ -166,6 +166,7 @@ export default {
     mathCeil,
     sleep,
     getPlatformOS,
+
     goback: function () {
       this.$router.go(-1)
     },
@@ -189,29 +190,31 @@ export default {
     }
   },
   created: function () {
+    this.$store.commit('gas/initCards')
+    console.log('============created========================')
+    // this.$store.dispatch('config/getConfigs')
     window.addEventListener('load', async () => {
-      console.log('============getPlatformOS========================')
+      while (!window.web3) {
+        console.log('检测Web3是否注入=>')
+        console.log(window.web3)
+        await sleep(1000)
+      }
+      this.$store.dispatch('config/getConfigs')
+      const account = await this.getAccount()
+      this.$store.commit('config/update', { account: account.toLowerCase() })
 
-      console.log('============getPlatformOS========================')
-      const wait = this.getPlatformOS() === 'Android' ? 2500 : 500
-      setTimeout(async () => {
-        console.log('=============load=======================')
-        const account = await this.getAccount()
-        this.$store.commit('config/update', { account: account.toLowerCase() })
+      this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
+      Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
+      this.$store.dispatch('config/register')
+      // this.$store.dispatch('config/initLayer2')
 
-        this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
-        Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
-        this.$store.dispatch('config/register')
-        this.$store.dispatch('config/initLayer2')
-
-        window.ethereum.on('accountsChanged', (accounts) => {
-          console.log('=============【切换 账号】=======================')
-          window.location.reload(true)
-        })
-        window.ethereum.on('networkChanged', function (netId) {
-          console.log('=============【切换 netId】=======================')
-        })
-      }, wait)
+      window.ethereum.on('accountsChanged', (accounts) => {
+        console.log('=============【切换 账号】=======================')
+        window.location.reload(true)
+      })
+      window.ethereum.on('networkChanged', function (netId) {
+        console.log('=============【切换 netId】=======================')
+      })
     })
   },
   sockets: {
@@ -223,13 +226,8 @@ export default {
     }
   },
   mounted: async function () {
-    this.$store.dispatch('config/getConfigs')
-    this.$store.commit('gas/initCards')
-
-    // console.log('==============mounted======================')
-    this.$store.dispatch('config/getChannelInfo')
-    this.$store.dispatch('config/getOnchainBalance')
-    this.$store.dispatch('config/getBalance')
+    console.log('==============mounted======================')
+    // this.$store.dispatch('config/getConfigs')
 
     this.$layer2.on('TokenApproval', (err, res) => {
       console.log('===========TokenApproval=========================')
