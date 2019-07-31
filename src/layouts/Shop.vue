@@ -26,7 +26,7 @@
         </q-toolbar-title>
         <q-separator dark vertical inset />
 
-        <q-btn-dropdown class="col" flat :label="symbol || '选择币种'" v-model="showSelectDropdown">
+        <q-btn-dropdown class="col" flat :label="symbol || ''" v-model="showSelectDropdown">
           <q-list separator>
 
             <q-item class="q-pa-none" v-for="(token, index) in tokens" clickable v-close-popup
@@ -179,7 +179,7 @@ export default {
       this.$store.dispatch('order/placeOrder', { path: this.$route.path })
     },
     deposit: function (token) {
-      console.log('=============【deposit】=======================')
+      console.log('========【deposit】=======================')
       const { address, symbol } = token
       this.$store.dispatch('channel/preDeposit', { address, symbol })
     },
@@ -192,7 +192,6 @@ export default {
   created: function () {
     this.$store.commit('gas/initCards')
     console.log('============created========================')
-    // this.$store.dispatch('config/getConfigs')
     window.addEventListener('load', async () => {
       while (!window.web3) {
         console.log('检测Web3是否注入=>')
@@ -206,7 +205,6 @@ export default {
       this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
       Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
       this.$store.dispatch('config/register')
-      // this.$store.dispatch('config/initLayer2')
 
       window.ethereum.on('accountsChanged', (accounts) => {
         console.log('=============【切换 账号】=======================')
@@ -227,7 +225,6 @@ export default {
   },
   mounted: async function () {
     console.log('==============mounted======================')
-    // this.$store.dispatch('config/getConfigs')
 
     this.$layer2.on('TokenApproval', (err, res) => {
       console.log('===========TokenApproval=========================')

@@ -29,7 +29,6 @@ export async function getAccount () {
     let account = '0x'
     if (typeof window.ethereum !== 'undefined') {
       try {
-        console.log('==============window.ethereum======================')
         await window.ethereum.enable()
         const accounts = await getAccountPromise
         account = accounts[0]
@@ -39,7 +38,6 @@ export async function getAccount () {
         reject(err)
       }
     } else if (window.web3) {
-      console.log('==============window.web3======================')
       const accounts = await getAccountPromise
       account = accounts[0]
       console.log('window.web3 ==>' + account)
