@@ -14,21 +14,16 @@ export function updateConfigs (state, config) {
     baseUrl,
     categorys,
     telegramUrl,
-    tokens,
-    contractAddress: {
-      ethPNAddress,
-      appRpcUrl,
-      appPNAddress
-    }
+    tokens
   } = config
 
   state.baseURL = baseUrl
   state.categorys = categorys
   state.telegramURL = telegramUrl
 
-  state.ethPNAddress = ethPNAddress
-  state.appPNAddress = appPNAddress
-  state.appRpcUrl = appRpcUrl
+  state.ethPNAddress = '0xbe5d4d46bd33362f66cb0e6a24c81565ecb565c4'
+  state.appPNAddress = '0x8A7B9f4396483A33fB2fb32B6F67ff9ff4Edf6fE'
+  state.appRpcUrl = 'https://cita.milewan.com:9191'
 
   const completion = { status: 0, channelBalance: '0', balance: '0' }
 

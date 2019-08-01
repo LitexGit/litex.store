@@ -2,19 +2,32 @@
   <q-layout view="lHh Lpr lFf">
     <q-header reveal elevated>
       <q-toolbar>
-        <q-btn size="lg" flat dense round  :disable='isShowRoot' @click="$router.go(-1)">
+        <q-btn
+          size="lg"
+          flat
+          dense
+          round
+          :disable="isShowRoot"
+          @click="$router.go(-1)"
+        >
           <q-icon v-if="!isShowRoot" name="chevron_left" />
         </q-btn>
         <q-toolbar-title class="flex flex-center column">
           <span>LITE<b>X</b> Store</span>
-          <small class="text-caption">{{title}}</small>
+          <small class="text-caption">{{ title }}</small>
         </q-toolbar-title>
-        <menu-btn/>
+        <menu-btn />
       </q-toolbar>
-      <ChannelStatusBar :status="channelStatus"/>
+      <ChannelStatusBar :status="channelStatus" />
       <q-tabs v-show="isShowRoot">
-        <q-route-tab v-for="(category, index) in categorys" :key="index" exact
-           :name="getRouter(category.categoryId)" :to="getRouter(category.categoryId)" :label="category.categoryDes" />
+        <q-route-tab
+          v-for="(category, index) in categorys"
+          :key="index"
+          exact
+          :name="getRouter(category.categoryId)"
+          :to="getRouter(category.categoryId)"
+          :label="category.categoryDes"
+        />
       </q-tabs>
       <fund-tabs v-if="isShowFund"></fund-tabs>
     </q-header>
@@ -23,38 +36,55 @@
       <q-toolbar class="bg-secondary text-white row">
         <q-toolbar-title class="col-6">
           <small> 金额：</small>
-          <small :class="[loading ? 'text-grey' : 'text-amber']"> {{ loading ? '加载中..' :  price}} </small>
+          <small :class="[loading ? 'text-grey' : 'text-amber']">
+            {{ loading ? "加载中.." : price }}
+          </small>
         </q-toolbar-title>
         <q-separator dark vertical inset />
 
         <q-btn-dropdown class="col" flat :label="symbol || ''" v-model="showSelectDropdown">
           <q-list separator>
-
-            <q-item class="q-pa-none" v-for="(token, index) in tokens" clickable v-close-popup
-              :key="index"  :active="index === selected"
-              @click="selectToken(index)">
-              <token-item :key="index" :token = "token" @deposit="deposit(token)" @withdraw="withdraw(token)"/>
+            <q-item
+              class="q-pa-none"
+              v-for="(token, index) in tokens"
+              clickable
+              v-close-popup
+              :key="index"
+              :active="index === selected"
+              @click="selectToken(index)"
+            >
+              <token-item
+                :key="index"
+                :token="token"
+                @deposit="deposit(token)"
+                @withdraw="withdraw(token)"
+              />
             </q-item>
           </q-list>
         </q-btn-dropdown>
         <q-separator dark vertical inset />
-        <q-btn flat class="col-3 q-pa-sm" label="支付" color="white" @click="placeOrder()" />
+        <q-btn
+          flat
+          class="col-3 q-pa-sm"
+          label="支付"
+          color="white"
+          @click="placeOrder()"
+        />
       </q-toolbar>
     </q-footer>
     <q-page-container>
       <router-view />
     </q-page-container>
 
-    <confirm-pay-model/>
-    <d-remind-model/>
-    <pre-dposit-model/>
-    <dposit-model/>
-    <withdraw-model/>
-    <w-remind-model/>
-    <deposit-token-model/>
-    <order-details-model/>
-    <deposit-dialog/>
-
+    <confirm-pay-model />
+    <d-remind-model />
+    <pre-dposit-model />
+    <dposit-model />
+    <withdraw-model />
+    <w-remind-model />
+    <deposit-token-model />
+    <order-details-model />
+    <deposit-dialog />
   </q-layout>
 </template>
 
@@ -66,7 +96,7 @@ import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawMod
 import { DepositDialog } from '../components/dialog'
 import MenuBtn from '../components/menu/MenuBtn'
 import { FundTabs } from '../components/tabs'
-import { getAccount, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil, sleep, getPlatformOS, isIPhoneFllS } from '../utils/helper'
+import { getAccount, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil, sleep, getPlatformOS, isIPhoneFllS, getWeb3forCurrentChain } from '../utils/helper'
 import { Preferences, PrefKeys } from '../utils/preferences'
 import Api from '../constants/interface'
 
@@ -76,7 +106,8 @@ export default {
     MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel, DepositDialog, ChannelStatusBar, FundTabs
   },
   data () {
-    return {}
+    return {
+    }
   },
   computed: {
     ...mapState('config', {
@@ -191,12 +222,14 @@ export default {
     }
   },
   created: function () {
+    getWeb3forCurrentChain()
     this.$store.commit('gas/initCards')
     console.log('============created========================')
     window.addEventListener('load', async () => {
-      while (!window.web3) {
+      getWeb3forCurrentChain()
+      while (!window.web3Proxy) {
         console.log('检测Web3是否注入=>')
-        console.log(window.web3)
+        console.log(window.web3Proxy)
         await sleep(1000)
       }
       this.$store.dispatch('config/getConfigs')
