@@ -18,7 +18,8 @@
       </q-tabs>
       <fund-tabs v-if="isShowFund"></fund-tabs>
     </q-header>
-    <q-footer v-show="isShowRoot">
+
+    <q-footer v-show="isShowRoot" class="bg-white" :class="this.isIPhoneFllS() ? 'q-pb-lg' : 'q-pb-nonce'">
       <q-toolbar class="bg-secondary text-white row">
         <q-toolbar-title class="col-6">
           <small> 金额：</small>
@@ -65,7 +66,7 @@ import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawMod
 import { DepositDialog } from '../components/dialog'
 import MenuBtn from '../components/menu/MenuBtn'
 import { FundTabs } from '../components/tabs'
-import { getAccount, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil, sleep, getPlatformOS } from '../utils/helper'
+import { getAccount, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil, sleep, getPlatformOS, isIPhoneFllS } from '../utils/helper'
 import { Preferences, PrefKeys } from '../utils/preferences'
 import Api from '../constants/interface'
 
@@ -166,7 +167,7 @@ export default {
     mathCeil,
     sleep,
     getPlatformOS,
-
+    isIPhoneFllS,
     goback: function () {
       this.$router.go(-1)
     },
@@ -225,7 +226,6 @@ export default {
   },
   mounted: async function () {
     console.log('==============mounted======================')
-
     this.$layer2.on('TokenApproval', (err, res) => {
       console.log('===========TokenApproval=========================')
       console.log('TokenApproval from L2', err, res)
@@ -335,4 +335,5 @@ export default {
 </script>
 
 <style>
+
 </style>

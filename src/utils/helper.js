@@ -366,3 +366,20 @@ export async function sleep (time) {
     setTimeout(resolve, time)
   })
 }
+
+
+// iPhone X、iPhone XS
+const isIPhoneX = /iphone/gi.test(window.navigator.userAgent) && window.devicePixelRatio && window.devicePixelRatio === 3 && window.screen.width === 375 && window.screen.height === 812;
+// iPhone XS Max
+const isIPhoneXSMax = /iphone/gi.test(window.navigator.userAgent) && window.devicePixelRatio && window.devicePixelRatio === 3 && window.screen.width === 414 && window.screen.height === 896;
+// iPhone XR
+const isIPhoneXR = /iphone/gi.test(window.navigator.userAgent) && window.devicePixelRatio && window.devicePixelRatio === 2 && window.screen.width === 414 && window.screen.height === 896;
+
+
+export function isIPhoneFllS (){
+  // console.log('isIPhoneX ==> ' + isIPhoneX)
+  // console.log('isIPhoneXSMax ==> ' + isIPhoneXSMax)
+  // console.log('isIPhoneXR ==> ' + isIPhoneXR)
+  // return isIPhoneX || isIPhoneXSMax || isIPhoneXR
+  return false
+}
