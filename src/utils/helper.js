@@ -310,16 +310,16 @@ export function getChannelStatusStyle (status) {
  * 获取chain
  */
 export function getCurrentChain () {
-  // if (typeof window.wan3 !== 'undefined') {
-  //   Preferences.setItem(PrefKeys.CURRENT_CHAIN, 'wanchain')
-  //   window.provider = window.wan3
-  //   return 'wanchain'
-  // }
-  // if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
-  //   Preferences.setItem(PrefKeys.CURRENT_CHAIN, 'ethereum')
-  //   window.provider = window.ethereum || window.web3
-  //   return 'ethereum'
-  // }
+  if (typeof window.wan3 !== 'undefined') {
+    Preferences.setItem(PrefKeys.CURRENT_CHAIN, 'wanchain')
+    window.provider = window.wan3
+    return 'wanchain'
+  }
+  if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
+    Preferences.setItem(PrefKeys.CURRENT_CHAIN, 'ethereum')
+    window.provider = window.ethereum || window.web3
+    return 'ethereum'
+  }
   window.provider = window.ethereum || window.web3
   Preferences.setItem(PrefKeys.CURRENT_CHAIN, 'ethereum')
   return 'ethereum'
@@ -390,8 +390,10 @@ export function getWalletInfo () {
 export function providerUpdate () {
   const chain = this.getCurrentChain()
   if (chain === 'wanchain') {
-    ethProviderUpdate();
-  } else {
+    console.log('===========wanchain=========================');
     wanProviderUpdate();
+  } else {
+    console.log('===========wanchain=========================');
+    ethProviderUpdate();
   }
 }

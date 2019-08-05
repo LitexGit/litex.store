@@ -234,11 +234,12 @@ export default {
       this.$store.commit('config/update', { account: account.toLowerCase() })
 
       this.$store.dispatch('config/getConfigs')
-      this.providerUpdate()
 
       this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
       Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
       this.$store.dispatch('config/register')
+
+      this.providerUpdate()
     })
   },
   sockets: {

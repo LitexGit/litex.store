@@ -1,3 +1,5 @@
+import { Preferences, PrefKeys } from '../utils/preferences'
+
 /**
  * 获取账户信息
  */
@@ -30,7 +32,10 @@ export function getWanNetId () {
 
 export function wanProviderUpdate () {
   window.wan3.currentProvider.publicConfigStore.on('update', (res) => {
-    console.log('============wan=【切换 netId/account】=======================')
+    const { selectedAddress } = res
+    const account = Preferences.getItem(PrefKeys.USER_ACCOUNT)
+    if (!selectedAddress || !account) return
+    if (selectedAddress.toLowerCase() === account.toLowerCase()) return
     window.location.reload(true)
   })
 }
