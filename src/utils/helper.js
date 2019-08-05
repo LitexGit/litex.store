@@ -65,8 +65,8 @@ export function getWalletInfo () {
   // console.log('===========getWalletInfo=========================')
   // console.log(window.web3.currentProvider)
   // console.log('===========getWalletInfo=========================')
-  if (window.web3.currentProvider.isMetaMask) {
-    return 'MetaMask'
+  if (window.web3.currentProvider.isHuobi) {
+    return 'Huobi'
   }
   if (window.web3.currentProvider.isImToken) {
     return 'imToken'
@@ -86,8 +86,8 @@ export function getWalletInfo () {
   if (navigator.userAgent.includes('TokenPocket')) {
     return 'TokenPocket'
   }
-  if (window.web3.currentProvider.isHuobi) {
-    return 'isHuobi'
+  if (window.web3.currentProvider.isMetaMask) {
+    return 'MetaMask'
   }
   return ''
 }

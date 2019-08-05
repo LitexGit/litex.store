@@ -1,6 +1,6 @@
 {
     "name": "litex.store",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Online Store of LITEX",
     "productName": "LITEX Store",
     "cordovaId": "org.cordova.quasar.app",
