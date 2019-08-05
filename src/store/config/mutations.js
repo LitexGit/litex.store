@@ -32,10 +32,6 @@ export function updateConfigs (state, config) {
     list.push(Object.assign(token, completion))
   }
   state.tokens = list
-
-  // console.log('=============config=======================')
-  // console.log(state)
-  // console.log('=============config=======================')
 }
 
 export function updateSelected (state, { index }) {

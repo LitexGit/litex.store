@@ -1,5 +1,7 @@
 import * as utils from 'web3-utils'
 import { Preferences, PrefKeys } from '../utils/preferences'
+import { getEthAccount, getEthNetId } from '../utils/eth-helper'
+import { getWanAccount, getWanNetId } from '../utils/wan-helper'
 
 export function getPlatformOS () {
   const user = navigator.userAgent
@@ -15,102 +17,25 @@ export function getPlatformOS () {
   }
 }
 
-/**
- * 获取账户信息
- */
-export async function getAccount () {
-  const getAccountPromise = new Promise((resolve, reject) => {
-    window.web3Proxy.eth.getAccounts((err, result) => {
-      err && reject(err)
-      resolve(result)
-    })
-  })
-  return new Promise(async (resolve, reject) => {
-    let account = '0x'
-    if (typeof window.ethereum !== 'undefined') {
-      try {
-        await window.ethereum.enable()
-        const accounts = await getAccountPromise
-        account = accounts[0]
-        console.log('window.ethereum ==>' + account)
-        resolve(account)
-      } catch (err) {
-        reject(err)
-      }
-    } else if (window.web3Proxy) {
-      const accounts = await getAccountPromise
-      account = accounts[0]
-      console.log('window.web3 ==>' + account)
-      resolve(account)
-    }
-  })
+// // iPhone X、iPhone XS
+// const isIPhoneX = /iphone/gi.test(window.navigator.userAgent) && window.devicePixelRatio && window.devicePixelRatio === 3 && window.screen.width === 375 && window.screen.height === 812
+// // iPhone XS Max
+// const isIPhoneXSMax = /iphone/gi.test(window.navigator.userAgent) && window.devicePixelRatio && window.devicePixelRatio === 3 && window.screen.width === 414 && window.screen.height === 896
+// // iPhone XR
+// const isIPhoneXR = /iphone/gi.test(window.navigator.userAgent) && window.devicePixelRatio && window.devicePixelRatio === 2 && window.screen.width === 414 && window.screen.height === 896
+
+export function isIPhoneFllS () {
+  // console.log('isIPhoneX ==> ' + isIPhoneX)
+  // console.log('isIPhoneXSMax ==> ' + isIPhoneXSMax)
+  // console.log('isIPhoneXR ==> ' + isIPhoneXR)
+  // return isIPhoneX || isIPhoneXSMax || isIPhoneXR
+  return false
 }
 
-/**
- * 获取网络环境
- */
-export function getNetwork () {
-  return new Promise((resolve, reject) => {
-    window.web3Proxy.version.getNetwork((err, result) => {
-      err && reject(err)
-      resolve(result)
-    })
+export async function sleep (time) {
+  return new Promise(resolve => {
+    setTimeout(resolve, time)
   })
-}
-
-/**
- * 根据当前chain获取相应web3
- */
-export function getWeb3forCurrentChain () {
-  // let currnetChain = 'eth'
-  let currnetChain = 'wan'
-  switch (currnetChain) {
-    case 'eth':
-      window.web3Proxy = window.web3
-      break
-    // return window.web3
-    case 'wan':
-      window.web3Proxy = window.wan3
-      break
-    // return window.wan3
-    default:
-      window.web3Proxy = window.web3
-    // return window.web3
-  }
-}
-
-/**
- * 获取钱包类型
- */
-export function getWalletInfo () {
-  // console.log('===========getWalletInfo=========================')
-  // console.log(window.web3.currentProvider)
-  // console.log('===========getWalletInfo=========================')
-  if (window.web3Proxy.currentProvider.isMetaMask) {
-    return 'MetaMask'
-  }
-  if (window.web3Proxy.currentProvider.isImToken) {
-    return 'imToken'
-  }
-  if (window.web3Proxy.currentProvider.isCoinbaseWallet) {
-    return 'Coinbase'
-  }
-  if (window.web3Proxy.currentProvider.isTrust) {
-    if (navigator.userAgent.includes('Kcash')) {
-      return 'Kcash'
-    }
-    return 'Trust'
-  }
-  if (window.web3Proxy.currentProvider.isAlphaWallet) {
-    return 'AlphaWallet'
-  }
-  if (navigator.userAgent.includes('TokenPocket')) {
-    return 'TokenPocket'
-  }
-  if (window.web3Proxy.currentProvider.isHuobi) {
-    return 'isHuobi'
-  }
-  return ''
 }
 
 /**
@@ -134,6 +59,17 @@ export function toWei ({ input, decimal = 18, pos = 4 }) {
  */
 export function toDecimal ({ amount, decimal = 18, pos = 4 }) {
   return weiToDecimal(amount, decimal, pos)
+}
+
+/**
+ * 向上取整保留小数
+ * @param {*} decimal 小数
+ * @param {*} round 保留小数位数
+ */
+export function mathCeil ({ decimal, round }) {
+  let value = decimal * Math.pow(10, round)
+  value = Math.ceil(value) / Math.pow(10, round)
+  return value
 }
 
 /**
@@ -171,6 +107,30 @@ export function weiToDecimal (x, n, fixed) {
 }
 
 /**
+ * 格式化输入
+ * @param {*} input
+ */
+export function formattedInput (input) {
+  if (!input || input === '0' || input === '0.0' || input === '0.00') return '' // string ==> number === 0 return ''
+  const reg = /^(0|[1-9]\d*|[1-9]\d*\.\d+|0\.\d*[1-9]\d*)$/
+  if (!reg.test(input)) return ''
+  // 清除“数字”和“.”以外的字符
+  let value = input.replace(/[^\d.]/g, '')
+  // 只保留第一个. 清除多余的
+  value = value.replace(/\.{2,}/g, '.')
+  value = value.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.')
+  // 只能输入4个小数
+  /* eslint-disable */
+  value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/, '$1$2.$3')
+  /* eslint-disable */
+  // 以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
+  if (value.indexOf('.') < 0 && value !== '') {
+    value = parseFloat(value)
+  }
+  return value
+}
+
+/**
  * 判断是否为手机号 校验是否为有效的手机号
  * @param {*} pone
  */
@@ -197,34 +157,10 @@ export function verifyCardId (type, id) {
 }
 
 /**
- * 格式化输入
- * @param {*} input
- */
-export function formattedInput (input) {
-  if (!input || input === '0' || input === '0.0' || input === '0.00') return '' // string ==> number === 0 return ''
-  const reg = /^(0|[1-9]\d*|[1-9]\d*\.\d+|0\.\d*[1-9]\d*)$/
-  if (!reg.test(input)) return ''
-  // 清除“数字”和“.”以外的字符
-  let value = input.replace(/[^\d.]/g, '')
-  // 只保留第一个. 清除多余的
-  value = value.replace(/\.{2,}/g, '.')
-  value = value.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.')
-  // 只能输入4个小数
-  /* eslint-disable */
-  value = value.replace(/^(\-)*(\d+)\.(\d\d\d\d).*$/, '$1$2.$3')
-  /* eslint-disable */
-  // 以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
-  if (value.indexOf('.') < 0 && value !== '') {
-    value = parseFloat(value)
-  }
-  return value
-}
-
-/**
  * 校验 input format
  * @param {*} input
  */
-export function isAvailableFormat(input) {
+export function isAvailableFormat (input) {
   if (!input) return false
   const reg = /^(0|[1-9]\d*|[1-9]\d*\.\d+|0\.\d*[1-9]\d*)$/
   if (!reg.test(input)) return false
@@ -235,7 +171,7 @@ export function isAvailableFormat(input) {
  * categoryId => router
  * @param {*} categoryId
  */
-export function getRouter(categoryId) {
+export function getRouter (categoryId) {
   switch (categoryId) {
     case 0:
       return 'phone'
@@ -245,37 +181,25 @@ export function getRouter(categoryId) {
       return 'vip'
 
     default:
-      break;
+      break
   }
-}
-
-/**
- * 向上取整保留小数
- * @param {*} decimal 小数
- * @param {*} round 保留小数位数
- */
-export function mathCeil({ decimal, round }) {
-  let value = decimal * Math.pow(10, round)
-  value = Math.ceil(value) / Math.pow(10, round)
-  return value
 }
 
 /**
  * 校验订单支付是否超时
  * @param {*} timeout 超时时刻
  */
-export function timeoutCheck(timeout) {
+export function timeoutCheck (timeout) {
   const moment = require('moment')
   const otime = moment(timeout).format()
   return moment().isSameOrAfter(otime)
 }
 
-
 /**
  * 解析异常提示
  * @param {*} error
  */
-export function getErrMsg(error) {
+export function getErrMsg (error) {
   const { code, message } = error
   let msg = ''
   if (code) {
@@ -294,7 +218,7 @@ export function getErrMsg(error) {
  * 校验是否为当前用户
  * @param {*} user msg 用户地址
  */
-export function isCurrentUser(user) {
+export function isCurrentUser (user) {
   const account = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   if (user.toLowerCase() === account.toLowerCase()) return true
   return false
@@ -305,10 +229,10 @@ export function isCurrentUser(user) {
  * @param {*} address
  * @param {*} tokens
  */
-export function getShowToken(address, tokens) {
+export function getShowToken (address, tokens) {
   const token = tokens.find(token => {
     return token.address.toLowerCase() === address.toLowerCase()
-  });
+  })
   return token
 }
 
@@ -317,7 +241,7 @@ export function getShowToken(address, tokens) {
  * @param {*} status
  * 0:已关闭 1:可支付 2:等待中
  */
-export function getChannelStatus({ status, tokens, address, userBalance }) {
+export function getChannelStatus ({ status, tokens, address, userBalance }) {
   switch (parseInt(status)) {
     case 0: // 默认初始化状态
     case 3: // 已关闭
@@ -326,10 +250,10 @@ export function getChannelStatus({ status, tokens, address, userBalance }) {
     case 1: // 通道打开
       return 1
     case 10001:
-      {
-        const isGT = utils.toBN(userBalance).gt(utils.toBN('0'))
-        return isGT ? 1 : 0
-      }
+    {
+      const isGT = utils.toBN(userBalance).gt(utils.toBN('0'))
+      return isGT ? 1 : 0
+    }
     case 2: // 强关中
     case 10000: // 授权中
     case 10002: // 开通道
@@ -349,7 +273,7 @@ export function getChannelStatus({ status, tokens, address, userBalance }) {
  * @param {*} status
  * 0:不可用 1:可用 2:准备中
  */
-export function getChannelStatusDes(status) {
+export function getChannelStatusDes (status) {
   switch (parseInt(status)) {
     case 0:
       return '已关闭'
@@ -368,7 +292,7 @@ export function getChannelStatusDes(status) {
  * @param {*} status
  * 0:不可用 1:可用 2:准备中
  */
-export function getChannelStatusStyle(status) {
+export function getChannelStatusStyle (status) {
   switch (parseInt(this.token.status)) {
     case 0:
       return { color: '#C10015' }
@@ -382,25 +306,81 @@ export function getChannelStatusStyle(status) {
   }
 }
 
-export async function sleep(time) {
-  return new Promise(resolve => {
-    setTimeout(resolve, time)
-  })
+/**
+ * 获取chain
+ */
+export function getCurrentChain () {
+  if (typeof window.wan3 !== 'undefined') {
+    Preferences.setItem(PrefKeys.CURRENT_CHAIN, 'wanchain')
+    window.provider = window.wan3
+    return 'wanchain'
+  }
+  if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
+    Preferences.setItem(PrefKeys.CURRENT_CHAIN, 'ethereum')
+    window.provider = window.ethereum || window.web3
+    return 'ethereum'
+  }
+  window.provider = window.ethereum || window.web3
+  Preferences.setItem(PrefKeys.CURRENT_CHAIN, 'ethereum')
+  return 'ethereum'
 }
 
+/**
+ * 获取账户信息
+ */
+export function getAccount () {
+  const chain = getCurrentChain()
+  if (chain === 'wanchain') {
+    return getWanAccount()
+  }
+  return getEthAccount()
+}
 
-// iPhone X、iPhone XS
-const isIPhoneX = /iphone/gi.test(window.navigator.userAgent) && window.devicePixelRatio && window.devicePixelRatio === 3 && window.screen.width === 375 && window.screen.height === 812;
-// iPhone XS Max
-const isIPhoneXSMax = /iphone/gi.test(window.navigator.userAgent) && window.devicePixelRatio && window.devicePixelRatio === 3 && window.screen.width === 414 && window.screen.height === 896;
-// iPhone XR
-const isIPhoneXR = /iphone/gi.test(window.navigator.userAgent) && window.devicePixelRatio && window.devicePixelRatio === 2 && window.screen.width === 414 && window.screen.height === 896;
+/**
+ * 获取网络环境
+ */
+export async function getNetwork () {
+  const chain = getCurrentChain()
+  if (chain === 'wanchain') {
+    return getWanNetId()
+  }
+  return getEthNetId()
+}
 
-
-export function isIPhoneFllS (){
-  // console.log('isIPhoneX ==> ' + isIPhoneX)
-  // console.log('isIPhoneXSMax ==> ' + isIPhoneXSMax)
-  // console.log('isIPhoneXR ==> ' + isIPhoneXR)
-  // return isIPhoneX || isIPhoneXSMax || isIPhoneXR
-  return false
+/**
+ * 获取钱包类型
+ */
+export function getWalletInfo () {
+  // console.log('===========getWalletInfo=========================')
+  // console.log(window.web3.currentProvider)
+  // console.log('===========getWalletInfo=========================')
+  const chain = getCurrentChain()
+  if (chain === 'wanchain') {
+    return 'WanMask'
+  }
+  if (window.web3.currentProvider.isMetaMask) {
+    return 'MetaMask'
+  }
+  if (window.web3.currentProvider.isImToken) {
+    return 'imToken'
+  }
+  if (window.web3.currentProvider.isCoinbaseWallet) {
+    return 'Coinbase'
+  }
+  if (window.web3.currentProvider.isTrust) {
+    if (navigator.userAgent.includes('Kcash')) {
+      return 'Kcash'
+    }
+    return 'Trust'
+  }
+  if (window.web3.currentProvider.isAlphaWallet) {
+    return 'AlphaWallet'
+  }
+  if (navigator.userAgent.includes('TokenPocket')) {
+    return 'TokenPocket'
+  }
+  if (window.web3.currentProvider.isHuobi) {
+    return 'Huobi'
+  }
+  return ''
 }

@@ -96,7 +96,7 @@ import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawMod
 import { DepositDialog } from '../components/dialog'
 import MenuBtn from '../components/menu/MenuBtn'
 import { FundTabs } from '../components/tabs'
-import { getAccount, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil, sleep, getPlatformOS, isIPhoneFllS, getWeb3forCurrentChain } from '../utils/helper'
+import { getAccount, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil, sleep, getPlatformOS, isIPhoneFllS, getCurrentChain } from '../utils/helper'
 import { Preferences, PrefKeys } from '../utils/preferences'
 import Api from '../constants/interface'
 
@@ -199,6 +199,7 @@ export default {
     sleep,
     getPlatformOS,
     isIPhoneFllS,
+    getCurrentChain,
     goback: function () {
       this.$router.go(-1)
     },
@@ -219,27 +220,24 @@ export default {
       console.log('=============【withdraw】=======================')
       const { address, symbol } = token
       this.$store.dispatch('channel/preWithdraw', { address, symbol })
-    }
-  },
-  created: function () {
-    getWeb3forCurrentChain()
-    this.$store.commit('gas/initCards')
-    console.log('============created========================')
-    window.addEventListener('load', async () => {
-      getWeb3forCurrentChain()
-      while (!window.web3Proxy) {
-        console.log('检测Web3是否注入=>')
-        console.log(window.web3Proxy)
-        await sleep(1000)
+    },
+    reloadWatcher: function () {
+      const chain = this.getCurrentChain()
+
+      console.log('===============window.wan3=====================')
+      console.log(window.wan3)
+      console.log('==============window.wan3======================')
+
+      if (chain === 'wanchain') {
+        // window.wan3.on('accountsChanged', (accounts) => {
+        //   console.log('=============【切换 账号】=======================')
+        //   window.location.reload(true)
+        // })
+        // window.wan3.on('networkChanged', function (netId) {
+        //   console.log('=============【切换 netId】=======================')
+        // })
+        return
       }
-      this.$store.dispatch('config/getConfigs')
-      const account = await this.getAccount()
-      this.$store.commit('config/update', { account: account.toLowerCase() })
-
-      this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
-      Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
-      this.$store.dispatch('config/register')
-
       window.ethereum.on('accountsChanged', (accounts) => {
         console.log('=============【切换 账号】=======================')
         window.location.reload(true)
@@ -247,6 +245,24 @@ export default {
       window.ethereum.on('networkChanged', function (netId) {
         console.log('=============【切换 netId】=======================')
       })
+    }
+  },
+  created: function () {
+    this.$store.commit('gas/initCards')
+    this.getCurrentChain()
+    window.addEventListener('load', async () => {
+      while (!window.provider) {
+        await sleep(1000)
+      }
+      const account = await this.getAccount()
+      this.$store.commit('config/update', { account: account.toLowerCase() })
+
+      this.$store.dispatch('config/getConfigs')
+      this.reloadWatcher()
+
+      this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
+      Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
+      this.$store.dispatch('config/register')
     })
   },
   sockets: {

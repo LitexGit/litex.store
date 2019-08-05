@@ -11,40 +11,23 @@ export async function register ({ commit }, payload) {
 }
 
 export async function getConfigs ({ commit, state }, payload) {
-  commit('loading', true)
   const netId = await getNetwork()
   const walletName = getWalletInfo()
-  // : 'Kcash'
-  const data = await api.getConfigs({ netId, walletName })
+  const data = await api.getConfigs({ netId, walletName }) // : 'Kcash'
   commit('updateConfigs', data)
   await initLayer2({ commit, state })
-  commit('loading', false)
 }
 
 export async function initLayer2 ({ commit, state }, payload) {
-  commit('update', { isInitL2: false })
   Vue.prototype.$layer2.setDebug(false)
 
+  commit('update', { isInitL2: false })
   process.versions = { node: '11.2.0' }
   const account = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   const { ethPNAddress, appRpcUrl, appPNAddress } = state
   await Vue.prototype.$layer2.init(account, window.web3Proxy, ethPNAddress, appRpcUrl, appPNAddress)
   commit('update', { isInitL2: true })
 }
-
-// if (!ethPNAddress || !appRpcUrl || !appPNAddress) {
-//   const netId = await getNetwork()
-//   const wallet = getWalletInfo()
-//   const config = await api.getConfigs({ netId, wallet })
-
-//   const { contractAddress: { ethPNAddress, appRpcUrl, appPNAddress } } = config
-//   console.log('============getconfig========================')
-//   await Vue.prototype.$layer2.init(account, window.web3, ethPNAddress, appRpcUrl, appPNAddress)
-//   console.log('============initLayer2========================')
-// } else {
-//   console.log('============initLayer2========================')
-//   await Vue.prototype.$layer2.init(account, window.web3, ethPNAddress, appRpcUrl, appPNAddress)
-// }
 
 export async function getOnchainBalance ({ commit, state }, payload) {
   let list = []
