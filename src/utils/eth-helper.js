@@ -40,3 +40,13 @@ export function getEthNetId () {
     })
   })
 }
+
+export function ethProviderUpdate () {
+  window.ethereum.on('accountsChanged', (accounts) => {
+    console.log('============eth=【切换 账号】=======================')
+    window.location.reload(true)
+  })
+  window.ethereum.on('networkChanged', function (netId) {
+    console.log('============eth=【切换 netId】=======================')
+  })
+}

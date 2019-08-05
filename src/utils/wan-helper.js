@@ -27,3 +27,10 @@ export function getWanNetId () {
     })
   })
 }
+
+export function wanProviderUpdate () {
+  window.wan3.currentProvider.publicConfigStore.on('update', (res) => {
+    console.log('============wan=【切换 netId/account】=======================')
+    window.location.reload(true)
+  })
+}

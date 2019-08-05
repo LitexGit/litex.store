@@ -96,7 +96,7 @@ import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawMod
 import { DepositDialog } from '../components/dialog'
 import MenuBtn from '../components/menu/MenuBtn'
 import { FundTabs } from '../components/tabs'
-import { getAccount, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil, sleep, getPlatformOS, isIPhoneFllS, getCurrentChain } from '../utils/helper'
+import { getAccount, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil, sleep, getPlatformOS, isIPhoneFllS, getCurrentChain, providerUpdate } from '../utils/helper'
 import { Preferences, PrefKeys } from '../utils/preferences'
 import Api from '../constants/interface'
 
@@ -200,6 +200,7 @@ export default {
     getPlatformOS,
     isIPhoneFllS,
     getCurrentChain,
+    providerUpdate,
     goback: function () {
       this.$router.go(-1)
     },
@@ -220,31 +221,6 @@ export default {
       console.log('=============【withdraw】=======================')
       const { address, symbol } = token
       this.$store.dispatch('channel/preWithdraw', { address, symbol })
-    },
-    reloadWatcher: function () {
-      const chain = this.getCurrentChain()
-
-      console.log('===============window.wan3=====================')
-      console.log(window.wan3)
-      console.log('==============window.wan3======================')
-
-      if (chain === 'wanchain') {
-        // window.wan3.on('accountsChanged', (accounts) => {
-        //   console.log('=============【切换 账号】=======================')
-        //   window.location.reload(true)
-        // })
-        // window.wan3.on('networkChanged', function (netId) {
-        //   console.log('=============【切换 netId】=======================')
-        // })
-        return
-      }
-      window.ethereum.on('accountsChanged', (accounts) => {
-        console.log('=============【切换 账号】=======================')
-        window.location.reload(true)
-      })
-      window.ethereum.on('networkChanged', function (netId) {
-        console.log('=============【切换 netId】=======================')
-      })
     }
   },
   created: function () {
@@ -258,7 +234,7 @@ export default {
       this.$store.commit('config/update', { account: account.toLowerCase() })
 
       this.$store.dispatch('config/getConfigs')
-      this.reloadWatcher()
+      this.providerUpdate()
 
       this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
       Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())

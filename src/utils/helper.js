@@ -1,7 +1,7 @@
 import * as utils from 'web3-utils'
 import { Preferences, PrefKeys } from '../utils/preferences'
-import { getEthAccount, getEthNetId } from '../utils/eth-helper'
-import { getWanAccount, getWanNetId } from '../utils/wan-helper'
+import { getEthAccount, getEthNetId, ethProviderUpdate } from '../utils/eth-helper'
+import { getWanAccount, getWanNetId, wanProviderUpdate } from '../utils/wan-helper'
 
 export function getPlatformOS () {
   const user = navigator.userAgent
@@ -310,16 +310,16 @@ export function getChannelStatusStyle (status) {
  * 获取chain
  */
 export function getCurrentChain () {
-  if (typeof window.wan3 !== 'undefined') {
-    Preferences.setItem(PrefKeys.CURRENT_CHAIN, 'wanchain')
-    window.provider = window.wan3
-    return 'wanchain'
-  }
-  if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
-    Preferences.setItem(PrefKeys.CURRENT_CHAIN, 'ethereum')
-    window.provider = window.ethereum || window.web3
-    return 'ethereum'
-  }
+  // if (typeof window.wan3 !== 'undefined') {
+  //   Preferences.setItem(PrefKeys.CURRENT_CHAIN, 'wanchain')
+  //   window.provider = window.wan3
+  //   return 'wanchain'
+  // }
+  // if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
+  //   Preferences.setItem(PrefKeys.CURRENT_CHAIN, 'ethereum')
+  //   window.provider = window.ethereum || window.web3
+  //   return 'ethereum'
+  // }
   window.provider = window.ethereum || window.web3
   Preferences.setItem(PrefKeys.CURRENT_CHAIN, 'ethereum')
   return 'ethereum'
@@ -383,4 +383,15 @@ export function getWalletInfo () {
     return 'Huobi'
   }
   return ''
+}
+/**
+ * watch provider
+ */
+export function providerUpdate () {
+  const chain = this.getCurrentChain()
+  if (chain === 'wanchain') {
+    ethProviderUpdate();
+  } else {
+    wanProviderUpdate();
+  }
 }
