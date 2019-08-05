@@ -6,6 +6,7 @@ import WithdrawModel from './WithdrawModel.vue'
 import WRemindModel from './WRemindModel.vue'
 import DepositTokenModel from './DepositTokenModel.vue'
 import OrderDetailsModel from './OrderDetailsModel.vue'
+import SwitchWalletModel from './SwitchWalletModel.vue'
 
 export {
   ConfirmPayModel,
@@ -15,5 +16,6 @@ export {
   WithdrawModel,
   WRemindModel,
   DepositTokenModel,
-  OrderDetailsModel
+  OrderDetailsModel,
+  SwitchWalletModel
 }

@@ -85,6 +85,7 @@
     <deposit-token-model />
     <order-details-model />
     <deposit-dialog />
+    <switch-wallet-model/>
   </q-layout>
 </template>
 
@@ -92,7 +93,7 @@
 import { mapState } from 'vuex'
 import ChannelStatusBar from '../components/ChannelStatusBar.vue'
 import { TokenItem } from '../components/item'
-import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel } from '../components/modal'
+import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel, SwitchWalletModel } from '../components/modal'
 import { DepositDialog } from '../components/dialog'
 import MenuBtn from '../components/menu/MenuBtn'
 import { FundTabs } from '../components/tabs'
@@ -103,7 +104,7 @@ import Api from '../constants/interface'
 export default {
   name: 'MyLayout',
   components: {
-    MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel, DepositDialog, ChannelStatusBar, FundTabs
+    MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel, DepositDialog, ChannelStatusBar, FundTabs, SwitchWalletModel
   },
   data () {
     return {
@@ -119,7 +120,8 @@ export default {
       isInitL2: 'isInitL2',
       account: 'account',
       isShowRoot: 'isShowRoot',
-      isShowFund: 'isShowFund'
+      isShowFund: 'isShowFund',
+      isConfirmChain: 'isConfirmChain'
     }),
     ...mapState('phone', {
       info: 'info',
@@ -187,6 +189,22 @@ export default {
       } else {
         this.$store.commit('config/syncChannelStatus', { channel: this.channel })
       }
+    },
+    isConfirmChain: async function (newValue, oldValue) {
+      if (!newValue) return
+      while (!window.provider) {
+        await sleep(1000)
+      }
+      const account = await this.getAccount()
+      this.$store.commit('config/update', { account: account.toLowerCase() })
+
+      this.$store.dispatch('config/getConfigs')
+
+      this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
+      Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
+      this.$store.dispatch('config/register')
+
+      this.providerUpdate()
     }
   },
   methods: {
@@ -225,21 +243,15 @@ export default {
   },
   created: function () {
     this.$store.commit('gas/initCards')
-    this.getCurrentChain()
+
     window.addEventListener('load', async () => {
-      while (!window.provider) {
-        await sleep(1000)
+      const cacheChain = Preferences.getItem(PrefKeys.CURRENT_CHAIN)
+      const chain = this.getCurrentChain(cacheChain)
+      if (chain === 'Web&&Wan') {
+        this.$store.commit('config/update', { isShowSwitchWModel: true })
+        return
       }
-      const account = await this.getAccount()
-      this.$store.commit('config/update', { account: account.toLowerCase() })
-
-      this.$store.dispatch('config/getConfigs')
-
-      this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
-      Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
-      this.$store.dispatch('config/register')
-
-      this.providerUpdate()
+      this.$store.commit('config/update', { isConfirmChain: true })
     })
   },
   sockets: {

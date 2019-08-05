@@ -309,7 +309,23 @@ export function getChannelStatusStyle (status) {
 /**
  * 获取chain
  */
-export function getCurrentChain () {
+export function getCurrentChain (chain) {
+  if (typeof window.wan3 !== 'undefined' && (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined')) {
+    Preferences.setItem(PrefKeys.IS_CAN_SWITCH, true)
+    // TODO 可以切换
+    if (chain === 'wanchain') {
+      Preferences.setItem(PrefKeys.CURRENT_CHAIN, 'wanchain')
+      window.provider = window.wan3
+      return 'wanchain'
+    }
+    if (chain === 'ethereum') {
+      Preferences.setItem(PrefKeys.CURRENT_CHAIN, 'ethereum')
+      window.provider = window.ethereum || window.web3
+      return 'ethereum'
+    }
+    return 'Web&&Wan'
+  }
+  Preferences.setItem(PrefKeys.IS_CAN_SWITCH, false)
   if (typeof window.wan3 !== 'undefined') {
     Preferences.setItem(PrefKeys.CURRENT_CHAIN, 'wanchain')
     window.provider = window.wan3
@@ -329,7 +345,10 @@ export function getCurrentChain () {
  * 获取账户信息
  */
 export function getAccount () {
-  const chain = getCurrentChain()
+  const chain = Preferences.getItem(PrefKeys.CURRENT_CHAIN)
+  console.log('==============chain======================');
+  console.log(chain);
+  console.log('==============chain======================');
   if (chain === 'wanchain') {
     return getWanAccount()
   }
@@ -340,7 +359,7 @@ export function getAccount () {
  * 获取网络环境
  */
 export async function getNetwork () {
-  const chain = getCurrentChain()
+  const chain = Preferences.getItem(PrefKeys.CURRENT_CHAIN)
   if (chain === 'wanchain') {
     return getWanNetId()
   }
@@ -354,7 +373,7 @@ export function getWalletInfo () {
   // console.log('===========getWalletInfo=========================')
   // console.log(window.web3.currentProvider)
   // console.log('===========getWalletInfo=========================')
-  const chain = getCurrentChain()
+  const chain = Preferences.getItem(PrefKeys.CURRENT_CHAIN)
   if (chain === 'wanchain') {
     return 'WanMask'
   }
@@ -388,7 +407,7 @@ export function getWalletInfo () {
  * watch provider
  */
 export function providerUpdate () {
-  const chain = this.getCurrentChain()
+  const chain = Preferences.getItem(PrefKeys.CURRENT_CHAIN)
   if (chain === 'wanchain') {
     console.log('===========wanchain=========================');
     wanProviderUpdate();

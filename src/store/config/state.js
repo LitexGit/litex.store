@@ -40,6 +40,20 @@ export default {
   showDepositDialog: false,
   showSelectDropdown: false,
 
+  chain: undefined,
+  isShowSwitchWModel: false,
+  isConfirmChain: false,
+
+  chains: [{
+    key: 'wanchain',
+    label: 'ETH钱包',
+    provider: 'ethereum'
+  }, {
+    key: 'ethereum',
+    label: 'WAN钱包',
+    provider: 'wanchain'
+  }],
+
   menuList: [{
     key: 'shop',
     label: '商城'

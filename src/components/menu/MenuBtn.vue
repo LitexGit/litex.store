@@ -5,7 +5,7 @@
         <q-item
           clickable
           v-close-popup
-          v-for="menuItem in menuList"
+          v-for="menuItem in menus"
           :key="menuItem.key"
           @click="clickItem(menuItem.key)"
         >
@@ -41,6 +41,8 @@
 
 <script>
 import { mapState } from 'vuex'
+import { Preferences, PrefKeys } from '../../utils/preferences'
+
 let deg = 0
 export default {
   name: 'MenuBtn',
@@ -52,8 +54,19 @@ export default {
   computed: {
     ...mapState('config', [
       'menuList',
-      'telegramURL'
-    ])
+      'telegramURL',
+      'chain'
+    ]),
+    menus: function () {
+      const isCanSwitch = Preferences.getItem(PrefKeys.IS_CAN_SWITCH) || false
+      if (!isCanSwitch) return this.menuList
+      let menus = []
+      for (const menu of this.menuList) {
+        menus.push(menu)
+      }
+      menus.push({ key: 'chain', label: '切换账户' })
+      return menus
+    }
   },
   methods: {
     click () {
