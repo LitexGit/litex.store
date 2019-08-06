@@ -346,9 +346,9 @@ export function getCurrentChain (chain) {
  */
 export function getAccount () {
   const chain = Preferences.getItem(PrefKeys.CURRENT_CHAIN)
-  console.log('==============chain======================');
-  console.log(chain);
-  console.log('==============chain======================');
+  // console.log('==============chain======================');
+  // console.log(chain);
+  // console.log('==============chain======================');
   if (chain === 'wanchain') {
     return getWanAccount()
   }
@@ -409,10 +409,10 @@ export function getWalletInfo () {
 export function providerUpdate () {
   const chain = Preferences.getItem(PrefKeys.CURRENT_CHAIN)
   if (chain === 'wanchain') {
-    console.log('===========wanchain=========================');
+    // console.log('===========wanchain=========================');
     wanProviderUpdate();
   } else {
-    console.log('===========wanchain=========================');
+    // console.log('===========wanchain=========================');
     ethProviderUpdate();
   }
 }

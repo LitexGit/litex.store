@@ -41,7 +41,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import { Preferences, PrefKeys } from '../../utils/preferences'
 
 let deg = 0
 export default {
@@ -58,14 +57,15 @@ export default {
       'chain'
     ]),
     menus: function () {
-      const isCanSwitch = Preferences.getItem(PrefKeys.IS_CAN_SWITCH) || false
-      if (!isCanSwitch) return this.menuList
-      let menus = []
-      for (const menu of this.menuList) {
-        menus.push(menu)
+      if (typeof window.wan3 !== 'undefined' && (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined')) {
+        let menus = []
+        for (const menu of this.menuList) {
+          menus.push(menu)
+        }
+        menus.splice(3, 0, { key: 'chain', label: '切换账户' })
+        return menus
       }
-      menus.push({ key: 'chain', label: '切换账户' })
-      return menus
+      return this.menuList
     }
   },
   methods: {
@@ -78,6 +78,9 @@ export default {
       document.getElementById('menuBtn').style.transform = 'rotate(' + deg + 'deg)'
     },
     clickItem (key) {
+      console.log('==========key==========================')
+      console.log(key)
+      console.log('===========key=========================')
       switch (key) {
         case 'shop':
           this.$router.push('/shop/phone')
@@ -87,6 +90,9 @@ export default {
           break
         case 'orders':
           this.$router.push('/shop/order')
+          break
+        case 'chain':
+          this.$store.commit('config/update', { isShowSwitchWModel: true })
           break
         case 'introduction':
           this.showIntroduction = true

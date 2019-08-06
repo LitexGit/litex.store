@@ -19,13 +19,20 @@ export async function getConfigs ({ commit, state }, payload) {
 }
 
 export async function initLayer2 ({ commit, state }, payload) {
-  Vue.prototype.$layer2.setDebug(false)
+  // Vue.prototype.$layer2.setDebug(false)
 
   commit('update', { isInitL2: false })
   process.versions = { node: '11.2.0' }
   const account = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   const { ethPNAddress, appRpcUrl, appPNAddress } = state
-  await Vue.prototype.$layer2.init(account, window.web3Proxy, ethPNAddress, appRpcUrl, appPNAddress)
+  const chain = Preferences.getItem(PrefKeys.CURRENT_CHAIN)
+  const provider = chain === 'ethereum' ? window.web3 : window.wan3
+  console.log('=============initLayer2=======================')
+  console.log(ethPNAddress)
+  console.log(appRpcUrl)
+  console.log(appPNAddress)
+  console.log('=============initLayer2=======================')
+  await Vue.prototype.$layer2.init(account, provider, ethPNAddress, appRpcUrl, appPNAddress)
   commit('update', { isInitL2: true })
 }
 
