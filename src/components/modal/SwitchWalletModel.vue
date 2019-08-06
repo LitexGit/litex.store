@@ -52,6 +52,7 @@ export default {
       this.$store.commit('config/update', { isShowSwitchWModel: false })
     },
     clickConfirm: function () {
+      // set window.provider
       const cache = Preferences.getItem(PrefKeys.CURRENT_CHAIN)
       Preferences.setItem(PrefKeys.CURRENT_CHAIN, this.chain)
       if (this.chain === 'wanchain') {
@@ -59,16 +60,13 @@ export default {
       } else {
         window.provider = window.ethereum || window.web3
       }
-      this.$store.commit('config/update', { isConfirmChain: true })
-      if (cache && cache !== this.chain) {
+      // upate model
+      this.$store.commit('config/update', { isConfirmChain: true, isShowSwitchWModel: false })
+      // init layer2 && reload
+      if (cache !== this.chain) { // cache &&
         window.location.reload(true)
       }
-      this.$store.commit('config/update', { isShowSwitchWModel: false })
     }
-  },
-  mounted: function () {
-    const chain = Preferences.getItem(PrefKeys.CURRENT_CHAIN)
-    this.$store.commit('config/update', { chain })
   }
 }
 </script>

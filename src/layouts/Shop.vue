@@ -242,6 +242,9 @@ export default {
     }
   },
   created: function () {
+    const chain = Preferences.getItem(PrefKeys.CURRENT_CHAIN)
+    this.$store.commit('config/update', { chain })
+
     this.$store.commit('gas/initCards')
 
     window.addEventListener('load', async () => {

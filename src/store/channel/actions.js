@@ -42,7 +42,7 @@ export function preDeposit ({ commit, rootState }, payload) {
     Notify.create({ message: '请稍后...', position: 'top', color: 'red', timeout: duration })
     return
   }
-  if (symbol === 'ETH') {
+  if (symbol === 'ETH' || symbol === 'WAN') {
     commit('updateShowDpositModel', { open: true })
   } else {
     getERC20Allowance({ commit, rootState }, { address })

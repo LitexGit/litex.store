@@ -11,7 +11,10 @@ export async function register ({ commit }, payload) {
 }
 
 export async function getConfigs ({ commit, state }, payload) {
+  console.log('==============getNetwork======================')
   const netId = await getNetwork()
+  console.log(netId)
+  console.log('==============getNetwork======================')
   const walletName = getWalletInfo()
   const data = await api.getConfigs({ netId, walletName }) // : 'Kcash'
   commit('updateConfigs', data)
@@ -55,13 +58,14 @@ export async function getOnchainBalance ({ commit, state }, payload) {
 export async function getBalance ({ commit, state }, payload) {
   let list = []
   const { tokens } = state
+
   for (const token of tokens) {
+    console.log('=============getBalance=======================')
     const { address } = token
+    console.log(address)
     let channelBalance = await Vue.prototype.$layer2.getBalance(address)
-    // console.log('=============getBalance=======================')
-    // console.log(address)
-    // console.log(channelBalance)
-    // console.log('==============getBalance======================')
+    console.log(channelBalance)
+    console.log('==============getBalance======================')
     channelBalance = channelBalance.toString()
     list.push({ address, channelBalance })
   }
