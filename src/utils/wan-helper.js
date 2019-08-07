@@ -1,4 +1,5 @@
 import { Preferences, PrefKeys } from '../utils/preferences'
+import { Notify } from 'quasar'
 
 /**
  * 获取账户信息
@@ -10,11 +11,16 @@ export function getWanAccount () {
       resolve(result)
     })
   })
-  return new Promise(async (resolve) => {
+  return new Promise(async (resolve, reject) => {
     const accounts = await getAccountPromise
     const account = accounts[0]
-    console.log('window.wan3 ==>' + account)
-    resolve(account)
+    if (!account) {
+      Notify.create({ message: '获取账户异常,请检查用户是否登录', position: 'top', color: 'red', timeout: 1500 })
+      reject('获取账户异常,请检查用户是否登录')
+    } else {
+      console.log('window.wan3 ==>' + account)
+      resolve(account)
+    }
   })
 }
 

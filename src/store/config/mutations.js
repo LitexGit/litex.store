@@ -1,6 +1,4 @@
 
-import { Preferences, PrefKeys } from '../../utils/preferences'
-
 export function update (state, payload) {
   Object.keys(payload).forEach(key => {
     this._vm.$set(state, key, payload[key])
@@ -24,16 +22,9 @@ export function updateConfigs (state, config) {
   state.categorys = categorys
   state.telegramURL = telegramUrl
 
-  const chain = Preferences.getItem(PrefKeys.CURRENT_CHAIN)
-  if (chain === 'ethereum') {
-    state.ethPNAddress = ethPNAddress
-    state.appPNAddress = appPNAddress
-    state.appRpcUrl = appRpcUrl
-  } else {
-    state.ethPNAddress = '0xbe5d4d46bd33362f66cb0e6a24c81565ecb565c4'
-    state.appPNAddress = '0x8A7B9f4396483A33fB2fb32B6F67ff9ff4Edf6fE'
-    state.appRpcUrl = 'https://cita.milewan.com:9191'
-  }
+  state.ethPNAddress = ethPNAddress
+  state.appPNAddress = appPNAddress
+  state.appRpcUrl = appRpcUrl
 
   const completion = { status: 0, channelBalance: '0', balance: '0' }
 

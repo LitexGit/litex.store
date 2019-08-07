@@ -254,7 +254,20 @@ export default {
         this.$store.commit('config/update', { isShowSwitchWModel: true })
         return
       }
-      this.$store.commit('config/update', { isConfirmChain: true })
+      // this.$store.commit('config/update', { isConfirmChain: true })
+      while (!window.provider) {
+        await sleep(1000)
+      }
+      const account = await this.getAccount()
+      this.$store.commit('config/update', { account: account.toLowerCase() })
+
+      this.$store.dispatch('config/getConfigs')
+
+      this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
+      Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
+      this.$store.dispatch('config/register')
+
+      this.providerUpdate()
     })
   },
   sockets: {

@@ -16,7 +16,7 @@
         <div class="q-mt-sm text-caption text-weight-light">
           1.<span>您提现的代币将直接进入您的数字钱包账户。</span><br/>
           2.<span>您可以随时提现。</span><br/>
-          3.<span>提现涉及与以太坊的链上交互，提现金额会扣除Gas费。成功的操作可以在“资金记录”中查看</span>
+          3.<span>提现涉及与<span>{{chainDes}}</span>的链上交互，提现金额会扣除Gas费。成功的操作可以在“资金记录”中查看</span>
         </div>
         <center class="q-mt-sm">
           <q-btn class="q-px-xl" dense color="primary" label="全部提现" @click="clickContinue()"/>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import { BalanceView } from '../../components/view'
 
 export default {
@@ -42,6 +42,9 @@ export default {
     }
   },
   computed: {
+    ...mapState('config', {
+      chain: 'chain'
+    }),
     isShowWithdrawModel: {
       get () {
         return this.$store.state.channel.isShowWithdrawModel
@@ -52,6 +55,12 @@ export default {
     },
     token: function () {
       return this.getSelectedToken()
+    },
+    chainDes: function () {
+      if (this.chain === 'wanchain') {
+        return 'Wanchain'
+      }
+      return '以太坊'
     }
   },
   methods: {

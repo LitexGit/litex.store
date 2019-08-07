@@ -44,7 +44,7 @@ export default {
 
   chain: undefined,
   isShowSwitchWModel: false,
-  isConfirmChain: false,
+  isConfirmChain: undefined,
 
   chains: [{
     key: 'wanchain',

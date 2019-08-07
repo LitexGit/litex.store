@@ -3,14 +3,14 @@ import { getNetwork, getChannelStatus, getWalletInfo } from '../../utils/helper'
 import { Preferences, PrefKeys } from '../../utils/preferences'
 import Vue from 'vue'
 
-export async function register ({ commit }, payload) {
+export async function register () {
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   const walletName = getWalletInfo()
   await api.register({ address, walletName })
   // userId
 }
 
-export async function getConfigs ({ commit, state }, payload) {
+export async function getConfigs ({ commit, state }) {
   console.log('==============getNetwork======================')
   const netId = await getNetwork()
   console.log(netId)
@@ -21,7 +21,7 @@ export async function getConfigs ({ commit, state }, payload) {
   await initLayer2({ commit, state })
 }
 
-export async function initLayer2 ({ commit, state }, payload) {
+export async function initLayer2 ({ commit, state }) {
   // Vue.prototype.$layer2.setDebug(false)
 
   commit('update', { isInitL2: false })
@@ -39,7 +39,7 @@ export async function initLayer2 ({ commit, state }, payload) {
   commit('update', { isInitL2: true })
 }
 
-export async function getOnchainBalance ({ commit, state }, payload) {
+export async function getOnchainBalance ({ commit, state }) {
   let list = []
   const { tokens } = state
   try {
@@ -55,7 +55,7 @@ export async function getOnchainBalance ({ commit, state }, payload) {
   }
 }
 
-export async function getBalance ({ commit, state }, payload) {
+export async function getBalance ({ commit, state }) {
   let list = []
   const { tokens } = state
 
@@ -83,16 +83,17 @@ export async function getBalance ({ commit, state }, payload) {
 // user: "0x0000000000000000000000000000000000000000"
 // userBalance: "0"
 // userDeposit: "0"
-export async function getChannelInfo ({ commit, state }, payload) {
+export async function getChannelInfo ({ commit, state }) {
   let list = []
   const { tokens } = state
   for (const token of tokens) {
     const { address } = token
     const info = await Vue.prototype.$layer2.getChannelInfo(address)
     const { status, userBalance } = info
-    // console.log('===============getChannelInfo=====================')
-    // console.log(' status==> ' + status)
-    // console.log('===============getChannelInfo=====================')
+    console.log('===============getChannelInfo=====================')
+    console.log(info)
+    console.log(' status==> ' + status)
+    console.log('===============getChannelInfo=====================')
     const channelStatus = getChannelStatus({ status, tokens, address, userBalance })
     list.push({ address, status: channelStatus })
   }
