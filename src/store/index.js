@@ -9,6 +9,7 @@ import vip from './vip'
 import pn from './pn'
 import order from './order'
 import fund from './fund'
+import life from './life'
 
 import config from './config'
 import channel from './channel'
@@ -32,7 +33,8 @@ export default function (/* { ssrContext } */) {
       vip,
       pn,
       order,
-      fund
+      fund,
+      life
     },
 
     // enable strict mode (adds overhead!)

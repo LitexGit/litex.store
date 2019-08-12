@@ -12,5 +12,9 @@ export default {
 
   GET_ORDER: '/orders',
   GET_SKU: '/config',
-  GET_PRICE: '/price'
+  GET_PRICE: '/price',
+
+  ADD_LIFE_ACCOUNT: '/api/v1/sdm/addAccount',
+  GET_LIFE_ACCOUNTS: '/api/v1/sdm/getAccounts',
+  GET_LIFE_COMPANIES: '/api/v1/sdm/getUnits'
 }

@@ -67,5 +67,29 @@ export default {
   getOrderRecords: async params => {
     const records = await axios.post(Api.POST_ORDER_RECORDS, params)
     return records
+  },
+
+  /**
+   * add life payment account
+   */
+  addAccount: async params => {
+    const accountId = await axios.post(Api.ADD_LIFE_ACCOUNT, params)
+    return accountId
+  },
+
+  /**
+   * get life payment accounts
+   */
+  getAccounts: async params => {
+    const accounts = await axios.post(Api.GET_LIFE_ACCOUNTS, params)
+    return accounts
+  },
+
+  /**
+   * get life payment companies
+   */
+  getCompanies: async params => {
+    const companies = await axios.post(Api.GET_LIFE_COMPANIES, params)
+    return companies
   }
 }
