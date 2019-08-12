@@ -222,6 +222,8 @@ export function getRouter(categoryId) {
             return 'gas'
         case 2:
             return 'vip'
+        case 3:
+            return 'life'
 
         default:
             break;

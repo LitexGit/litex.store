@@ -5,6 +5,7 @@ import AddCard from 'pages/AddCard'
 import Fund from 'pages/Fund'
 import Order from 'pages/Order'
 import CardList from 'pages/CardList'
+import Life from 'pages/Life'
 
 const routes = [{
   path: '/',
@@ -21,6 +22,7 @@ const routes = [{
     { path: 'fund', component: Fund },
     { path: 'order', component: Order },
     { path: 'cardList', component: CardList },
+    { path: 'life', component: Life },
     {
       path: '*',
       component: () =>
