@@ -4,7 +4,7 @@
       <q-card-section class="q-pa-sm" v-if="accounts && accounts.length > 0">
         <div class="q-pb-md q-pl-sm">我的缴费</div>
         <div class="q-px-sm" v-for="(account, index) in accounts" :key="index">
-          <q-btn class="full-width q-pa-xs q-mb-sm">
+          <q-btn class="full-width q-pa-xs q-mb-sm" to="lifeDeal">
             <life-account-item
               class="full-width"
               :name="account.name"

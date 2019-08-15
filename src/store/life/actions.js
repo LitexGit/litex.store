@@ -20,3 +20,9 @@ export async function getCompanies ({ commit }, payload) {
   const companies = await api.getCompanies({ type, cityId })
   commit('updateCompanies', { companies })
 }
+
+export async function getAccountInfo ({ commit }, payload) {
+  const { accountId } = payload
+  const bills = await api.getAccountBill({ accountId })
+  commit('updateAccountBill', { bills })
+}

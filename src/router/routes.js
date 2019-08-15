@@ -7,6 +7,8 @@ import Order from 'pages/Order'
 import CardList from 'pages/CardList'
 import Life from 'pages/Life'
 import LifeAdd from 'pages/LifeAdd'
+import LifeDeal from 'pages/LifeDeal'
+import LifeDealDetail from 'pages/LifeDealDetail'
 
 const routes = [{
   path: '/',
@@ -25,6 +27,8 @@ const routes = [{
     { path: 'cardList', component: CardList },
     { path: 'life', component: Life },
     { path: 'lifeAdd', component: LifeAdd },
+    { path: 'lifeDeal', component: LifeDeal },
+    { path: 'lifeDealDetail', component: LifeDealDetail },
     {
       path: '*',
       component: () =>

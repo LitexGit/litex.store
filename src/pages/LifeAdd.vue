@@ -18,7 +18,7 @@
             :title="title1"
             icon="settings"
             :done="step > 1"
-            :caption="company ? company.name : null"
+            :caption="caption"
             done-color="positive"
             active-color="secondary"
             inactive-color="secondary"
@@ -29,7 +29,6 @@
                 :options="companies"
                 option-label="name"
                 option-value="id"
-                label="请选择缴费单位"
                 dense
               >
                 <template v-slot:selected-item="scope">
@@ -38,7 +37,7 @@
               </q-select>
             </div>
             <q-stepper-navigation>
-              <q-btn @click="step = 2" color="primary" label="下一步" />
+              <q-btn @click="continue1()" color="primary" label="下一步" />
             </q-stepper-navigation>
           </q-step>
 
@@ -62,7 +61,7 @@
               <q-btn color="primary" label="提交" @click="addAccount()" />
               <q-btn
                 flat
-                @click="step = 1"
+                @click="back1()"
                 color="primary"
                 label="返回"
                 class="q-ml-sm"
@@ -85,7 +84,8 @@ export default {
     return {
       step: 1,
       title1: '缴费单位',
-      title2: '缴费户号'
+      title2: '缴费户号',
+      caption: ''
     }
   },
   components: {
@@ -117,8 +117,16 @@ export default {
     getIconName,
     getTypeName,
     addAccount () {
-      this.$store.dispatch('life/addAccount', { accountNumber: this.accountNumber, company: this.company })
-      // this.$router.push('')
+      // this.$store.dispatch('life/addAccount', { accountNumber: this.accountNumber, company: this.company })
+      this.$router.push('lifeDeal')
+    },
+    continue1 () {
+      this.step = 2
+      this.caption = this.company ? this.company.name : null
+    },
+    back1 () {
+      this.step = 1
+      this.caption = null
     }
   },
   created () {

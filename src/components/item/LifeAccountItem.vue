@@ -1,7 +1,7 @@
 <template>
   <div class="row q-py-xs">
     <div class="col-1 self-center q-ml-md q-mr-sm row">
-      <svg class="icon  col self-center" aria-hidden="true">
+      <svg class="icon col self-center" aria-hidden="true">
         <use :xlink:href="getIconName(type)"></use>
       </svg>
     </div>
@@ -39,5 +39,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang="stylus">
+
 </style>
