@@ -38,7 +38,7 @@
           </q-list>
         </q-btn-dropdown>
         <q-separator dark vertical inset />
-        <q-btn flat class="col-3 q-pa-sm" label="支付" color="white" @click="placeOrder()" />
+        <q-btn flat class="col-3 q-pa-sm" label="支付" color="white" @click="placeOrder()" :disable="!payable"/>
       </q-toolbar>
     </q-footer>
     <q-page-container>
@@ -104,6 +104,9 @@ export default {
     ...mapState('channel', {
       channel: 'channel'
     }),
+    ...mapState('life', [
+      'payable'
+    ]),
     phone: function () {
       return this.info.phone
     },

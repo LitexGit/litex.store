@@ -8,7 +8,7 @@ export function updateAccounts (state, payload) {
   const { accounts } = payload
   state.accounts = []
   if (accounts && accounts.length > 0) {
-    accounts.array.forEach(ele => {
+    accounts.forEach(ele => {
       const account = {
         id: ele.id,
         type: ele.type,
@@ -19,6 +19,18 @@ export function updateAccounts (state, payload) {
         cityName: ele.city
       }
       state.accounts.push(account)
+    })
+  }
+}
+
+export function updateAccount (state, payload) {
+  const { accountId } = payload
+  const accounts = state.accounts
+  if (accounts && accounts.length > 0) {
+    accounts.forEach(ele => {
+      if (ele.id === Number(accountId)) {
+        state.account = ele
+      }
     })
   }
 }

@@ -20,15 +20,12 @@ export default {
     }
   ],
   type: 2,
-  company: {
-    id: 1,
-    name: '国网天津市电力公司'
-  },
+  company: undefined,
   accountNumber: undefined,
   accounts: [
     {
       id: 1,
-      type: 2,
+      type: 1,
       number: 1234567890,
       name: '*01室',
       companyId: 0,
@@ -36,12 +33,14 @@ export default {
       city: '北京市'
     }
   ],
+  account: {},
+  depositAmount: undefined,
   bill: {
     accountUserName: '张昭亮', // 客户姓名
     accountNo: 123456789, // 账号
     month: 7, // 账单月
     customerAddress: '北京市昌平区***单元401室', // 地址
-    payAmount: 200, // 应缴金额
+    payAmount: 102, // 应缴金额
     penalty: 0, // 滞纳金
     balance: 0, // 余额
     billCycle: '1231564', // 返回的账单(供下单充值)
@@ -63,5 +62,6 @@ export default {
     {
       type: 3
     }
-  ]
+  ],
+  payable: true
 }

@@ -5,9 +5,9 @@
         <q-card class="q-mt-sm">
           <div class="row q-pt-sm">
             <div class="col text-center ">
-              <q-btn round :id="getIconName(type).substring(1)">
+              <q-btn round id="detailBtn">
                 <svg class="icon text-center" aria-hidden="true">
-                  <use :xlink:href="getIconName(type)"></use>
+                  <use :xlink:href="getIconName(account.type)"></use>
                 </svg>
               </q-btn>
             </div>
@@ -17,7 +17,7 @@
               <div class="col text-subtitle2">缴费金额</div>
             </div>
             <div class="row text-center q-pb-md">
-              <div class="col text-bold text-h4">￥{{ bill.payAmount }}</div>
+              <div class="col text-bold text-h4">￥{{ depositAmount }}</div>
             </div>
             <div class="row q-py-sm">
               <div class="col-5">应缴金额</div>
@@ -25,7 +25,7 @@
             </div>
             <div class="row q-py-sm">
               <div class="col-5">入表金额</div>
-              <div class="col">{{ bill.payAmount }}元</div>
+              <div class="col">{{ depositAmount - bill.payAmount }}元</div>
             </div>
             <div class="row q-py-sm">
               <q-separator />
@@ -40,7 +40,7 @@
             </div>
             <div class="row q-py-sm">
               <div class="col-5">缴费单位</div>
-              <div class="col">{{ company.name }}</div>
+              <div class="col">{{ account.companyName }}</div>
             </div>
             <div class="row q-py-sm">
               <div class="col-5">用电地址</div>
@@ -67,26 +67,23 @@ export default {
   name: 'LifeDealDetail',
   data () {
     return {
-      type: 2,
-      depositAmount: undefined
+      type: 2
     }
   },
   computed: {
     ...mapState('life', [
+      'account',
       'bill',
-      'company'
-    ]),
-    adviceAmount: function () {
-      return 50
-    }
+      'depositAmount'
+    ])
   },
   methods: {
-    getIconName,
-    setAmount (amount) {
-      this.depositAmount = amount
-    }
+    getIconName
   },
   created () {
+  },
+  destroyed () {
+    this.$store.commit('life/update', { depositAmount: undefined })
   }
 }
 </script>

@@ -63,7 +63,8 @@ module.exports = function (ctx) {
         'QTable',
         'QStepper',
         'QStep',
-        'QStepperNavigation'
+        'QStepperNavigation',
+        'QForm'
       ],
 
       directives: ['Ripple', 'ClosePopup'],

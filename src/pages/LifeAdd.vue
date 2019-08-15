@@ -23,22 +23,26 @@
             active-color="secondary"
             inactive-color="secondary"
           >
-            <div>
-              <q-select
-                v-model="company"
-                :options="companies"
-                option-label="name"
-                option-value="id"
-                dense
-              >
-                <template v-slot:selected-item="scope">
-                  {{ company.name }}
-                </template>
-              </q-select>
-            </div>
-            <q-stepper-navigation>
-              <q-btn @click="continue1()" color="primary" label="下一步" />
-            </q-stepper-navigation>
+            <q-form @submit="continue1()">
+              <div>
+                <q-select
+                  v-model="company"
+                  :options="companies"
+                  option-label="name"
+                  option-value="id"
+                  dense
+                  lazy-rules
+                  :rules="[val => val || '需选定缴费单位']"
+                >
+                  <template v-slot:selected-item="scope">
+                    {{ company.name }}
+                  </template>
+                </q-select>
+              </div>
+              <q-stepper-navigation class="q-pt-xs">
+                <q-btn type="submit" color="primary" label="下一步" />
+              </q-stepper-navigation>
+            </q-form>
           </q-step>
 
           <q-step
@@ -50,23 +54,29 @@
             active-color="secondary"
             inactive-color="secondary"
           >
-            <div>
-              <q-input
-                placeholder="请输入缴费户号"
-                v-model="accountNumber"
-                dense
-              ></q-input>
-            </div>
-            <q-stepper-navigation>
-              <q-btn color="primary" label="提交" @click="addAccount()" />
-              <q-btn
-                flat
-                @click="back1()"
-                color="primary"
-                label="返回"
-                class="q-ml-sm"
-              />
-            </q-stepper-navigation>
+            <q-form @submit="addAccount()">
+              <div>
+                <q-input
+                  placeholder="请输入缴费户号"
+                  v-model="accountNumber"
+                  dense
+                  maxlength="10"
+                  :rules="[
+                    val => (val && val.length === 10) || '请输入10位用户编号'
+                  ]"
+                ></q-input>
+              </div>
+              <q-stepper-navigation>
+                <q-btn color="primary" label="提交" type="submit" />
+                <q-btn
+                  flat
+                  @click="back1()"
+                  color="primary"
+                  label="返回"
+                  class="q-ml-sm"
+                />
+              </q-stepper-navigation>
+            </q-form>
           </q-step>
         </q-stepper>
       </div>
@@ -117,12 +127,12 @@ export default {
     getIconName,
     getTypeName,
     addAccount () {
-      // this.$store.dispatch('life/addAccount', { accountNumber: this.accountNumber, company: this.company })
+      this.$store.dispatch('life/addAccount', { accountNumber: this.accountNumber, company: this.company })
       this.$router.push('lifeDeal')
     },
     continue1 () {
       this.step = 2
-      this.caption = this.company ? this.company.name : null
+      this.caption = this.company ? this.company.namee : null
     },
     back1 () {
       this.step = 1
@@ -137,8 +147,12 @@ export default {
       this.$store.commit('life/update', { company: this.companies[0] })
     }
   },
+  mounted () {
+    this.$store.commit('life/update', { payable: false })
+  },
   destroyed () {
     // this.$store.commit('config/update', { isShowRoot: true, isShowFund: false, title: undefined })
+    this.$store.commit('life/update', { payable: true })
   }
 }
 </script>

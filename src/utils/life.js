@@ -7,8 +7,6 @@ export function getIconName (type) {
     case 3:
       return '#icon-ranqifei'
     default:
-      console.log(type)
-      console.log(typeof type)
       return '#icon-bolt'
   }
 }

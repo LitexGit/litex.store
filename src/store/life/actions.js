@@ -3,10 +3,10 @@ import { Preferences, PrefKeys } from '../../utils/preferences'
 
 export async function addAccount ({ commit }, payload) {
   // commit('update', { loading: true })
-  const { accountNumber, company } = payload
-  const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
-  await api.addAccount({ address, householdId: accountNumber, itemId: company.id })
-  commit('update', { type: undefined, accountNumber: undefined, comapny: {} })
+  // const { accountNumber, company } = payload
+  // const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
+  // const accountId = await api.addAccount({ address, householdId: accountNumber, itemId: company.id })
+  commit('update', { type: undefined, accountNumber: undefined, comapny: undefined, account: { id: 1 } })
 }
 
 export async function getAccounts ({ commit }, payload) {
