@@ -38,7 +38,7 @@ export default {
   bill: {
     accountUserName: '张昭亮', // 客户姓名
     accountNo: 123456789, // 账号
-    month: 7, // 账单月
+    month: 201907, // 账单月
     customerAddress: '北京市昌平区***单元401室', // 地址
     payAmount: 102, // 应缴金额
     penalty: 0, // 滞纳金
