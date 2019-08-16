@@ -1,14 +1,24 @@
 export default {
+  recentCities: [
+    {
+      id: 1,
+      name: '北京'
+    },
+    {
+      id: 2,
+      name: '上海'
+    },
+    {
+      id: 3,
+      name: '通辽'
+    }
+  ],
+  cityGroups: [
+  ],
   city: {
     id: 0,
     name: '北京市'
   },
-  cities: [
-    {
-      id: 0,
-      name: '北京市'
-    }
-  ],
   companies: [
     {
       id: 0,

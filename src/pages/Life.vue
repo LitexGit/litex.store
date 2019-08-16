@@ -20,7 +20,7 @@
       <q-card-section class="q-pa-sm">
         <div class="row q-pb-md q-pt-sm">
           <div class="col q-pl-sm">新增缴费</div>
-          <div class="col  q-pr-sm text-right">
+          <div class="col  q-pr-sm text-right" @click="pickCity()">
             {{ city.name }}
             <q-icon name="keyboard_arrow_down" style="font-size:1.5em"></q-icon>
           </div>
@@ -74,6 +74,9 @@ export default {
     toLifeDeal (account) {
       this.$store.commit('life/update', { account: { id: account.id } })
       this.$router.push('lifeDeal')
+    },
+    pickCity () {
+      this.$router.push('cityPicker')
     }
   }
 }

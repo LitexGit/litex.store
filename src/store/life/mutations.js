@@ -1,3 +1,5 @@
+import { dataLetterSort } from '../../utils/life'
+
 export function update (state, payload) {
   Object.keys(payload).forEach(key => {
     this._vm.$set(state, key, payload[key])
@@ -47,6 +49,27 @@ export function updateCompanies (state, payload) {
       state.companies.push(company)
     })
   }
+}
+
+var pinyin = require('pinyin')
+
+export function updateCities (state, payload) {
+  const { cities } = payload
+  if (cities && cities.length > 0) {
+    cities.forEach(city => {
+      const py = pinyin(city.name, {
+        style: pinyin.STYLE_NORMAL
+      }).join('')
+      const fpy = pinyin(city.name, {
+        style: pinyin.STYLE_FIRST_LETTER
+      }).join('')
+      city.py = py
+      city.fpy = fpy
+    })
+  }
+  let cityGroups = dataLetterSort(cities, 'py')
+  // console.log(cityGroups)
+  state.cityGroups = cityGroups
 }
 
 export function updateAccountBill (state, payload) {

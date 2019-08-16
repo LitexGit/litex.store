@@ -86,6 +86,14 @@ export default {
   },
 
   /**
+   * get life cities
+   */
+  getCities: async params => {
+    const cities = await axios.get(Api.GET_LIFE_CITIES, params)
+    return cities
+  },
+
+  /**
    * get life payment companies
    */
   getCompanies: async params => {
@@ -96,7 +104,7 @@ export default {
   /**
    * get life payment account info
    */
-  getAccountInfo: async params => {
+  getAccountBill: async params => {
     const bills = await axios.post(Api.GET_LIFE_ACCOUNT_BILL, params)
     return bills
   },
