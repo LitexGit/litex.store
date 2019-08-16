@@ -81,6 +81,10 @@ export default {
     getIconName
   },
   created () {
+    if (!this.account || !this.account.id) {
+      this.$router.push('life')
+    }
+    this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
   },
   destroyed () {
     this.$store.commit('life/update', { depositAmount: undefined })

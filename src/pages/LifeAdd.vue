@@ -132,7 +132,7 @@ export default {
     },
     continue1 () {
       this.step = 2
-      this.caption = this.company ? this.company.namee : null
+      this.caption = this.company ? this.company.name : null
     },
     back1 () {
       this.step = 1

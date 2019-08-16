@@ -101,7 +101,7 @@ export default {
       const info = { phone: null }
       const selectGoods = { goodsId: null, productId: null }
       this.$store.commit('phone/update', { info, selectGoods, remind: '请输入手机号' })
-      this.$store.dispatch('pn/updatePrice')
+      this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
     },
     clickClose: function () {
       this.$store.commit('order/updateShowOrderDModel', { open: false })

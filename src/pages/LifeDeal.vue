@@ -46,10 +46,14 @@ export default {
   },
   created () {
     // this.$store.dispatch('life/getAccounts')
+    if (!this.account || !this.account.id) {
+      this.$router.push('life')
+    }
     this.$store.commit('life/updateAccount', { accountId: this.account.id })
   },
   mounted () {
-    if (this.account.id !== 1) {
+    console.log('this.account.id', this.account.id)
+    if (this.account.type !== 1) {
       this.$store.commit('life/update', { payable: false })
     }
   },

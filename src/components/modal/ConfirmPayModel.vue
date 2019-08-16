@@ -82,6 +82,12 @@ export default {
           return '流量充值'
         case 3:
           return '加油卡充值'
+        case 4:
+          return '水费'
+        case 5:
+          return '电费'
+        case 6:
+          return '燃气费'
         default:
           return '话费充值'
       }

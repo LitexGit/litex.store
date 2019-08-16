@@ -135,7 +135,7 @@ export default {
         const selectedGoods = { goodsId: null, productId: null }
         this.$store.commit('phone/update', { selectedGoods })
         this.$store.commit('gas/update', { disable: true })
-        this.$store.commit('pn/updatePrice', 0)
+        this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
       } else {
         this.$store.dispatch('gas/getGoodsList', { selectedCard: this.selectedCard })
         this.$store.commit('gas/update', { disable: false })
@@ -169,7 +169,7 @@ export default {
     this.$store.dispatch('gas/getGoodsList', { selectedCard: this.selectedCard })
   },
   destroyed: function () {
-    this.$store.commit('pn/updatePrice', 0)
+    this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
     this.$store.commit('gas/update', { selectedGoods: {} })
   },
   mounted: function () {

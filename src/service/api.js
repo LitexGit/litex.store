@@ -99,5 +99,13 @@ export default {
   getAccountInfo: async params => {
     const bills = await axios.post(Api.GET_LIFE_ACCOUNT_BILL, params)
     return bills
+  },
+
+  /**
+   * place life order
+   */
+  placeLifeOrder: async params => {
+    const order = await axios.post(Api.PLACE_LIFE_ORDER, params)
+    return order
   }
 }

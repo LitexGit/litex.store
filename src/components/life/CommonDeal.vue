@@ -95,11 +95,13 @@ export default {
       'bill'
     ]),
     adviceAmount: function () {
-      return Math.ceil(this.bill.payAmount / 50) * 50
+      const advice = Math.ceil(this.bill.payAmount / 50) * 50
+      return advice < 50 ? 50 : advice
     },
     depositAmount: {
       set: function (val) {
         this.$store.commit('life/update', { depositAmount: val })
+        this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
       },
       get: function () {
         return this.$store.state.life.depositAmount

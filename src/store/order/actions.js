@@ -36,17 +36,32 @@ export async function placeOrder ({ commit, rootState }, payload) {
         phoneNum: selectedCard.tel
       })
       break
+    case '/shop/lifeDeal':
+    case '/shop/lifeDealDetail':
+      break
     default: return
   }
 
-  // 02:校验 商品
-  const { productId, goodsId } = selectGoods
-  if (!productId || !goodsId) {
-    Notify.create({ message: '请先选择下单商品', position: 'top', color: 'red', timeout: duration })
-    return
+  let productId, goodsId
+  switch (path) {
+    case '/shop/phone':
+    case '/shop/gas':
+      // 02:校验 商品
+      productId = selectGoods.productId
+      goodsId = selectGoods.goodsId
+      if (!productId || !goodsId) {
+        Notify.create({ message: '请先选择下单商品', position: 'top', color: 'red', timeout: duration })
+      }
+      break
+    case '/shop/lifeDeal':
+    case '/shop/lifeDealDetail':
+      break
+    default:
+      return
   }
-  const { type: tokenType, decimal, channelBalance, status } = tokens[selected]
+
   // 校验通道状态
+  const { type: tokenType, decimal, channelBalance, status } = tokens[selected]
   console.log('=======placeOrder=====status========================')
   console.log(status)
   console.log('=======placeOrder=====status========================')
@@ -61,7 +76,6 @@ export async function placeOrder ({ commit, rootState }, payload) {
   }
 
   // 03:校验 余额
-
   let { price } = rootState.pn
   price = price * Math.pow(10, decimal)
   const isGte = utils.toBN(price).gte(utils.toBN(channelBalance))
@@ -70,12 +84,27 @@ export async function placeOrder ({ commit, rootState }, payload) {
     commit('config/update', { showDepositDialog: true }, { root: true })
     return
   }
+
   // 04:下单
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
+  let order
   commit('updateLoading', true)
-  const order = await api.placeOrder({ address, accountNum, tokenType, productId, goodsId, remark })
-  commit('updateLoading', false)
-  commit('update', { current: Object.assign(order, { status: 1, productId: selectGoods.productId }) })
+  switch (path) {
+    case '/shop/phone':
+    case '/shop/gas':
+      order = await api.placeOrder({ address, accountNum, tokenType, productId, goodsId, remark })
+      commit('updateLoading', false)
+      commit('update', { current: Object.assign(order, { status: 1, productId: selectGoods.productId }) })
+      break
+    case '/shop/lifeDeal':
+    case '/shop/lifeDealDetail':
+      const { life: { account: { accountId, type }, depositAmount } } = rootState
+      order = await api.placeLifeOrder({ address, accountId, tokenType, depositAmount })
+      commit('update', { current: Object.assign(order, { status: 1, productId: type + 3 }) })
+      break
+    default:
+      return
+  }
   commit('updateShowConfirmPay', { open: true })
 }
 

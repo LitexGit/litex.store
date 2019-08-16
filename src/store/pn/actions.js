@@ -2,30 +2,37 @@ import api from '../../service/api'
 import { mathCeil } from '../../utils/helper'
 
 export async function updatePrice ({ commit, rootGetters, rootState }, payload) {
+  const { path } = payload
   commit('loading', true)
-  const { selectGoods: { price } } = rootState.phone
+  let payPrice
+  switch (path) {
+    case '/shop/phone':
+      const { selectGoods: { phonePrice } } = rootState.phone
+      payPrice = phonePrice
+      break
+    case '/shop/gas':
+      const { selectedGoods: { gasPrice } } = rootState.gas
+      payPrice = gasPrice
+      break
+    case '/shop/life':
+      commit('updatePrice', 0)
+      commit('loading', false)
+      return
+    case '/shop/lifeDeal':
+    case '/shop/lifeDealDetail':
+      const { depositAmount } = rootState.life
+      payPrice = depositAmount * 100
+      break
+    default:
+      return
+  }
   const { tokens, selected } = rootState.config
   const { address, round } = tokens[selected]
   const { tokens: rates } = await api.getRates([{ address }])
   const Ramda = require('ramda')
   const { rate } = Ramda.head(rates)
 
-  let decimal = price / 100 / rate
-  decimal = mathCeil({ decimal, round })
-  commit('updatePrice', decimal)
-  commit('loading', false)
-}
-
-export async function updateGasPrice ({ commit, rootGetters, rootState }, payload) {
-  commit('loading', true)
-  const { selectedGoods: { price } } = rootState.gas
-  const { tokens, selected } = rootState.config
-  const { address, round } = tokens[selected]
-  const { tokens: rates } = await api.getRates([{ address }])
-  const Ramda = require('ramda')
-  const { rate } = Ramda.head(rates)
-
-  let decimal = price / 100 / rate
+  let decimal = payPrice / 100 / rate
   decimal = mathCeil({ decimal, round })
   commit('updatePrice', decimal)
   commit('loading', false)

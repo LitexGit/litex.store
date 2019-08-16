@@ -178,7 +178,7 @@ export default {
     selectToken: function (index) {
       this.$store.commit('config/updateSelected', { index })
       if (!this.isInitL2) return
-      this.$store.dispatch('pn/updatePrice')
+      this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
     },
     placeOrder: function () {
       this.$store.dispatch('order/placeOrder', { path: this.$route.path })

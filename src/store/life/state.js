@@ -40,7 +40,7 @@ export default {
     accountNo: 123456789, // 账号
     month: 201907, // 账单月
     customerAddress: '北京市昌平区***单元401室', // 地址
-    payAmount: 102, // 应缴金额
+    payAmount: 0, // 应缴金额
     penalty: 0, // 滞纳金
     balance: 0, // 余额
     billCycle: '1231564', // 返回的账单(供下单充值)

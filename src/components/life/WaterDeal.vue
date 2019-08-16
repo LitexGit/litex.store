@@ -51,6 +51,10 @@ export default {
       'account',
       'bill'
     ])
+  },
+  created () {
+    this.$store.commit('life/update', { depositAmount: this.bill.payAmount })
+    this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
   }
 }
 </script>

@@ -17,5 +17,6 @@ export default {
   ADD_LIFE_ACCOUNT: '/api/v1/sdm/addAccount',
   GET_LIFE_ACCOUNTS: '/api/v1/sdm/getAccounts',
   GET_LIFE_COMPANIES: '/api/v1/sdm/getUnits',
-  GET_LIFE_ACCOUNT_BILL: '/api/v1/sdm/getAccountInfo'
+  GET_LIFE_ACCOUNT_BILL: '/api/v1/sdm/getAccountInfo',
+  PLACE_LIFE_ORDER: '/api/v1/sdm/placeOrder'
 }

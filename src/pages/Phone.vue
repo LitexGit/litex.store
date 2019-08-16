@@ -81,7 +81,7 @@ export default {
       if (!this.isPoneAvailable(input)) {
         const selectGoods = { goodsId: null, productId: null }
         this.$store.commit('phone/update', { selectGoods })
-        this.$store.dispatch('pn/updatePrice')
+        this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
         this.$store.commit('phone/update', { disable: true })
       } else {
         // this.$store.dispatch('sku/getGoodsList', { accountNum: input, debug: this.debug })
@@ -96,7 +96,7 @@ export default {
       if (!this.isPoneAvailable(phone)) {
         const selectGoods = { goodsId: null, productId: null }
         this.$store.commit('phone/update', { selectGoods })
-        this.$store.dispatch('pn/updatePrice')
+        this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
         this.$store.commit('phone/update', { disable: true })
       } else {
         this.$store.commit('phone/update', { disable: false })
@@ -108,7 +108,7 @@ export default {
     clickGoods: function (goods, productId) {
       goods.productId = productId
       this.$store.commit('phone/update', { selectGoods: goods })
-      this.$store.dispatch('pn/updatePrice')
+      this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
     }
   },
   // 默认商品列表
@@ -120,7 +120,7 @@ export default {
     this.$store.dispatch('phone/getGoodsList', { accountNum: phone, debug: this.debug })
   },
   destroyed: function () {
-    this.$store.commit('pn/updatePrice', 0)
+    this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
     this.$store.commit('phone/update', { selectGoods: {} })
   },
   mounted: function () {
