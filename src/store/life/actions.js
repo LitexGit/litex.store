@@ -10,6 +10,12 @@ export async function addAccount ({ commit }, payload) {
   commit('update', { type: undefined, account: { id: accountId } })
 }
 
+export async function deleteAccount ({ commit }, payload) {
+  const { accountId } = payload
+  const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
+  await api.deleteAccount({ address, accountId })
+}
+
 export async function getAccounts ({ commit }, payload) {
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   const { accountList: accounts } = await api.getAccounts({ address })

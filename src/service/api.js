@@ -78,6 +78,14 @@ export default {
   },
 
   /**
+   * add life payment account
+   */
+  deleteAccount: async params => {
+    const response = await axios.post(Api.DELETE_LIFE_ACCOUNT, params)
+    return response
+  },
+
+  /**
    * get life payment accounts
    */
   getAccounts: async params => {

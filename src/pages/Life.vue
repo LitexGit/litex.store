@@ -4,17 +4,13 @@
       <q-card-section class="q-pa-sm" v-if="accounts && accounts.length > 0">
         <div class="q-pb-md q-pl-sm">我的缴费</div>
         <div class="q-px-sm" v-for="(account, index) in accounts" :key="index">
-          <q-btn
-            class="full-width q-pa-xs q-mb-sm"
-            @click="toLifeDeal(account)"
-          >
-            <life-account-item
-              class="full-width"
-              :name="account.name"
-              :type="account.type"
-              :number="account.number"
-            ></life-account-item>
-          </q-btn>
+          <life-account-item
+            class="full-width"
+            :name="account.name"
+            :type="account.type"
+            :number="account.number"
+            :account="account"
+          ></life-account-item>
         </div>
       </q-card-section>
       <q-card-section class="q-pa-sm">
@@ -77,13 +73,13 @@ export default {
     this.$store.commit('life/update', { payable: true })
   },
   methods: {
-    toLifeDeal (account) {
-      this.$store.dispatch('life/getAccountInfo', { accountId: account.id })
-      if (this.billResponse && this.billResponse.status === '1') {
-        this.$store.commit('life/update', { account: { id: account.id } })
-        this.$router.push('lifeDeal')
-      }
-    },
+    // toLifeDeal (account) {
+    //   this.$store.dispatch('life/getAccountInfo', { accountId: account.id })
+    //   if (this.billResponse && this.billResponse.status === '1') {
+    //     this.$store.commit('life/update', { account: { id: account.id } })
+    //     this.$router.push('lifeDeal')
+    //   }
+    // },
     async toLifeAdd (item) {
       const result = await this.$store.dispatch('life/getCompanies', { cityId: this.city.id, type: item.type })
       if (result === 'ok') {

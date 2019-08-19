@@ -15,6 +15,7 @@ export default {
   GET_PRICE: '/price',
 
   ADD_LIFE_ACCOUNT: '/api/v1/sdm/addAccount',
+  DELETE_LIFE_ACCOUNT: '/api/v1/sdm/deleteAccount',
   GET_LIFE_ACCOUNTS: '/api/v1/sdm/getAccounts',
   GET_LIFE_CITIES: '/api/v1/sdm/getCities',
   GET_LIFE_COMPANIES: '/api/v1/sdm/getUnits',
