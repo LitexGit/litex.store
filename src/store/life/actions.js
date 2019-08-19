@@ -17,9 +17,19 @@ export async function getAccounts ({ commit }, payload) {
 }
 
 export async function getCompanies ({ commit }, payload) {
+  commit('update', { loading: true })
   const { type, cityId } = payload
   const { units: companies } = await api.getCompanies({ type, cityId })
-  commit('updateCompanies', { companies })
+  let result
+  if (companies && companies.length > 0) {
+    commit('updateCompanies', { companies })
+    result = 'ok'
+  } else {
+    Notify.create({ message: '暂不支持该城市当前缴费', position: 'top', color: 'red', timeout: 1500 })
+    result = 'fail'
+  }
+  commit('update', { loading: false })
+  return result
 }
 
 export async function getAccountInfo ({ commit }, payload) {

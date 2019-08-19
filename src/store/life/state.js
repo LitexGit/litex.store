@@ -1,14 +1,6 @@
 export default {
-  recentCities: [
-    {
-      id: 'v1954',
-      name: '北京'
-    },
-    {
-      id: 2,
-      name: '上海'
-    }
-  ],
+  recentCities: [],
+  search: undefined,
   cityGroups: [],
   city: {
     id: 'v1954',

@@ -1,4 +1,5 @@
 import { dataLetterSort } from '../../utils/life'
+import { Preferences } from '../../utils/preferences'
 
 export function update (state, payload) {
   Object.keys(payload).forEach(key => {
@@ -70,6 +71,27 @@ export function updateCities (state, payload) {
   let cityGroups = dataLetterSort(cities, 'py')
   // console.log(cityGroups)
   state.cityGroups = cityGroups
+}
+
+export function getRecentCities (state) {
+  state.recentCities = Preferences.getItem('recentCites')
+}
+
+export function updateRecentCities (state, payload) {
+  const { city } = payload
+  let exist = 0
+  state.recentCities.forEach(ele => {
+    if (ele.name === city.name) {
+      exist = 1
+    }
+  })
+  if (exist === 0) {
+    state.recentCities.unshift(city)
+    if (state.recentCities.length > 3) {
+      state.recentCities.pop()
+    }
+  }
+  Preferences.setItem('recentCites', state.recentCities)
 }
 
 export function updateAccountBill (state, payload) {

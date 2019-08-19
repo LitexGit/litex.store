@@ -31,7 +31,7 @@
             v-for="(item, index) in paymentItems"
             :key="index"
           >
-            <q-btn class="full-width q-mb-md" :to="'lifeAdd?type=' + item.type">
+            <q-btn class="full-width q-mb-md" @click="toLifeAdd(item)">
               <payment-item :type="item.type"></payment-item>
             </q-btn>
           </div>
@@ -63,7 +63,8 @@ export default {
       'accounts',
       'city',
       'billResponse',
-      'loading'
+      'loading',
+      'comapnies'
     ])
   },
   created () {
@@ -81,6 +82,12 @@ export default {
       if (this.billResponse && this.billResponse.status === '1') {
         this.$store.commit('life/update', { account: { id: account.id } })
         this.$router.push('lifeDeal')
+      }
+    },
+    async toLifeAdd (item) {
+      const result = await this.$store.dispatch('life/getCompanies', { cityId: this.city.id, type: item.type })
+      if (result === 'ok') {
+        this.$router.push('lifeAdd?type=' + item.type)
       }
     },
     pickCity () {

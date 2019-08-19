@@ -4,13 +4,13 @@
       <q-card-section class="q-pa-sm q-pr-md">
         <div>
           <div class="q-pb-md">
-            <q-input placeholder="北京/beijing/bj" filled dense
+            <q-input placeholder="北京/bj" filled dense v-model="search"
               ><template v-slot:prepend>
                 <q-icon name="search" /> </template
             ></q-input>
           </div>
 
-          <div class="q-pb-xs">
+          <div class="q-pb-xs" v-if="recentCities.length > 0 && !search">
             <div class="q-pl-xs q-py-sm q-mb-sm bg-grey-3">
               最近访问
             </div>
@@ -26,6 +26,7 @@
                   no-caps
                   color="grey-7"
                   class="city"
+                  @click="setCity(city)"
                 >
                 </q-btn>
               </div>
@@ -87,11 +88,39 @@ export default {
   },
   computed: {
     ...mapState('life', [
-      'recentCities',
-      'cityGroups'
+      'recentCities'
     ]),
+    search: {
+      set: function (search) {
+        this.$store.commit('life/update', { search })
+      },
+      get: function () {
+        return this.$store.state.life.search
+      }
+    },
     words: function () {
       return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+    },
+    cityGroups: function () {
+      const allCityGroups = this.$store.state.life.cityGroups.slice(0)
+      if (!this.search) {
+        return allCityGroups
+      }
+      let newCityGroups = []
+      if (this.search) {
+        allCityGroups.forEach(cityGroup => {
+          let cities = []
+          cityGroup.cities.forEach(city => {
+            if (city.name.indexOf(this.search) !== -1 || city.fpy.indexOf(this.search) === 0) {
+              cities.push(city)
+            }
+          })
+          if (cities.length > 0) {
+            newCityGroups.push({ word: cityGroup.word, cities })
+          }
+        })
+      }
+      return newCityGroups
     }
   },
   methods: {
@@ -102,11 +131,13 @@ export default {
     },
     setCity (city) {
       this.$store.commit('life/update', { city })
+      this.$store.commit('life/updateRecentCities', { city })
       this.$router.push('life')
     }
   },
   created () {
     this.$store.commit('config/update', { isShowRoot: false, isShowFund: false, title: '城市选择' })
+    this.$store.commit('life/getRecentCities')
     this.$store.dispatch('life/getCities')
   },
   destroyed () {
