@@ -8,7 +8,8 @@
     <div class="col-8 column">
       <div class="row">{{ getTypeName(type) }}</div>
       <div class="row text-caption">
-        {{ number + " | " + name }}
+        <!-- {{ number + " | " + name }} -->
+        {{ number }}
       </div>
     </div>
     <div class="col self-center">
@@ -25,7 +26,7 @@ export default {
   props: {
     type: Number,
     name: String,
-    number: Number
+    number: String
   },
   data () {
     return {}
@@ -39,6 +40,4 @@ export default {
 }
 </script>
 
-<style scoped lang="stylus">
-
-</style>
+<style scoped lang="stylus"></style>

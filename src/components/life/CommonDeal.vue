@@ -8,19 +8,19 @@
       <div class="row q-py-sm">
         <q-separator />
       </div>
-      <div class="row q-py-sm">
+      <div class="row q-py-sm" v-if="bill.accountUserName">
         <div class="col-5">缴费户名</div>
         <div class="col">{{ bill.accountUserName }}</div>
       </div>
-      <div class="row q-py-sm">
+      <div class="row q-py-sm" v-if="bill.accountNo">
         <div class="col-5">缴费户号</div>
         <div class="col">{{ bill.accountNo }}</div>
       </div>
-      <div class="row q-py-sm">
+      <div class="row q-py-sm" v-if="account.companyName">
         <div class="col-5">缴费单位</div>
         <div class="col">{{ account.companyName }}</div>
       </div>
-      <div class="row q-py-sm">
+      <div class="row q-py-sm" v-if="bill.customerAddress">
         <div class="col-5">用电地址</div>
         <div class="col">{{ bill.customerAddress }}</div>
       </div>

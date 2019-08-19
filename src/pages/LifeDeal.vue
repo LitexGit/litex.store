@@ -4,7 +4,7 @@
       <q-card-section class="q-pa-sm">
         <q-card class="q-mt-sm">
           <div class="row q-pt-sm">
-            <div class="col text-center ">
+            <div class="col text-center">
               <q-btn round id="detailBtn">
                 <svg class="icon item-center" aria-hidden="true">
                   <use :xlink:href="getIconName(account.type)"></use>
@@ -45,20 +45,29 @@ export default {
     getIconName
   },
   created () {
-    // this.$store.dispatch('life/getAccounts')
     if (!this.account || !this.account.id) {
       this.$router.push('life')
     }
+    // this.$store.dispatch('life/getAccountInfo', { accountId: this.account.id })
+    // console.log('billResponse', billResponse)
+    // if (billResponse.status !== '1') {
+    //   this.$q.notify({
+    //     message: billResponse.message,
+    //     position: 'top',
+    //     color: 'red',
+    //     timeout: 1500
+    //   })
+    //   this.$router.push('life')
+    // }
     this.$store.commit('life/updateAccount', { accountId: this.account.id })
   },
   mounted () {
-    console.log('this.account.id', this.account.id)
     if (this.account.type !== 1) {
       this.$store.commit('life/update', { payable: false })
     }
   },
   destroyed () {
-    this.$store.commit('life/update', { payable: true })
+    this.$store.commit('life/update', { payable: true, account: {} })
   }
 }
 </script>

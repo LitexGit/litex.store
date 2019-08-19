@@ -140,9 +140,9 @@ export default {
     }
   },
   created () {
-    this.$store.commit('life/update', { type: this.$route.query.type })
-    // this.$store.dispatch('life/getCompanies', { cityId: this.city.id, type: this.type })
     // this.$store.commit('config/update', { isShowRoot: false, isShowFund: false, title: '新增缴费' })
+    this.$store.commit('life/update', { type: this.$route.query.type })
+    this.$store.dispatch('life/getCompanies', { cityId: this.city.id, type: this.type })
     if (this.companies && this.companies.length === 1) {
       this.$store.commit('life/update', { company: this.companies[0] })
     }
@@ -152,7 +152,7 @@ export default {
   },
   destroyed () {
     // this.$store.commit('config/update', { isShowRoot: true, isShowFund: false, title: undefined })
-    this.$store.commit('life/update', { payable: true })
+    this.$store.commit('life/update', { payable: true, company: undefined, companies: undefined, accountNumber: undefined })
   }
 }
 </script>

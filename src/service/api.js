@@ -97,7 +97,8 @@ export default {
    * get life payment companies
    */
   getCompanies: async params => {
-    const companies = await axios.post(Api.GET_LIFE_COMPANIES, params)
+    const { type, cityId } = params
+    const companies = await axios.get(Api.GET_LIFE_COMPANIES + '?type=' + type + '&cityId=' + cityId)
     return companies
   },
 

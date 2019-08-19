@@ -41,7 +41,7 @@ export function updateCompanies (state, payload) {
   const { companies } = payload
   state.companies = []
   if (companies && companies.length > 0) {
-    companies.array.forEach(ele => {
+    companies.forEach(ele => {
       const company = {
         id: ele.itemId,
         name: ele.name

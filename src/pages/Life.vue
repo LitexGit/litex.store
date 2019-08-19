@@ -38,6 +38,9 @@
         </div>
       </q-card-section>
     </q-card>
+    <q-inner-loading :showing="loading">
+      <q-spinner-bars size="50px" color="primary" />
+    </q-inner-loading>
   </q-page>
 </template>
 
@@ -58,11 +61,13 @@ export default {
     ...mapState('life', [
       'paymentItems',
       'accounts',
-      'city'
+      'city',
+      'billResponse',
+      'loading'
     ])
   },
   created () {
-    // this.$store.dispatch('life/getAccounts')
+    this.$store.dispatch('life/getAccounts')
   },
   mounted () {
     this.$store.commit('life/update', { payable: false })
@@ -72,8 +77,11 @@ export default {
   },
   methods: {
     toLifeDeal (account) {
-      this.$store.commit('life/update', { account: { id: account.id } })
-      this.$router.push('lifeDeal')
+      this.$store.dispatch('life/getAccountInfo', { accountId: account.id })
+      if (this.billResponse && this.billResponse.status === '1') {
+        this.$store.commit('life/update', { account: { id: account.id } })
+        this.$router.push('lifeDeal')
+      }
     },
     pickCity () {
       this.$router.push('cityPicker')
