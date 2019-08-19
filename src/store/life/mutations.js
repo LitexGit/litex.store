@@ -43,10 +43,20 @@ export function updateCompanies (state, payload) {
   state.companies = []
   if (companies && companies.length > 0) {
     companies.forEach(ele => {
+      // console.log(ele)
+      // let nameList = ele.name.split(' ')
+      // let newNameList = []
+      // nameList.forEach(name => {
+      //   if (name !== '') {
+      //     newNameList.push(name)
+      //   }
+      // })
       const company = {
         id: ele.itemId,
+        // name: newNameList[1]
         name: ele.name
       }
+
       state.companies.push(company)
     })
   }
