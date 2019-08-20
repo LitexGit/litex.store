@@ -59,7 +59,7 @@ export default {
     //   })
     //   this.$router.push('life')
     // }
-    this.$store.commit('life/updateAccount', { accountId: this.account.id })
+    // this.$store.commit('life/updateAccount', { accountId: this.account.id })
   },
   mounted () {
     if (this.account.type !== 1) {
@@ -67,7 +67,8 @@ export default {
     }
   },
   destroyed () {
-    this.$store.commit('life/update', { payable: true, account: {} })
+    this.$store.commit('life/update', { payable: true })
+    // this.$store.commit('life/update', { payable: true })
   }
 }
 </script>

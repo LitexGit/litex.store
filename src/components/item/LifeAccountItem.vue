@@ -54,7 +54,7 @@ export default {
     async toLifeDeal (account) {
       await this.$store.dispatch('life/getAccountInfo', { accountId: account.id })
       if (this.billResponse && this.billResponse.status === '1') {
-        this.$store.commit('life/update', { account: { id: account.id } })
+        this.$store.commit('life/updateAccount', { accountId: account.id })
         this.$router.push('lifeDeal')
       }
     },
