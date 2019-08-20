@@ -2,7 +2,16 @@
   <q-page padding class="flex">
     <q-card class="q-pa-sm container">
       <q-card-section>
-        <q-input filled counter maxlength="11" type='tel' :label="remind" v-model="phone" @blur="blur({phone})" @input="inputValue">
+        <q-input
+          filled
+          counter
+          maxlength="11"
+          type="tel"
+          :label="remind"
+          v-model="phone"
+          @blur="blur({ phone })"
+          @input="inputValue"
+        >
           <template v-slot:prepend>
             <q-icon name="smartphone" />
           </template>
@@ -11,18 +20,38 @@
           </template>
         </q-input>
       </q-card-section>
-      <q-card-section v-for="(product, index) in skus" :key="index" class="q-gutter-sm">
-        <div>{{product.productDes}}</div>
-        <q-btn v-for="(goods, index) in product.goodsList" :key="index" :color="disable ? 'grey-6' : 'primary'"
-          :disable="disable" :outline="goods.goodsId!=selectGoods.goodsId" @click="clickGoods(goods, product.productId)">
+      <q-card-section
+        v-for="(product, index) in skus"
+        :key="index"
+        class="q-gutter-sm"
+      >
+        <div>{{ product.productDes }}</div>
+        <q-btn
+          v-for="(goods, index) in product.goodsList"
+          :key="index"
+          :color="disable ? 'grey-6' : 'primary'"
+          :disable="disable"
+          :outline="goods.goodsId != selectGoods.goodsId"
+          @click="clickGoods(goods, product.productId)"
+        >
           <div>
-            <div>{{goods.goodsDes}}</div>
+            <div>{{ goods.goodsDes }}</div>
             <small>
-              售价:<span>{{(goods.price / 100).toFixed(2)}}</span>元
+              售价:<span>{{ (goods.price / 100).toFixed(2) }}</span
+              >元
             </small>
           </div>
-          </q-btn>
+        </q-btn>
       </q-card-section>
+      <!-- <div class="text-center q-mt-sm">
+        <q-btn
+          flat
+          type="a"
+          label="充值记录"
+          color="blue"
+          to="phoneRecords"
+        ></q-btn>
+      </div> -->
     </q-card>
     <q-inner-loading :showing="loading001 || loading002">
       <q-spinner-bars size="50px" color="primary" />
@@ -131,6 +160,6 @@ export default {
 
 <style scoped>
 .container {
-  flex: 1
+  flex: 1;
 }
 </style>

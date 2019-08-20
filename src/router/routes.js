@@ -10,6 +10,8 @@ import LifeAdd from 'pages/LifeAdd'
 import LifeDeal from 'pages/LifeDeal'
 import LifeDealDetail from 'pages/LifeDealDetail'
 import LifeRecords from 'pages/LifeRecords'
+import PhoneRecords from 'pages/PhoneRecords'
+import GasRecords from 'pages/GasRecords'
 import CityPicker from 'pages/CityPicker'
 
 const routes = [{
@@ -32,6 +34,8 @@ const routes = [{
     { path: 'lifeDeal', component: LifeDeal },
     { path: 'lifeDealDetail', component: LifeDealDetail },
     { path: 'lifeRecords', component: LifeRecords },
+    { path: 'phoneRecords', component: PhoneRecords },
+    { path: 'gasRecords', component: GasRecords },
     { path: 'cityPicker', component: CityPicker },
     {
       path: '*',

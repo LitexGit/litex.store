@@ -83,6 +83,15 @@
           </div>
         </q-btn>
       </q-card-section>
+      <!-- <div class="text-center q-mt-sm">
+        <q-btn
+          flat
+          type="a"
+          label="充值记录"
+          color="blue"
+          to="gasRecords"
+        ></q-btn>
+      </div> -->
     </q-card>
     <q-inner-loading :showing="loading || channelLoading">
       <q-spinner-bars size="50px" color="primary" />
