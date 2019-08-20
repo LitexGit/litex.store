@@ -60,9 +60,13 @@
                   placeholder="请输入缴费户号"
                   v-model="accountNumber"
                   dense
-                  maxlength="10"
+                  :maxlength="Number(type) === 1 ? 9 : 10"
                   :rules="[
-                    val => (val && val.length === 10) || '请输入10位用户编号'
+                    Number(type) === 1
+                      ? val =>
+                          (val && val.length === 9) || '请输入9位用户编号'
+                      : val =>
+                          (val && val.length === 10) || '请输入10位用户编号'
                   ]"
                 ></q-input>
               </div>
