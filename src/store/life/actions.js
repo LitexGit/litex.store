@@ -55,8 +55,8 @@ export async function getAccountInfo ({ commit }, payload) {
   } else {
     Notify.create({ message, position: 'top', color: 'red', timeout: 1500 })
   }
-  commit('update', { loading: false })
   commit('update', { billResponse: { message, status } })
+  commit('update', { loading: false })
 }
 
 export async function getCities ({ commit }, payload) {
