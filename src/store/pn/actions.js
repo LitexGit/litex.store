@@ -7,8 +7,8 @@ export async function updatePrice ({ commit, rootGetters, rootState }, payload) 
   let payPrice
   switch (path) {
     case '/shop/phone':
-      const { selectGoods: { phonePrice } } = rootState.phone
-      payPrice = phonePrice
+      const { selectGoods: { price } } = rootState.phone
+      payPrice = price
       break
     case '/shop/gas':
       const { selectedGoods: { gasPrice } } = rootState.gas

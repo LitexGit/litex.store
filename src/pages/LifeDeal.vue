@@ -68,7 +68,7 @@ export default {
   },
   destroyed () {
     this.$store.commit('life/update', { payable: true })
-    // this.$store.commit('life/update', { payable: true })
+    this.$store.commit('pn/updatePrice', 0)
   }
 }
 </script>

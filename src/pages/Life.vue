@@ -65,6 +65,7 @@ export default {
   },
   created () {
     this.$store.dispatch('life/getAccounts')
+    // this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
   },
   mounted () {
     this.$store.commit('life/update', { payable: false })

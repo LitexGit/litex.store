@@ -88,6 +88,7 @@ export default {
   },
   destroyed () {
     this.$store.commit('life/update', { depositAmount: undefined })
+    this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
   }
 }
 </script>
