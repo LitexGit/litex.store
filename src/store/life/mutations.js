@@ -9,8 +9,6 @@ export function update (state, payload) {
 
 export function updateAccounts (state, payload) {
   const { accounts } = payload
-  console.log('accounts', accounts)
-
   state.accounts = []
   if (accounts && accounts.length > 0) {
     accounts.forEach(ele => {
@@ -35,7 +33,6 @@ export function updateAccount (state, payload) {
     accounts.forEach(ele => {
       if (ele.id === Number(accountId)) {
         state.account = ele
-        console.log('state.account', state.account)
       }
     })
   }

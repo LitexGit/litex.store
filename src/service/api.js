@@ -89,6 +89,8 @@ export default {
    * get life payment accounts
    */
   getAccounts: async params => {
+    // const res = await axios.get('http://60.205.207.34:38080/aps/account/login')
+    // console.log('res', res)
     const accounts = await axios.post(Api.GET_LIFE_ACCOUNTS, params)
     return accounts
   },

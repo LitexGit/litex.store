@@ -60,14 +60,8 @@
                   placeholder="请输入缴费户号"
                   v-model="accountNumber"
                   dense
-                  :maxlength="Number(type) === 1 ? 9 : 10"
-                  :rules="[
-                    Number(type) === 1
-                      ? val =>
-                          (val && val.length === 9) || '请输入9位用户编号'
-                      : val =>
-                          (val && val.length === 10) || '请输入10位用户编号'
-                  ]"
+                  :maxlength="maxlength"
+                  :rules="rules"
                 ></q-input>
               </div>
               <q-stepper-navigation>
@@ -85,6 +79,9 @@
         </q-stepper>
       </div>
     </q-card>
+    <q-inner-loading :showing="loading">
+      <q-spinner-bars size="50px" color="primary" />
+    </q-inner-loading>
   </q-page>
 </template>
 
@@ -108,7 +105,9 @@ export default {
     ...mapState('life', [
       'city',
       'companies',
-      'type'
+      'type',
+      'loading',
+      'account'
     ]),
     company: {
       set: function (obj) {
@@ -125,14 +124,46 @@ export default {
       get: function () {
         return this.$store.state.life.accountNumber
       }
+    },
+    maxlength: function () {
+      switch (Number(this.type)) {
+        case 1: return 9
+        case 2: return 10
+        case 3: return 11
+        default:
+          return 10
+      }
+    },
+    rules: function () {
+      switch (Number(this.type)) {
+        case 1:
+          return [
+            val => (val && val.length === 9) || '请输入9位用户编号'
+          ]
+        case 2: return [
+          val => (val && val.length === 10) || '请输入10位用户编号'
+        ]
+        case 3: return [
+          val => (val && val.length === 11) || '请输入11位用户编号'
+        ]
+        default:
+          return [
+            val => (val && val.length === 9) || '请输入9位用户编号'
+          ]
+      }
     }
   },
   methods: {
     getIconName,
     getTypeName,
-    addAccount () {
-      this.$store.dispatch('life/addAccount', { accountNumber: this.accountNumber, company: this.company })
-      this.$router.push('lifeDeal')
+    async addAccount () {
+      await this.$store.dispatch('life/addAccount', { accountNumber: this.accountNumber, company: this.company })
+      // await this.$store.dispatch('life/getAccountInfo', { accountId: this.account.id })
+      // if (this.billResponse && this.billResponse.status === '1') {
+      //   this.$store.commit('life/updateAccount', { accountId: this.account.id })
+      //   this.$router.push('lifeDeal')
+      // }
+      this.$router.push('life')
     },
     continue1 () {
       this.step = 2

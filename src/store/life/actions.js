@@ -3,12 +3,16 @@ import { Preferences, PrefKeys } from '../../utils/preferences'
 import { Notify } from 'quasar'
 
 export async function addAccount ({ commit, dispatch }, payload) {
-  // commit('update', { loading: true })
+  commit('update', { loading: true })
   const { accountNumber, company } = payload
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
-  const { accountId } = await api.addAccount({ address, householdId: accountNumber, itemId: company.id })
-  commit('update', { type: undefined, account: { id: accountId } })
-  dispatch('getAccounts')
+  const result = await api.addAccount({ address, householdId: accountNumber, itemId: company.id })
+  if (result && result.accountId) {
+    const { accountId } = result
+    commit('update', { type: undefined, account: { id: accountId } })
+    dispatch('getAccounts')
+  }
+  commit('update', { loading: false })
 }
 
 export async function deleteAccount ({ commit, dispatch }, payload) {
