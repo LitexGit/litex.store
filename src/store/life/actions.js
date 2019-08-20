@@ -2,18 +2,20 @@ import api from '../../service/api'
 import { Preferences, PrefKeys } from '../../utils/preferences'
 import { Notify } from 'quasar'
 
-export async function addAccount ({ commit }, payload) {
+export async function addAccount ({ commit, dispatch }, payload) {
   // commit('update', { loading: true })
   const { accountNumber, company } = payload
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   const { accountId } = await api.addAccount({ address, householdId: accountNumber, itemId: company.id })
   commit('update', { type: undefined, account: { id: accountId } })
+  dispatch('getAccounts')
 }
 
-export async function deleteAccount ({ commit }, payload) {
+export async function deleteAccount ({ commit, dispatch }, payload) {
   const { accountId } = payload
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   await api.deleteAccount({ address, accountId })
+  dispatch('getAccounts')
 }
 
 export async function getAccounts ({ commit }, payload) {
