@@ -126,5 +126,13 @@ export default {
   placeLifeOrder: async params => {
     const order = await axios.post(Api.PLACE_LIFE_ORDER, params)
     return order
+  },
+
+  /**
+   * get life records
+   */
+  getLifeRecords: async params => {
+    const records = await axios.post(Api.GET_LIFE_RECORDS, params)
+    return records
   }
 }

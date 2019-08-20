@@ -32,6 +32,7 @@
             </q-btn>
           </div>
         </div>
+        <life-records-view label="缴费记录" to="lifeRecords"></life-records-view>
       </q-card-section>
     </q-card>
     <q-inner-loading :showing="loading">
@@ -42,6 +43,7 @@
 
 <script>
 import { PaymentItem, LifeAccountItem } from '../components/item'
+import { LifeRecordsView } from '../components/view'
 import { mapState } from 'vuex'
 
 export default {
@@ -51,7 +53,7 @@ export default {
     }
   },
   components: {
-    PaymentItem, LifeAccountItem
+    PaymentItem, LifeAccountItem, LifeRecordsView
   },
   computed: {
     ...mapState('life', [

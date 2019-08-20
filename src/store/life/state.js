@@ -41,5 +41,55 @@ export default {
       type: 3
     }
   ],
-  payable: true
+  payable: true,
+  records: [
+    {
+      stamp: new Date().getTime(),
+      orderInfo: {
+        orderNo: '1',
+        householdId: '123456789',
+        type: 1,
+        unit: '北京市国家电网公司',
+        fiatAmount: 100
+      },
+      token: {
+        symbol: 'ETH',
+        decimal: 18,
+        amount: 100000000000000000000000000
+      },
+      status: 0
+    },
+    {
+      stamp: new Date().getTime(),
+      orderInfo: {
+        orderNo: '1',
+        householdId: '123456789',
+        type: 1,
+        unit: '北京市国家电网公司',
+        fiatAmount: 100
+      },
+      token: {
+        symbol: 'ETH',
+        decimal: 18,
+        amount: 100000000000000000000000000
+      },
+      status: 0
+    },
+    {
+      stamp: new Date().getTime(),
+      orderInfo: {
+        orderNo: '1',
+        householdId: '123456789',
+        type: 1,
+        unit: '北京市国家电网公司',
+        fiatAmount: 100
+      },
+      token: {
+        symbol: 'ETH',
+        decimal: 18,
+        amount: 100000000000000000000000000
+      },
+      status: 0
+    }
+  ]
 }

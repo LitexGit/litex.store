@@ -20,5 +20,6 @@ export default {
   GET_LIFE_CITIES: '/api/v1/sdm/getCities',
   GET_LIFE_COMPANIES: '/api/v1/sdm/getUnits',
   GET_LIFE_ACCOUNT_BILL: '/api/v1/sdm/getAccountInfo',
-  PLACE_LIFE_ORDER: '/api/v1/sdm/placeOrder'
+  PLACE_LIFE_ORDER: '/api/v1/sdm/placeOrder',
+  GET_LIFE_RECORDS: '/api/v1/sdm/getOrders'
 }

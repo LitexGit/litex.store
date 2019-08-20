@@ -71,3 +71,9 @@ export async function getCities ({ commit }, payload) {
   // const end = new Date().getTime()
   // console.log('cost time:', end - start)
 }
+
+export async function getRecords ({ commit }, payload) {
+  const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
+  const records = api.getLifeRecords({ address })
+  commit('update', { records })
+}
