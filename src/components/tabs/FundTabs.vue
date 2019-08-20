@@ -1,7 +1,6 @@
 <template>
   <div>
     <q-tabs
-      v-model="type"
       dense
       class="bg-primary text-white row"
       indicator-bg-color="primary"
@@ -31,11 +30,7 @@ export default {
   computed: {
     ...mapState('config', [
       'tokens', 'selected', 'account'
-    ]),
-    type: function () {
-      const { type = 1 } = this.tokens[this.selected] || {}
-      return type
-    }
+    ])
   },
   methods: {
     back: () => {
