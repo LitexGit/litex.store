@@ -5,7 +5,7 @@
         <q-list>
           <q-item-label header class="q-pt-sm q-pb-sm">缴费记录</q-item-label>
           <div v-for="(record, index) in records" :key="index">
-            <q-separator inset class="q-my-xs"/>
+            <q-separator inset class="q-my-xs" />
             <q-item clickable v-ripple>
               <q-item-section avatar class="self-center">
                 <svg class="icon" aria-hidden="true">
@@ -18,6 +18,7 @@
                   {{ getTypeName(record.orderInfo.type) }} -
                   {{ record.orderInfo.householdId }}
                 </q-item-label>
+                <q-item-label caption></q-item-label>
                 <q-item-label caption>
                   {{ format(new Date(record.stamp), "MM-DD HH:mm") }}
                 </q-item-label>
@@ -51,7 +52,7 @@ export default {
     getIconName, getTypeName, format
   },
   created () {
-    // this.$store.dispatch('life/getRecords')
+    this.$store.dispatch('life/getRecords')
   }
 }
 </script>

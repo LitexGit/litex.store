@@ -74,6 +74,6 @@ export async function getCities ({ commit }, payload) {
 
 export async function getRecords ({ commit }, payload) {
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
-  const records = api.getLifeRecords({ address })
+  const records = await api.getLifeRecords({ address })
   commit('update', { records })
 }
