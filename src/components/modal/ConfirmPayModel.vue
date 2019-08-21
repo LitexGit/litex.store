@@ -1,24 +1,49 @@
 <template>
-  <q-dialog v-model="isShowConfirmPay" position='bottom'
-    @hide="hide()" @cancel="clickCancel()">
+  <q-dialog
+    v-model="isShowConfirmPay"
+    position="bottom"
+    @hide="hide()"
+    @cancel="clickCancel()"
+  >
     <div class="container">
       <div class="bg-primary q-pa-sm">
-        <q-btn class="absolute-top-left" color="white" round outline flat size="md" icon="close" @click="clickClose()"/>
-          <center>
-            <span class="text-subtitle1 text-white">确认支付</span>
-          </center>
+        <q-btn
+          class="absolute-top-left"
+          color="white"
+          round
+          outline
+          flat
+          size="md"
+          icon="close"
+          @click="clickClose()"
+        />
+        <center>
+          <span class="text-subtitle1 text-white">确认支付</span>
+        </center>
       </div>
       <div class="q-pa-md bg-white">
         <center class="text-subtitle1">
-          <span>{{amount}}</span>&nbsp;<span>{{symbol}}</span>
+          <span>{{ amount }}</span
+          >&nbsp;<span>{{ symbol }}</span>
         </center>
         <div class="q-py-md q-px-md text-body2">
-          <span>订单信息：<span>{{orderinfo.accountNum}}</span></span> <br/>
-          <span>{{use}}：￥<span>{{fiat}}</span></span> <br/>
-          <span>付款方式：</span><span>{{symbol}}</span>
+          <span
+            >订单信息：<span>{{ orderinfo.accountNum }}</span></span
+          >
+          <br />
+          <span
+            >{{ use }}：￥<span>{{ fiat }}</span></span
+          >
+          <br />
+          <span>付款方式：</span><span>{{ symbol }}</span>
         </div>
         <center>
-          <q-btn class="q-px-xl" color="primary" label="支付" @click="clickConfirm()"/>
+          <q-btn
+            class="q-px-xl"
+            color="primary"
+            label="支付"
+            @click="clickConfirm()"
+          />
         </center>
       </div>
     </div>
@@ -52,10 +77,14 @@ export default {
     },
     amount: function () {
       let amount = this.orderinfo.amount || '0'
+      console.log('amount', amount)
       const decimal = this.getSelectedToken().decimal
+      console.log('decimal', decimal)
       const round = this.getSelectedToken().round
       amount = toDecimal({ amount, decimal, pos: round + 1 })
-      return mathCeil({ decimal: amount, round })
+      const result = mathCeil({ decimal: amount, round })
+      console.log('result', result)
+      return result
     },
     orderinfo: function () {
       return this.current.orderinfo || {}

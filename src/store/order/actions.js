@@ -98,8 +98,10 @@ export async function placeOrder ({ commit, rootState }, payload) {
       break
     case '/shop/lifeDeal':
     case '/shop/lifeDealDetail':
-      const { life: { account: { accountId, type }, depositAmount } } = rootState
-      order = await api.placeLifeOrder({ address, accountId, tokenType, depositAmount })
+      const { life: { account: { id: accountId, type }, depositAmount } } = rootState
+      order = await api.placeLifeOrder({ address, accountId, tokenType, fiatAmount: depositAmount * 100 })
+      order.orderinfo = order.orderInfo
+      order.ordered = order.orderNo
       commit('update', { current: Object.assign(order, { status: 1, productId: type + 3 }) })
       break
     default:

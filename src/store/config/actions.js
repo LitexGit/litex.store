@@ -23,7 +23,7 @@ export async function getConfigs ({ commit, state }, payload) {
 
 export async function initLayer2 ({ commit, state }, payload) {
   commit('update', { isInitL2: false })
-  Vue.prototype.$layer2.setDebug(false)
+  Vue.prototype.$layer2.setDebug(true)
 
   process.versions = { node: '11.2.0' }
   const account = Preferences.getItem(PrefKeys.USER_ACCOUNT)

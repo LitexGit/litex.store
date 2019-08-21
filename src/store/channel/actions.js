@@ -157,6 +157,7 @@ export async function transfer ({ commit, rootState }, payload) {
   })
   const { address } = token
   Loading.show()
+  // console.log('orderinfo,ordered', orderinfo, ordered)
   try {
     await Vue.prototype.$layer2.transfer(amount, address, ordered, timeout)
   } catch (error) {
