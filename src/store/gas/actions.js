@@ -1,4 +1,5 @@
 import api from '../../service/api'
+import { Preferences, PrefKeys } from '../../utils/preferences'
 
 export async function getGoodsList ({ commit }, payload) {
   commit('update', { loading: true })
@@ -13,4 +14,15 @@ export async function getGoodsList ({ commit }, payload) {
   } else {
     commit('update', { disable: false })
   }
+}
+
+export async function getRecords ({ commit }, payload) {
+  const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
+  const type = 3 // 加油卡
+  // 加油卡充值记录
+  const records = api.getLifeRecords({ address, type: type })
+  records.forEach(element => {
+    element.type = 3
+  })
+  commit('update', { records })
 }

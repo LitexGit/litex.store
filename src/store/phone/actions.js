@@ -1,5 +1,6 @@
 import api from '../../service/api'
 import { isPoneAvailable } from '../../utils/helper'
+import { Preferences, PrefKeys } from '../../utils/preferences'
 
 export async function getGoodsList ({ commit }, payload) {
   commit('loading', true)
@@ -17,4 +18,21 @@ export async function getGoodsList ({ commit }, payload) {
   } else {
     commit('update', { disable: false })
   }
+}
+export async function getRecords ({ commit }, payload) {
+  const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
+  const type1 = 1 // 话费
+  const type2 = 2 // 流量
+  // 话费充值记录
+  const callRecords = api.getLifeRecords({ address, type: type1 })
+  callRecords.forEach(element => {
+    element.type = 1
+  })
+  // 流量充值记录
+  const flowRecords = api.getLifeRecords({ address, type: type2 })
+  flowRecords.forEach(element => {
+    element.type = 2
+  })
+
+  commit('updateRecords', { records: callRecords.push.apply(callRecords, flowRecords) })
 }

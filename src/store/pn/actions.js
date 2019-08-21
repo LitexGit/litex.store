@@ -14,16 +14,14 @@ export async function updatePrice ({ commit, rootGetters, rootState }, payload) 
       const { selectedGoods: { gasPrice } } = rootState.gas
       payPrice = gasPrice
       break
-    case '/shop/life':
-      commit('updatePrice', 0)
-      commit('loading', false)
-      return
     case '/shop/lifeDeal':
     case '/shop/lifeDealDetail':
       const { depositAmount } = rootState.life
       payPrice = depositAmount * 100
       break
     default:
+      commit('updatePrice', 0)
+      commit('loading', false)
       return
   }
   const { tokens, selected } = rootState.config

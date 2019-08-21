@@ -46,9 +46,9 @@ export default {
   }, {
     key: 'funds',
     label: '资金记录'
-  }, {
-    key: 'orders',
-    label: '订单列表'
+    // }, {
+    //   key: 'orders',
+    //   label: '订单列表'
   }, {
     key: 'introduction',
     label: '说明'

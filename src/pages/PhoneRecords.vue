@@ -1,10 +1,13 @@
 <template>
-  <q-page padding></q-page>
+  <records-component
+    :records="records"
+    iconName="smartphone"
+  ></records-component>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import format from 'date-fns/format'
+import { RecordsComponent } from '../components/records'
 
 export default {
   name: 'PhoneRecords',
@@ -13,8 +16,10 @@ export default {
       'records'
     ])
   },
+  components: {
+    RecordsComponent
+  },
   methods: {
-    format
   },
   created () {
     // this.$store.dispatch('phone/getRecords')

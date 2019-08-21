@@ -83,7 +83,7 @@
           </div>
         </q-btn>
       </q-card-section>
-      <!-- <div class="text-center q-mt-sm">
+      <div class="text-center">
         <q-btn
           flat
           type="a"
@@ -91,7 +91,7 @@
           color="blue"
           to="gasRecords"
         ></q-btn>
-      </div> -->
+      </div>
     </q-card>
     <q-inner-loading :showing="loading || channelLoading">
       <q-spinner-bars size="50px" color="primary" />

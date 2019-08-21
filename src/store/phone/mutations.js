@@ -28,3 +28,11 @@ export function updatePhoneRemind (state, { phone }) {
 export function updateSelectedSku (state, selected) {
   state.selected = selected
 }
+
+export function updateRecords (state, payload) {
+  const { records } = payload
+  records.sort((record1, record2) => {
+    return record2.stamp - record1.stamp
+  })
+  state.records = records
+}

@@ -18,7 +18,6 @@
                   {{ getTypeName(record.orderInfo.type) }} -
                   {{ record.orderInfo.householdId }}
                 </q-item-label>
-                <q-item-label caption> </q-item-label>
                 <q-item-label caption>
                   {{ format(new Date(record.stamp), "MM-DD HH:mm") }}
                 </q-item-label>

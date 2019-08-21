@@ -43,7 +43,7 @@
           </div>
         </q-btn>
       </q-card-section>
-      <!-- <div class="text-center q-mt-sm">
+      <div class="text-center q-mt-sm">
         <q-btn
           flat
           type="a"
@@ -51,7 +51,7 @@
           color="blue"
           to="phoneRecords"
         ></q-btn>
-      </div> -->
+      </div>
     </q-card>
     <q-inner-loading :showing="loading001 || loading002">
       <q-spinner-bars size="50px" color="primary" />
