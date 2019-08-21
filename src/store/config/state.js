@@ -15,8 +15,8 @@ export default {
   // baseURL: 'https://storeapi.bykernel.com',
   // socketURL: 'https://storeapi.bykernel.com',
 
-  baseURL: 'http://192.168.51.73:7778',
-  socketURL: 'http://192.168.51.73:7778',
+  baseURL: 'http://54.178.102.165:7778',
+  socketURL: 'http://54.178.102.165:7778',
 
   // config
   ethPNAddress: undefined,
