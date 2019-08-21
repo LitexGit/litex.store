@@ -79,12 +79,11 @@ export function updateCities (state, payload) {
     })
   }
   let cityGroups = dataLetterSort(cities, 'py')
-  // console.log(cityGroups)
   state.cityGroups = cityGroups
 }
 
 export function getRecentCities (state) {
-  state.recentCities = Preferences.getItem('recentCites')
+  state.recentCities = Preferences.getItem('recentCites') ? Preferences.getItem('recentCites') : []
 }
 
 export function updateRecentCities (state, payload) {

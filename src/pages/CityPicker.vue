@@ -4,10 +4,11 @@
       <q-card-section class="q-pa-sm q-pr-md">
         <div>
           <div class="q-pb-md">
-            <q-input placeholder="北京/bj" filled dense v-model="search"
-              ><template v-slot:prepend>
-                <q-icon name="search" /> </template
-            ></q-input>
+            <q-input placeholder="北京/bj" filled dense v-model="search">
+              <template v-slot:prepend>
+                <q-icon name="search" />
+              </template>
+            </q-input>
           </div>
 
           <div class="q-pb-xs" v-if="recentCities.length > 0 && !search">
@@ -102,7 +103,7 @@ export default {
       return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
     },
     cityGroups: function () {
-      const allCityGroups = this.$store.state.life.cityGroups.slice(0)
+      const allCityGroups = this.$store.state.life.cityGroups
       if (!this.search) {
         return allCityGroups
       }

@@ -48,7 +48,7 @@ export default {
       orderInfo: {
         orderNo: '1',
         householdId: '123456789',
-        type: 1,
+        type: 2,
         unit: '北京市国家电网公司',
         fiatAmount: 100
       },
@@ -80,7 +80,7 @@ export default {
       orderInfo: {
         orderNo: '1',
         householdId: '123456789',
-        type: 1,
+        type: 3,
         unit: '北京市国家电网公司',
         fiatAmount: 100
       },

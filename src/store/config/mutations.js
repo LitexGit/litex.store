@@ -24,10 +24,6 @@ export function updateConfigs (state, config) {
 
   state.baseURL = baseUrl
   state.categorys = categorys
-  state.categorys.push({
-    categoryDes: '生活缴费',
-    categoryId: 3
-  })
   state.telegramURL = telegramUrl
 
   state.ethPNAddress = ethPNAddress
