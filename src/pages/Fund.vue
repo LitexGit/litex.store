@@ -3,8 +3,8 @@
     <!-- <fund-header ></fund-header> -->
     <div class="row text-weight-thin text-center" style="font-size:90%">
       <div class="col q-pa-xs">时间</div>
-      <div class="col q-pa-xs">金额</div>
       <div class="col q-pa-xs">用途</div>
+      <div class="col q-pa-xs">金额</div>
     </div>
     <div v-if="!records || records.length < 1">
       <q-separator />
