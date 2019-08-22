@@ -60,9 +60,10 @@
                   placeholder="请输入缴费户号"
                   v-model="accountNumber"
                   dense
-                  :maxlength="maxlength"
-                  :rules="rules"
-                ></q-input>
+                >
+                  <!-- :maxlength="maxlength" -->
+                  <!-- :rules="rules" -->
+                </q-input>
               </div>
               <q-stepper-navigation>
                 <q-btn color="primary" label="提交" type="submit" />
