@@ -67,7 +67,9 @@ export default {
     clickItem (key) {
       switch (key) {
         case 'shop':
-          this.$router.push('/shop/phone')
+          if (this.$route.path !== '/shop/phone') {
+            this.$router.push('/shop/phone')
+          }
           break
         case 'funds':
           this.$router.push('/shop/fund')
