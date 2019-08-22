@@ -19,7 +19,7 @@
       <fund-tabs v-if="isShowFund"></fund-tabs>
     </q-header>
 
-    <q-footer v-show="isShowRoot" class="bg-white" :class="this.isIPhoneFllS() ? 'q-pb-lg' : 'q-pb-nonce'">
+    <q-footer v-show="isShowRoot || isShowRootFoot" class="bg-white" :class="this.isIPhoneFllS() ? 'q-pb-lg' : 'q-pb-nonce'">
       <q-toolbar class="bg-secondary text-white row">
         <q-toolbar-title class="col-6">
           <small> 金额：</small>
@@ -88,7 +88,8 @@ export default {
       isInitL2: 'isInitL2',
       account: 'account',
       isShowRoot: 'isShowRoot',
-      isShowFund: 'isShowFund'
+      isShowFund: 'isShowFund',
+      isShowRootFoot: 'isShowRootFoot'
     }),
     ...mapState('phone', {
       info: 'info',

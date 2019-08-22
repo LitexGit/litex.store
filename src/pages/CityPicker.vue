@@ -141,12 +141,9 @@ export default {
     }
   },
   created () {
-    this.$store.commit('config/update', { isShowRoot: false, isShowFund: false, title: '城市选择' })
+    this.$store.commit('config/update', { isShowRoot: false, isShowRootFoot: false, title: '城市选择' })
     this.$store.commit('life/getRecentCities')
     this.$store.dispatch('life/getCities')
-  },
-  destroyed () {
-    this.$store.commit('config/update', { isShowRoot: true, isShowFund: false, title: undefined })
   }
 }
 </script>

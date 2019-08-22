@@ -77,13 +77,10 @@ export default {
     },
     amount: function () {
       let amount = this.orderinfo.amount || '0'
-      console.log('amount', amount)
       const decimal = this.getSelectedToken().decimal
-      console.log('decimal', decimal)
       const round = this.getSelectedToken().round
       amount = toDecimal({ amount, decimal, pos: round + 1 })
       const result = mathCeil({ decimal: amount, round })
-      console.log('result', result)
       return result
     },
     orderinfo: function () {

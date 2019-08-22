@@ -30,6 +30,7 @@ export default {
   title: 'LITE X Store',
   isShowRoot: true,
   isShowFund: false,
+  isShowRootFoot: true,
   isInitL2: false,
   loading: false,
   duration: 1500,

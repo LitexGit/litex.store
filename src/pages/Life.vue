@@ -78,6 +78,7 @@ export default {
   },
   mounted () {
     this.$store.commit('life/update', { payable: false })
+    this.$store.commit('config/update', { isShowRoot: true, isShowRootFoot: true, title: undefined })
   },
   destroyed () {
     this.$store.commit('life/update', { payable: true })

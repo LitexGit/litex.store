@@ -86,6 +86,9 @@ export default {
     }
     this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
   },
+  mounted () {
+    this.$store.commit('config/update', { isShowRoot: false, isShowRootFoot: true, title: '账单详情' })
+  },
   destroyed () {
     this.$store.commit('life/update', { depositAmount: undefined })
     this.$store.dispatch('pn/updatePrice', { path: this.$route.path })

@@ -89,11 +89,7 @@ export default {
     }
   },
   mounted: function () {
-    this.$store.commit('config/update', { isShowRoot: false })
-    this.$store.commit('config/update', { title: '加油卡列表' })
-  },
-  destroyed: function () {
-    this.$store.commit('config/update', { isShowRoot: true })
+    this.$store.commit('config/update', { isShowRoot: false, isShowRootFoot: false, title: '加油卡列表' })
   }
 }
 </script>

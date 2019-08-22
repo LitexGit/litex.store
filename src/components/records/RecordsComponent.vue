@@ -82,6 +82,9 @@ export default {
         Math.pow(10, record.token.decimal),
         record.token.symbol)
     }
+  },
+  created () {
+    this.$store.commit('config/update', { isShowRoot: false, isShowRootFoot: false, title: '充值记录' })
   }
 }
 </script>

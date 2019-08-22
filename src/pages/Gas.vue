@@ -182,7 +182,7 @@ export default {
     this.$store.commit('gas/update', { selectedGoods: {} })
   },
   mounted: function () {
-    this.$store.commit('config/update', { title: undefined })
+    this.$store.commit('config/update', { isShowRoot: true, isShowRootFoot: true, title: undefined })
   }
 }
 </script>

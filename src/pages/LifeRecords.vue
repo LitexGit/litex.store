@@ -87,6 +87,7 @@ export default {
   },
   created () {
     this.$store.dispatch('life/getRecords')
+    this.$store.commit('config/update', { isShowRoot: false, isShowRootFoot: false, title: '缴费记录' })
   }
 }
 </script>

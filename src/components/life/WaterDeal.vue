@@ -59,6 +59,9 @@ export default {
   created () {
     this.$store.commit('life/update', { depositAmount: this.bill.payAmount })
     this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
+  },
+  mounted () {
+    this.$store.commit('config/update', { isShowRoot: false, isShowRootFoot: true, title: '账单详情' })
   }
 }
 </script>

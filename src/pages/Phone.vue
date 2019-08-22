@@ -153,7 +153,7 @@ export default {
     this.$store.commit('phone/update', { selectGoods: {} })
   },
   mounted: function () {
-    this.$store.commit('config/update', { title: undefined })
+    this.$store.commit('config/update', { isShowRoot: true, isShowRootFoot: true, title: undefined })
   }
 }
 </script>

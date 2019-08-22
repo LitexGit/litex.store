@@ -94,13 +94,10 @@ export default {
   },
   mounted: function () {
     this.updateFundRecords()
-    this.$store.commit('config/update', { isShowRoot: false })
-    this.$store.commit('config/update', { isShowFund: true })
-    this.$store.commit('config/update', { title: '资金记录' })
+    this.$store.commit('config/update', { isShowRoot: false, isShowFund: true, isShowRootFoot: false, title: '资金记录' })
   },
   destroyed: function () {
     this.$store.commit('config/update', { isShowFund: false })
-    this.$store.commit('config/update', { isShowRoot: true })
   },
   methods: {
     format,

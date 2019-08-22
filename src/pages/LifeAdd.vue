@@ -175,7 +175,6 @@ export default {
     }
   },
   created () {
-    // this.$store.commit('config/update', { isShowRoot: false, isShowFund: false, title: '新增缴费' })
     this.$store.commit('life/update', { type: this.$route.query.type })
     this.$store.dispatch('life/getCompanies', { cityId: this.city.id, type: this.type })
     if (this.companies && this.companies.length === 1) {
@@ -184,9 +183,9 @@ export default {
   },
   mounted () {
     this.$store.commit('life/update', { payable: false })
+    this.$store.commit('config/update', { isShowRoot: false, isShowRootFoot: false, title: '新增缴费' })
   },
   destroyed () {
-    // this.$store.commit('config/update', { isShowRoot: true, isShowFund: false, title: undefined })
     this.$store.commit('life/update', { payable: true, company: undefined, companies: undefined, accountNumber: undefined })
   }
 }

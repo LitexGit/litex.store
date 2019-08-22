@@ -115,6 +115,9 @@ export default {
     toDealDetail () {
       this.$router.push('lifeDealDetail')
     }
+  },
+  mounted () {
+    this.$store.commit('config/update', { isShowRoot: false, isShowRootFoot: false, title: '账单详情' })
   }
 }
 </script>

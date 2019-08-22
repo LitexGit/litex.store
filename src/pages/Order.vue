@@ -95,11 +95,7 @@ export default {
     this.updateOrderRecords()
   },
   mounted: function () {
-    this.$store.commit('config/update', { isShowRoot: false })
-    this.$store.commit('config/update', { title: '订单列表' })
-  },
-  destroyed: function () {
-    this.$store.commit('config/update', { isShowRoot: true })
+    this.$store.commit('config/update', { isShowRoot: false, isShowRootFoot: false, title: '订单列表' })
   },
   // watch: {
   //   channelBalance: function () {
