@@ -49,6 +49,9 @@ export function depositRes (state, payload) {
     case 4:
       msg = 'Vip充值:'
       break
+    case 5:
+      msg = '水电煤缴费:'
+      break
 
     default:
       msg = 'msg:'
