@@ -34,7 +34,7 @@
                 </q-item-section>
                 <q-item-section side>
                   <q-item-label caption>
-                    -￥ {{ record.orderInfo.fiatAmount / 100 }}
+                    ￥ {{ record.orderInfo.fiatAmount / 100 }}
                   </q-item-label>
                   <q-item-label caption>
                     {{ tokenAmount(record) }}{{ record.token.symbol }}
@@ -84,7 +84,6 @@ export default {
         Math.pow(10, record.token.decimal),
         record.token.symbol)
     }
-
   },
   created () {
     this.$store.dispatch('life/getRecords')

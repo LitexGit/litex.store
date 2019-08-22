@@ -35,7 +35,7 @@
 
                 <q-item-section side>
                   <q-item-label caption>
-                    -￥ {{ record.orderInfo.fiatAmount / 100 }}
+                    ￥ {{ record.orderInfo.fiatAmount / 100 }}
                   </q-item-label>
                   <q-item-label caption>
                     {{ tokenAmount(record) }}{{ record.token.symbol }}
