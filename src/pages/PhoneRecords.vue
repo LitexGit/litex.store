@@ -2,6 +2,7 @@
   <records-component
     :records="records"
     iconName="smartphone"
+    :loading="loading"
   ></records-component>
 </template>
 
@@ -13,7 +14,8 @@ export default {
   name: 'PhoneRecords',
   computed: {
     ...mapState('phone', [
-      'records'
+      'records',
+      'loading'
     ])
   },
   components: {
@@ -22,7 +24,7 @@ export default {
   methods: {
   },
   created () {
-    // this.$store.dispatch('phone/getRecords')
+    this.$store.dispatch('phone/getRecords')
   }
 }
 </script>

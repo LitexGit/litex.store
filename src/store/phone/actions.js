@@ -20,19 +20,23 @@ export async function getGoodsList ({ commit }, payload) {
   }
 }
 export async function getRecords ({ commit }, payload) {
+  commit('loading', true)
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   const type1 = 1 // 话费
   const type2 = 2 // 流量
   // 话费充值记录
-  const callRecords = api.getLifeRecords({ address, type: type1 })
+  const callRecords = await api.getOrderRecords({ address, type: type1 })
   callRecords.forEach(element => {
     element.type = 1
   })
   // 流量充值记录
-  const flowRecords = api.getLifeRecords({ address, type: type2 })
+  const flowRecords = await api.getOrderRecords({ address, type: type2 })
   flowRecords.forEach(element => {
     element.type = 2
   })
 
-  commit('updateRecords', { records: callRecords.push.apply(callRecords, flowRecords) })
+  callRecords.push.apply(callRecords, flowRecords)
+  commit('updateRecords', { records: callRecords })
+  // commit('updateRecords', { records: callRecords.filter(record => record.status && record.status !== 0) })
+  commit('loading', false)
 }

@@ -17,12 +17,15 @@ export async function getGoodsList ({ commit }, payload) {
 }
 
 export async function getRecords ({ commit }, payload) {
+  commit('update', { loading: true })
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   const type = 3 // 加油卡
   // 加油卡充值记录
-  const records = api.getLifeRecords({ address, type: type })
+  const records = await api.getOrderRecords({ address, type: type })
   records.forEach(element => {
     element.type = 3
   })
   commit('update', { records })
+  // commit('update', { records: records.filter(record => record.status && record.status !== 0) })
+  commit('update', { loading: false })
 }

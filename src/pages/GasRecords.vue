@@ -2,6 +2,7 @@
   <records-component
     :records="records"
     iconName="local_gas_station"
+    :loading="loading"
   ></records-component>
 </template>
 
@@ -13,7 +14,8 @@ export default {
   name: 'GasRecords',
   computed: {
     ...mapState('gas', [
-      'records'
+      'records',
+      'loading'
     ])
   },
   components: {
@@ -22,7 +24,7 @@ export default {
   methods: {
   },
   created () {
-    // this.$store.dispatch('gas/getRecords')
+    this.$store.dispatch('gas/getRecords')
   }
 }
 </script>
