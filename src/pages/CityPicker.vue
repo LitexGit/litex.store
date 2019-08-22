@@ -76,6 +76,9 @@
         </div>
       </div>
     </q-card>
+    <q-inner-loading :showing="loading">
+      <q-spinner-bars size="50px" color="primary" />
+    </q-inner-loading>
   </q-page>
 </template>
 
@@ -89,7 +92,8 @@ export default {
   },
   computed: {
     ...mapState('life', [
-      'recentCities'
+      'recentCities',
+      'loading'
     ]),
     search: {
       set: function (search) {

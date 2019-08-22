@@ -23,9 +23,11 @@ export async function deleteAccount ({ commit, dispatch }, payload) {
 }
 
 export async function getAccounts ({ commit }, payload) {
+  // commit('update', { loading: true })
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   const { accountList: accounts } = await api.getAccounts({ address })
   commit('updateAccounts', { accounts })
+  // commit('update', { loading: false })
 }
 
 export async function getCompanies ({ commit }, payload) {
@@ -54,9 +56,9 @@ export async function getAccountInfo ({ commit }, payload) {
       waterCoalBill: bills
     }
   } } = await api.getAccountBill({ accountId })
-  if (status === '1') {
+  if (status === '1') { // 获取账户信息成功
     commit('updateAccountBill', { bills })
-  } else {
+  } else { // 获取账户信息失败
     Notify.create({ message, position: 'top', color: 'red', timeout: 1500 })
   }
   commit('update', { billResponse: { message, status } })
@@ -64,12 +66,10 @@ export async function getAccountInfo ({ commit }, payload) {
 }
 
 export async function getCities ({ commit }, payload) {
-  // const { type } = payload
-  // const start = new Date().getTime()
+  // commit('update', { loading: true })
   const { cities } = await api.getCities()
   commit('updateCities', { cities })
-  // const end = new Date().getTime()
-  // console.log('cost time:', end - start)
+  // commit('update', { loading: false })
 }
 
 export async function getRecords ({ commit }, payload) {
@@ -77,6 +77,7 @@ export async function getRecords ({ commit }, payload) {
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   const records = await api.getLifeRecords({ address })
   commit('update', { records })
+  // 对未进行支付的订单进行过滤
   // commit('update', { records: records.filter(record => record.status && record.status !== 0) })
   commit('update', { loading: false })
 }

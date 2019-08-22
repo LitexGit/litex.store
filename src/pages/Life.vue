@@ -83,13 +83,6 @@ export default {
     this.$store.commit('life/update', { payable: true })
   },
   methods: {
-    // toLifeDeal (account) {
-    //   this.$store.dispatch('life/getAccountInfo', { accountId: account.id })
-    //   if (this.billResponse && this.billResponse.status === '1') {
-    //     this.$store.commit('life/update', { account: { id: account.id } })
-    //     this.$router.push('lifeDeal')
-    //   }
-    // },
     async toLifeAdd (item) {
       const result = await this.$store.dispatch('life/getCompanies', { cityId: this.city.id, type: item.type })
       if (result === 'ok') {

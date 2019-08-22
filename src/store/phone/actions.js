@@ -37,6 +37,7 @@ export async function getRecords ({ commit }, payload) {
 
   callRecords.push.apply(callRecords, flowRecords)
   commit('updateRecords', { records: callRecords })
+  // 对未进行支付的订单进行过滤
   // commit('updateRecords', { records: callRecords.filter(record => record.status && record.status !== 0) })
   commit('loading', false)
 }

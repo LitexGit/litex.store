@@ -5,7 +5,7 @@ export default {
   city: {
     id: 'v1954',
     name: '北京市'
-  },
+  }, // 默认城市
   companies: [],
   type: 2,
   company: undefined,
