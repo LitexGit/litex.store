@@ -34,7 +34,7 @@
         v-model="depositAmount"
         class="row q-py-sm"
         :rules="[
-          val => (val && val >= 1) || '最少需缴费1元',
+          val => (val && val >= 10) || '最少需缴费10元',
           val => val >= bill.payAmount || '缴费金额需大于应缴金额'
         ]"
       ></q-input>
