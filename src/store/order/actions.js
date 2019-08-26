@@ -88,20 +88,22 @@ export async function placeOrder ({ commit, rootState }, payload) {
   // 04:下单
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   let order
-  commit('updateLoading', true)
   switch (path) {
     case '/shop/phone':
     case '/shop/gas':
+      commit('updateLoading', true)
       order = await api.placeOrder({ address, accountNum, tokenType, productId, goodsId, remark })
       commit('updateLoading', false)
       commit('update', { current: Object.assign(order, { status: 1, productId: selectGoods.productId }) })
       break
     case '/shop/lifeDeal':
     case '/shop/lifeDealDetail':
+      commit('updateLoading', true)
       const { life: { account: { id: accountId, type }, depositAmount } } = rootState
       order = await api.placeLifeOrder({ address, accountId, tokenType, fiatAmount: depositAmount * 100 })
       order.orderinfo = order.orderInfo
       order.ordered = order.orderNo
+      commit('updateLoading', false)
       commit('update', { current: Object.assign(order, { status: 1, productId: type + 3 }) })
       break
     default:
