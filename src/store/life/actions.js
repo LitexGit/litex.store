@@ -7,12 +7,15 @@ export async function addAccount ({ commit, dispatch }, payload) {
   const { accountNumber, company } = payload
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   const result = await api.addAccount({ address, householdId: accountNumber, itemId: company.id })
+  commit('update', { loading: false })
   if (result && result.accountId) {
     const { accountId } = result
     commit('update', { type: undefined, account: { id: accountId } })
     dispatch('getAccounts')
+    return 'ok'
+  } else {
+    return 'failed'
   }
-  commit('update', { loading: false })
 }
 
 export async function deleteAccount ({ commit, dispatch }, payload) {

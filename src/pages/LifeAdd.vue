@@ -158,13 +158,15 @@ export default {
     getIconName,
     getTypeName,
     async addAccount () {
-      await this.$store.dispatch('life/addAccount', { accountNumber: this.accountNumber, company: this.company })
+      const result = await this.$store.dispatch('life/addAccount', { accountNumber: this.accountNumber, company: this.company })
       // await this.$store.dispatch('life/getAccountInfo', { accountId: this.account.id })
       // if (this.billResponse && this.billResponse.status === '1') {
       //   this.$store.commit('life/updateAccount', { accountId: this.account.id })
       //   this.$router.push('lifeDeal')
       // }
-      this.$router.push('life')
+      if (result === 'ok') {
+        this.$router.push('life')
+      }
     },
     continue1 () {
       this.step = 2
