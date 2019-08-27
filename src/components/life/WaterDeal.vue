@@ -8,14 +8,14 @@
     </div>
     <div class="row q-pb-sm">
       <div class="col-5">当前余额</div>
-      <div class="col">{{ bill.balance }}元</div>
+      <div class="col">{{ bill.balance ? bill.balance : '0.00' }} 元</div>
     </div>
     <div class="row q-py-sm">
       <q-separator />
     </div>
-    <div class="row q-py-sm" v-if="bill.customerAddress">
+    <div class="row q-py-sm" v-if="bill.customerName">
       <div class="col-5">缴费户名</div>
-      <div class="col">{{ bill.customerAddress }}</div>
+      <div class="col">{{ bill.customerName }}</div>
     </div>
     <div class="row q-py-sm" v-if="account.number">
       <div class="col-5">缴费户号</div>

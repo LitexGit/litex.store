@@ -8,9 +8,9 @@
       <div class="row q-py-sm">
         <q-separator />
       </div>
-      <div class="row q-py-sm" v-if="bill.accountUserName">
+      <div class="row q-py-sm" v-if="bill.customerName">
         <div class="col-5">缴费户名</div>
-        <div class="col">{{ bill.accountUserName }}</div>
+        <div class="col">{{ bill.customerName }}</div>
       </div>
       <div class="row q-py-sm" v-if="account.number">
         <div class="col-5">缴费户号</div>
