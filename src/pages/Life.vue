@@ -32,7 +32,7 @@
               @click="toLifeAdd(item)"
               :disable="!item.available"
             >
-              <payment-item :type="item.type"></payment-item>
+              <payment-item :type="item.type" :available="item.available"></payment-item>
             </q-btn>
           </div>
         </div>

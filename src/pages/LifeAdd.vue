@@ -4,9 +4,7 @@
       <q-card-section class="q-pa-sm">
         <div class="row q-pt-xs">
           <div class="col-1 self-center">
-            <svg class="icon" aria-hidden="true">
-              <use :xlink:href="getIconName(type)"></use>
-            </svg>
+            <q-icon :name="getIconImgName(type, true)" style="font-size:1.5em"></q-icon>
           </div>
           <span class="col self-center">{{ getTypeName(type) }}</span>
         </div>
@@ -87,7 +85,7 @@
 </template>
 
 <script>
-import { getIconName, getTypeName } from '../utils/life'
+import { getIconImgName, getTypeName } from '../utils/life'
 import { mapState } from 'vuex'
 
 export default {
@@ -155,7 +153,7 @@ export default {
     }
   },
   methods: {
-    getIconName,
+    getIconImgName,
     getTypeName,
     async addAccount () {
       const result = await this.$store.dispatch('life/addAccount', { accountNumber: this.accountNumber, company: this.company })

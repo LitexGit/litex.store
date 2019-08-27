@@ -2,9 +2,7 @@
   <div class="row q-py-xs no-wrap">
     <q-btn class="full-width q-pa-xs q-mb-sm" @click="toLifeDeal(account)">
       <div class="col-1 self-center q-ml-md q-mr-sm row">
-        <svg class="icon col self-center" aria-hidden="true">
-          <use :xlink:href="getIconName(type)"></use>
-        </svg>
+        <q-icon :name="getIconImgName(type, true)"></q-icon>
       </div>
       <div class="col-7 column">
         <div class="row">{{ getTypeName(type) }}</div>
@@ -28,7 +26,7 @@
 </template>
 
 <script>
-import { getIconName, getTypeName } from '../../utils/life'
+import { getIconImgName, getTypeName } from '../../utils/life'
 import { mapState } from 'vuex'
 import { DeleteAccountDialog } from '../dialog'
 
@@ -49,7 +47,7 @@ export default {
     ])
   },
   methods: {
-    getIconName,
+    getIconImgName,
     getTypeName,
     async toLifeDeal (account) {
       await this.$store.dispatch('life/getAccountInfo', { accountId: account.id })

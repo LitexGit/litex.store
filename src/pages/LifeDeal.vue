@@ -6,9 +6,10 @@
           <div class="row q-pt-sm">
             <div class="col text-center">
               <q-btn round id="detailBtn">
-                <svg class="icon item-center" aria-hidden="true">
+                <q-icon :name="getIconImgName(account.type, true)"></q-icon>
+                <!-- <svg class="icon item-center" aria-hidden="true">
                   <use :xlink:href="getIconName(account.type)"></use>
-                </svg>
+                </svg> -->
               </q-btn>
             </div>
           </div>
@@ -21,7 +22,7 @@
 </template>
 
 <script>
-import { getIconName } from '../utils/life'
+import { getIconImgName } from '../utils/life'
 import { mapState } from 'vuex'
 import { CommonDeal, WaterDeal } from '../components/life'
 
@@ -42,7 +43,7 @@ export default {
     ])
   },
   methods: {
-    getIconName
+    getIconImgName
   },
   created () {
     if (!this.account || !this.account.id) {

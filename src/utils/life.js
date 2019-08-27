@@ -11,6 +11,19 @@ export function getIconName (type) {
   }
 }
 
+export function getIconImgName (type, available) {
+  switch (Number(type)) {
+    case 2:
+      return available ? 'img:statics/life/dianfei.png' : 'img:statics/life/dianfei-unavailable.png'
+    case 1:
+      return available ? 'img:statics/life/shuifei.png' : 'img:statics/life/shuifei-unavailable.png'
+    case 3:
+      return available ? 'img:statics/life/ranqifei.png' : 'img:statics/life/ranqifei-unavailable.png'
+    default:
+      return available ? 'img:statics/life/dianfei.png' : 'img:statics/life/dianfei-unavailable.png'
+  }
+}
+
 export function getTypeName (type) {
   switch (Number(type)) {
     case 2:

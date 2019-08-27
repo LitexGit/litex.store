@@ -1,30 +1,30 @@
 <template>
   <div>
-    <svg class="icon" aria-hidden="true">
-      <use :xlink:href="getIconName(type)"></use>
-    </svg>
-    <div>{{ getTypeName(type) }}</div>
+    <q-icon :name="getIconImgName(type, available)" class="q-my-xs"></q-icon>
+    <!-- <svg class="icon" aria-hidden="true">
+      <use :xlink:href="getIconImgName(type, available)"></use>
+    </svg> -->
+    <div>{{ getTypeName(type ) }}</div>
   </div>
 </template>
 
 <script>
-import { getIconName, getTypeName } from '../../utils/life'
+import { getIconImgName, getTypeName } from '../../utils/life'
 
 export default {
   name: 'PaymentItem',
   props: {
-    type: Number
+    type: Number,
+    available: Boolean
   },
   data () {
     return {}
   },
   methods: {
-    getIconName,
+    getIconImgName,
     getTypeName
   }
 }
 </script>
 
-<style lang="stylus">
-
-</style>
+<style lang="stylus"></style>

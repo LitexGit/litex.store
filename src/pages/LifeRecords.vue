@@ -17,9 +17,12 @@
               <q-separator inset class="q-my-xs" />
               <q-item clickable v-ripple>
                 <q-item-section avatar class="self-center">
-                  <svg class="icon" aria-hidden="true">
+                  <q-icon
+                    :name="getIconImgName(record.orderInfo.type, true)"
+                  ></q-icon>
+                  <!-- <svg class="icon" aria-hidden="true">
                     <use :xlink:href="getIconName(record.orderInfo.type)"></use>
-                  </svg>
+                  </svg> -->
                 </q-item-section>
 
                 <q-item-section class="content">
@@ -57,7 +60,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getIconName, getTypeName } from '../utils/life'
+import { getIconImgName, getTypeName } from '../utils/life'
 import { roundFun } from '../utils/math'
 import format from 'date-fns/format'
 import { ORDER_LIFE_STATE } from '../constants/state'
@@ -71,7 +74,7 @@ export default {
     ])
   },
   methods: {
-    getIconName,
+    getIconImgName,
     getTypeName,
     format,
     roundFun,
