@@ -67,7 +67,7 @@
       </q-card-section>
       <div class="words column">
         <div
-          class="row"
+          class="row self-center"
           v-for="(word, index) in words"
           :key="index"
           @click="jump(word)"
