@@ -324,6 +324,11 @@ export default {
       console.log('===========Transfer=========================')
       this.$store.dispatch('config/getBalance')
       this.$store.commit('order/updateShowOrderDModel', { open: true })
+      switch (this.$route.path) {
+        case '/shop/lifeDeal':
+        case '/shop/lifeDealDetail':
+          this.$router.push('life')
+      }
       // TODO 更新通道余额
       // TODO 更新钱包余额
       // additionalHash: '0xf569983d1df7db3e9b14014373e7db838cc7c564cae929d9e0afd8b3f7da9ea1'
