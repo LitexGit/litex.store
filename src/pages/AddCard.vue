@@ -1,97 +1,139 @@
 <template>
   <q-page padding class="flex">
     <q-card class="q-pa-sm container">
-      <q-card-section class="q-gutter-sm">
-        <div class="flex justify-between">
-          <span>加油卡类型:</span>
+      <q-card-section class="q-pa-xs">
+        <q-list>
+          <q-item-label header class="q-pa-xs q-mb-sm">
+            添加加油卡
+          </q-item-label>
+          <q-separator />
+          <q-item class="q-pa-xs" dense>
+            <q-item-section>
+              <q-item-label>加油卡类型: </q-item-label>
+            </q-item-section>
+            <q-item-section side>
+              <q-btn
+                size="md"
+                dense
+                flat
+                text-color="primary"
+                label="加油卡列表"
+                to="/shop/CardList"
+                v-if="cards && cards.length > 0"
+              />
+            </q-item-section>
+          </q-item>
+          <q-item class="q-pa-xs">
+            <q-item-section v-for="item in cardTypes" :key="item.value">
+              <div class="text-center">
+                <q-btn
+                  class="q-mr-md"
+                  :icon="'img:' + item.img"
+                  :color="card.type == item.value ? 'primary' : 'white'"
+                  :text-color="card.type == item.value ? 'white' : 'primary'"
+                  :label="item.label"
+                  @click="chooseType(item)"
+                />
+              </div>
+            </q-item-section>
+          </q-item>
+          <q-item class="q-pa-xs">
+            <q-item-section side no-wrap class="q-pr-xs">
+              <q-item-label class="text-black">
+                卡号：
+              </q-item-label>
+            </q-item-section>
+            <q-item-section>
+              <q-input
+                class=""
+                style="flex: 1"
+                input-style="text-align: right"
+                type="number"
+                dense
+                clearable
+                items-aligned
+                v-model="card.id"
+              />
+            </q-item-section>
+          </q-item>
+          <q-item class="q-pa-xs">
+            <q-item-section side class="q-pr-xs">
+              <q-item-label class="text-black">
+                姓名：
+              </q-item-label>
+            </q-item-section>
+            <q-item-section>
+              <q-input
+                class=""
+                style="flex: 1"
+                input-style="text-align: right"
+                dense
+                clearable
+                items-aligned
+                v-model="card.user"
+              />
+            </q-item-section>
+          </q-item>
+          <q-item class="q-pa-xs">
+            <q-item-section side class="q-pr-xs">
+              <q-item-label class="text-black">
+                手机：
+              </q-item-label>
+            </q-item-section>
+            <q-item-section>
+              <q-input
+                class=""
+                style="flex: 1"
+                input-style="text-align: right"
+                type="number"
+                dense
+                clearable
+                items-aligned
+                v-model="card.tel"
+              />
+            </q-item-section>
+          </q-item>
+        </q-list>
+        <div class="text-grey text-caption q-mt-lg q-px-xs">
+          <q-list>
+            <q-item-label>
+              注意事项：
+            </q-item-label>
 
-          <q-btn
-            size="md"
-            dense
-            flat
-            text-color="primary"
-            label="已添加"
-            to="/shop/CardList"
-            v-if="cards && cards.length > 0"
-          />
-        </div>
-        <div class="row">
-          <div v-for="item in cardTypes" :key="item.value" class="col">
-            <q-btn
-              class="q-mr-md"
-              :icon="'img:' + item.img"
-              :color="card.type == item.value ? 'primary' : 'white'"
-              :text-color="card.type == item.value ? 'white' : 'primary'"
-              :label="item.label"
-              @click="chooseType(item)"
-            />
-          </div>
+            <q-item dense>
+              <q-item-section>
+                <q-item-label>
+                  <div class="line">
+                    1. 请务必确认加油卡信息正确无误。
+                  </div>
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item dense>
+              <q-item-section>
+                <q-item-label>
+                  <div class="line">
+                    2. 信息填错导致的财产损失本产品概不负责。
+                  </div>
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item dense>
+              <q-item-section>
+                <q-item-label>
+                  <div class="line">
+                    3.
+                    完成网上充值后，需到所充值油卡当地加油站进行激活(圈存)操作，否则充值金额将无法生效。
+                  </div>
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
         </div>
       </q-card-section>
-      <q-card-section class="q-gutter-sm">
-        <div class="row items-center">
-          <span class="">加油卡卡号:</span>
-          <q-input
-            class=""
-            style="flex: 1"
-            input-style="text-align: right"
-            type="number"
-            dense
-            clearable
-            items-aligned
-            v-model="card.id"
-          />
-        </div>
-        <div class="row items-center">
-          <span class=""
-            >姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:</span
-          >
-          <q-input
-            class=""
-            style="flex: 1"
-            input-style="text-align: right"
-            dense
-            clearable
-            items-aligned
-            v-model="card.user"
-          />
-        </div>
-        <div class="row items-center">
-          <span class=""
-            >手&nbsp;&nbsp;&nbsp;&nbsp;机&nbsp;&nbsp;&nbsp;&nbsp;号:</span
-          >
-          <q-input
-            class=""
-            style="flex: 1"
-            input-style="text-align: right"
-            type="number"
-            dense
-            clearable
-            items-aligned
-            v-model="card.tel"
-          />
-        </div>
-      </q-card-section>
-
-      <div class="bg-grey-3 q-pa-xs" />
-
-      <div class="row justify-end items-center q-mt-md q-mr-md">
-        <div class="col-4 text-right">
-          <q-btn icon="warning" size="sm" flat round />
-          <q-btn
-            size="md"
-            dense
-            flat
-            text-color="primary"
-            label="注意事项"
-            @click="precautions"
-          />
-        </div>
-      </div>
-
       <center>
         <q-btn
-          class="q-mt-md"
+          class="q-my-md"
           label="确认添加"
           style="width:80%"
           color="primary"
@@ -100,13 +142,11 @@
         />
       </center>
     </q-card>
-    <!-- <precaution-dialog hide></precaution-dialog> -->
   </q-page>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import { CardAddDialog, PrecautionDialog } from '../components/dialog'
 import { isPoneAvailable, verifyCardId } from '../utils/helper'
 export default {
   name: 'AddCard',
@@ -120,9 +160,6 @@ export default {
       }
     }
   },
-  // components: {
-  //   PrecautionDialog
-  // },
   computed: {
     ...mapState('gas', [
       'cardTypes',
@@ -135,17 +172,6 @@ export default {
   methods: {
     verifyCardId,
     isPoneAvailable,
-    precautions: function () {
-      this.$q.dialog({
-        component: PrecautionDialog
-      }).onOk(() => {
-        // console.log('OK')
-      }).onCancel(() => {
-        // console.log('Cancel')
-      }).onDismiss(() => {
-        // console.log('Called on OK or Cancel')
-      })
-    },
     chooseType (item) {
       this.card.type = item.value
     },
@@ -177,16 +203,14 @@ export default {
         this.notify('请填写正确的手机号')
         return
       }
-      this.$q.dialog({
-        component: CardAddDialog,
-        root: this.$root,
-        card: this.card
-      }).onOk(() => {
-        this.$store.commit('gas/addCard', this.card)
-        this.$router.push('/shop/gas')
-      }).onCancel(() => {
-      }).onDismiss(() => {
+      this.$store.commit('gas/addCard', this.card)
+      this.$q.notify({
+        message: '加油卡添加成功',
+        color: 'positive',
+        position: 'top',
+        timeout: this.duration
       })
+      this.$router.push('/shop/gas')
     }
   },
   mounted: function () {
@@ -198,5 +222,8 @@ export default {
 <style scoped>
 .container {
   flex: 1;
+}
+.line {
+  line-height: 20px;
 }
 </style>
