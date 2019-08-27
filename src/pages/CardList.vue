@@ -1,8 +1,29 @@
 <template>
   <q-page padding class="flex">
-    <q-card class="q-pa-sm container">
+    <q-card class="q-pa-sm container" flat>
       <div v-if="cards && cards.length > 0">
-        <q-card
+        <q-list class="q-mt-sm">
+          <div v-for="(card, index) in cards" :key="index">
+            <q-card class="q-mb-md  card">
+              <q-item class="q-pa-sm" clickable v-ripple>
+                <q-item-section no-wrap>
+                  <q-item-label class="q-py-xs">
+                    <q-icon :name="'img:' + img(card.type)"></q-icon>
+                    {{ brand(card.type) }}
+                  </q-item-label>
+                  <q-item-label caption> 姓名：{{ card.user }} </q-item-label>
+                  <q-item-label caption> 卡号：{{ card.id }} </q-item-label>
+                </q-item-section>
+                <q-item-section side top>
+                  <q-item-label @click="removeCard(card)">
+                    <q-icon name="delete"></q-icon>
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-card>
+          </div>
+        </q-list>
+        <!-- <q-card
           class="my-card bg-white q-mb-md"
           v-for="(card, index) in cards"
           :key="index"
@@ -28,7 +49,7 @@
             </div>
           </q-card-section>
           <div class="bg-grey-4 q-pa-xs" />
-        </q-card>
+        </q-card> -->
       </div>
       <!-- <div v-else class=" text-center q-mt-md">
         <q-btn
@@ -97,5 +118,8 @@ export default {
 <style scoped>
 .container {
   flex: 1;
+}
+.card{
+  background-color: #80CBC4
 }
 </style>

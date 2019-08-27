@@ -12,7 +12,7 @@ export function addCard (state, card) {
 }
 
 export function removeCard (state, card) {
-  if (state.selectedCard.id === card.id) {
+  if (state.selectedCard && state.selectedCard.id === card.id) {
     state.selectedCard = null
   }
   state.cards.splice(state.cards.findIndex(item => item.id === card.id), 1)
