@@ -27,7 +27,11 @@
             v-for="(item, index) in paymentItems"
             :key="index"
           >
-            <q-btn class="full-width q-mb-md" @click="toLifeAdd(item)">
+            <q-btn
+              class="full-width q-mb-md"
+              @click="toLifeAdd(item)"
+              :disable="!item.available"
+            >
               <payment-item :type="item.type"></payment-item>
             </q-btn>
           </div>
@@ -64,16 +68,30 @@ export default {
   },
   computed: {
     ...mapState('life', [
-      'paymentItems',
       'accounts',
       'city',
       'billResponse',
       'loading',
       'comapnies'
-    ])
+    ]),
+    paymentItems: function () {
+      let available = []
+      let unAvailable = []
+      const items = this.$store.state.life.paymentItems
+      items.forEach(element => {
+        if (element.available) {
+          available.push(element)
+        } else {
+          unAvailable.push(element)
+        }
+      })
+      return available.concat(unAvailable)
+    }
   },
   created () {
     this.$store.dispatch('life/getAccounts')
+    this.$store.dispatch('life/updatePaymentItems', { cityId: this.city.id })
+
     // this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
   },
   mounted () {
@@ -93,6 +111,11 @@ export default {
     pickCity () {
       this.$router.push('cityPicker')
     }
+    // async checkAvailable (type) {
+    //   const result = await this.$store.dispatch('life/checkCompany', { cityId: this.city.id, type })
+    //   console.log(result)
+    //   return result
+    // }
   }
 }
 </script>

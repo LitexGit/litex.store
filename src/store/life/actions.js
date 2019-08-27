@@ -49,6 +49,25 @@ export async function getCompanies ({ commit }, payload) {
   return result
 }
 
+export async function checkCompany ({ commit }, payload) {
+  const { type, cityId } = payload
+  const { units: companies } = await api.getCompanies({ type, cityId })
+  return companies && companies.length > 0
+}
+
+export async function updatePaymentItems ({ commit, dispatch, rootState }, payload) {
+  const { cityId } = payload
+  const { life: { paymentItems } } = rootState
+  let items = []
+  for (let i = 0; i < paymentItems.length; i++) {
+    const item = paymentItems[i]
+    const { units: companies } = await api.getCompanies({ type: item.type, cityId })
+    const available = companies && companies.length > 0
+    items.push({ type: item.type, available })
+  }
+  commit('update', { paymentItems: items })
+}
+
 export async function getAccountInfo ({ commit }, payload) {
   commit('update', { loading: true })
   const { accountId } = payload
