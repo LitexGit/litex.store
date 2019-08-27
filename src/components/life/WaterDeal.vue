@@ -8,7 +8,7 @@
     </div>
     <div class="row q-pb-sm">
       <div class="col-5">当前余额</div>
-      <div class="col">{{ bill.balance ? bill.balance : '0.00' }} 元</div>
+      <div class="col">{{ bill.balance ? bill.balance : "0.00" }} 元</div>
     </div>
     <div class="row q-py-sm">
       <q-separator />
@@ -62,6 +62,9 @@ export default {
   },
   mounted () {
     this.$store.commit('config/update', { isShowRoot: false, isShowRootFoot: true, title: '账单详情' })
+  },
+  destroyed () {
+    this.$store.commit('life/update', { depositAmount: undefined })
   }
 }
 </script>
