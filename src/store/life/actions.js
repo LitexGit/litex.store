@@ -79,8 +79,8 @@ export async function getRecords ({ commit }, payload) {
   commit('update', { loading: true })
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   const records = await api.getLifeRecords({ address })
-  commit('update', { records })
+  // commit('update', { records })
   // 对未进行支付的订单进行过滤
-  // commit('update', { records: records.filter(record => record.status && record.status !== 0) })
+  commit('update', { records: records.filter(record => record.status && record.status !== 0) })
   commit('update', { loading: false })
 }
