@@ -37,7 +37,7 @@
       <q-separator />
     </div>
     <div class="row text-caption q-pb-md text-grey">
-      点击下方"支付"进行下单操作
+      <div>您的缴费预计在一个工作日内到账</div>
     </div>
   </div>
 </template>

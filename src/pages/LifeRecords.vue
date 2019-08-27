@@ -60,7 +60,7 @@ import { mapState } from 'vuex'
 import { getIconName, getTypeName } from '../utils/life'
 import { roundFun } from '../utils/math'
 import format from 'date-fns/format'
-import { ORDER_STATE } from '../constants/state'
+import { ORDER_LIFE_STATE } from '../constants/state'
 
 export default {
   name: 'LifeRecords',
@@ -76,7 +76,7 @@ export default {
     format,
     roundFun,
     getOrderState: (state) => {
-      return ORDER_STATE[state]
+      return ORDER_LIFE_STATE[state]
     },
     tokenAmount: function (record) {
       return roundFun(

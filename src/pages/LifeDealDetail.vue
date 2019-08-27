@@ -30,9 +30,9 @@
             <div class="row q-py-sm">
               <q-separator />
             </div>
-            <div class="row q-py-sm" v-if="bill.accountUserName">
+            <div class="row q-py-sm" v-if="bill.customerName">
               <div class="col-5">缴费户名</div>
-              <div class="col">{{ bill.accountUserName }}</div>
+              <div class="col">{{ bill.customerName }}</div>
             </div>
             <div class="row q-py-sm" v-if="account.number">
               <div class="col-5">缴费户号</div>
@@ -50,7 +50,7 @@
               <q-separator />
             </div>
             <div class="row text-caption q-pb-md text-grey">
-              点击下方"支付"进行下单操作
+              <div>您的缴费预计在一个工作日内到账</div>
             </div>
           </div>
         </q-card>
