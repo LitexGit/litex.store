@@ -103,6 +103,7 @@ export async function placeOrder ({ commit, rootState }, payload) {
       order = await api.placeLifeOrder({ address, accountId, tokenType, fiatAmount: depositAmount * 100 })
       order.orderinfo = order.orderInfo
       order.ordered = order.orderNo
+      order.orderinfo.accountNum = order.orderinfo.householdId
       commit('updateLoading', false)
       commit('update', { current: Object.assign(order, { status: 1, productId: type + 3 }) })
       break
