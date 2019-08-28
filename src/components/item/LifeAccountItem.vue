@@ -1,28 +1,22 @@
 <template>
-  <div class="row q-py-xs no-wrap">
-    <q-btn class="full-width q-pa-xs q-mb-sm" @click="toLifeDeal(account)">
-      <div class="col-1 self-center q-ml-md q-mr-sm row">
-        <q-icon :name="getIconImgName(type, true)"></q-icon>
-      </div>
-      <div class="col-7 column">
-        <div class="row">{{ getTypeName(type) }}</div>
-        <div class="row text-caption">
-          <!-- {{ number + " | " + name }} -->
-          {{ number }}
+  <q-btn flat class="row">
+    <div class="col-12 row justify-between" @click="toLifeDeal(account)">
+      <div class="row items-center">
+        <q-icon :name="getIconImgName(type, true)"/>
+        <div class="column q-ml-lg">
+          <div class="row">{{ getTypeName(type) }}</div>
+          <div class="row text-caption">
+            {{ number }}
+          </div>
         </div>
       </div>
-      <div class="col self-center">
-        <q-icon name="chevron_right"></q-icon>
+      <div class="row items-center">
+        <q-icon name="chevron_right"/>
+        <!-- <q-icon name="backspace" class="delete" @click="deleteAccount(account)"/> -->
       </div>
-    </q-btn>
-    <div class="col">
-      <q-icon
-        name="backspace"
-        class="delete"
-        @click="deleteAccount(account)"
-      ></q-icon>
     </div>
-  </div>
+    <div class="col-12 bg-grey-5" style="height: 0.5px"/>
+  </q-btn>
 </template>
 
 <script>

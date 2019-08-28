@@ -1,52 +1,45 @@
 <template>
-  <q-page padding class="flex">
-    <q-card class="q-pa-sm container">
-      <q-card-section class="q-pa-sm" v-if="accounts && accounts.length > 0">
-        <div class="q-pb-md q-pl-sm">我的缴费</div>
-        <div class="q-px-sm" v-for="(account, index) in accounts" :key="index">
-          <life-account-item
-            class="full-width"
-            :name="account.name"
-            :type="account.type"
-            :number="account.number"
-            :account="account"
-          ></life-account-item>
-        </div>
-      </q-card-section>
-      <q-card-section class="q-pa-sm">
-        <div class="row q-pb-md q-pt-sm">
-          <div class="col q-pl-sm">新增缴费</div>
-          <div class="col  q-pr-sm text-right" @click="pickCity()">
-            {{ city.name }}
-            <q-icon name="keyboard_arrow_down" style="font-size:1.5em"></q-icon>
+  <q-page padding class="flex column">
+    <div style="flex:1">
+
+        <q-card-section class="q-pa-sm" v-if="accounts && accounts.length > 0">
+          <div class="q-pb-md q-pl-sm">我的缴费</div>
+          <q-card class="q-py-sm">
+            <div class="q-px-sm" v-for="(account, index) in accounts" :key="index">
+              <life-account-item
+                class="full-width"
+                :name="account.name"
+                :type="account.type"
+                :number="account.number"
+                :account="account"/>
+             </div>
+          </q-card>
+        </q-card-section>
+
+        <q-card-section class="q-pa-sm" style="flex:1">
+          <div class="row q-my-md">
+            <div class="col q-pl-sm">新增缴费</div>
+            <small class="col q-pr-sm items-end text-right" style="color: blue" @click="pickCity()">
+              {{ city.name }}
+              <q-icon name="keyboard_arrow_down" style="font-size:1.5em"/>
+            </small>
           </div>
-        </div>
-        <div class="row justify-around">
-          <div
-            class="col-4 text-center q-px-sm"
-            v-for="(item, index) in paymentItems"
-            :key="index"
-          >
-            <q-btn
-              class="full-width q-mb-md"
-              @click="toLifeAdd(item)"
-              :disable="!item.available"
-            >
-              <payment-item :type="item.type" :available="item.available"></payment-item>
-            </q-btn>
-          </div>
-        </div>
-        <div class="text-center q-mt-sm">
-          <q-btn
-            flat
-            type="a"
-            label="缴费记录"
-            color="blue"
-            to="lifeRecords"
-          ></q-btn>
-        </div>
-      </q-card-section>
-    </q-card>
+
+          <q-card class="row justify-around q-pa-md">
+              <div class="col-3 text-center "  v-for="(item, index) in paymentItems" :key="index">
+                <q-btn flat  outline class="full-width" :disable="!item.available" @click="toLifeAdd(item)">
+                  <payment-item :type="item.type" :available="item.available"/>
+                </q-btn>
+              </div>
+          </q-card>
+
+        </q-card-section>
+
+    </div>
+
+    <div class="text-center">
+      <q-btn flat size="sm" type="a" label="缴费记录" color="blue" to="lifeRecords"/>
+    </div>
     <q-inner-loading :showing="loading">
       <q-spinner-bars size="50px" color="primary" />
     </q-inner-loading>
@@ -121,4 +114,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>
