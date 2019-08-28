@@ -15,14 +15,25 @@
       </q-card-section>
       <div class="q-px-sm">
         <q-form @submit="addAccount()">
-          <q-item class="q-py-xs">
+          <q-item class="q-py-xs" dense>
             <q-item-section side>
               <q-item-label>1. 缴费机构：</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item class="q-mb-md q-py-xs">
+          <q-item class="q-py-xs">
             <q-item-section>
-              <q-btn-dropdown
+              <q-select
+                v-model="company"
+                :options="companies"
+                option-label="name"
+                option-value="id"
+                dense
+                lazy-rules
+                :rules="[val => val || '需选定缴费单位']"
+                behavior="menu"
+                placeholder="Placeholder"
+              ></q-select>
+              <!-- <q-btn-dropdown
                 color="secondary"
                 :label="company ? company.name : '点此选择缴费机构'"
                 outline
@@ -42,7 +53,7 @@
                     </q-item-section>
                   </q-item>
                 </q-list>
-              </q-btn-dropdown>
+              </q-btn-dropdown> -->
             </q-item-section>
           </q-item>
           <q-item class="q-py-xs" dense>
@@ -55,8 +66,9 @@
               <q-input
                 v-model="accountNumber"
                 dense
-                placeholder="输入缴费户号"
                 type="number"
+                lazy-rules
+                :rules="[val => (val && val.length > 0) || '请填写缴费户号']"
               >
               </q-input>
             </q-item-section>
@@ -68,80 +80,6 @@
           </q-item>
         </q-form>
       </div>
-      <!-- <div class="q-pa-sm">
-        <q-stepper v-model="step" vertical color="positive" animated>
-          <q-step
-            :name="1"
-            :title="title1"
-            icon="settings"
-            :done="step > 1"
-            :caption="caption"
-            done-color="positive"
-            active-color="secondary"
-            inactive-color="secondary"
-          >
-            <q-form @submit="continue1()">
-              <div>
-                <q-btn-dropdown
-                  color="positive"
-                  :label="company ? company.name : '请选择缴费机构'"
-                   outline
-                >
-                  <q-list>
-                    <q-item
-                      v-for="(item, index) in companies"
-                      :key="index"
-                      clickable
-                      v-close-popup
-                      @click="onItemClick(item)"
-                    >
-                      <q-item-section>
-                        <q-item-label>
-                          {{ item.name }}
-                        </q-item-label>
-                      </q-item-section>
-                    </q-item>
-                  </q-list>
-                </q-btn-dropdown>
-              </div>
-              <q-stepper-navigation class="q-py-sm">
-                <q-btn type="submit" color="primary" label="下一步" />
-              </q-stepper-navigation>
-            </q-form>
-          </q-step>
-
-          <q-step
-            :name="2"
-            :title="title2"
-            icon="settings"
-            :done="step > 2"
-            done-color="positive"
-            active-color="secondary"
-            inactive-color="secondary"
-          >
-            <q-form @submit="addAccount()">
-              <div>
-                <q-input
-                  placeholder="请输入缴费户号"
-                  v-model="accountNumber"
-                  dense
-                >
-                </q-input>
-              </div>
-              <q-stepper-navigation>
-                <q-btn color="primary" label="提交" type="submit" />
-                <q-btn
-                  flat
-                  @click="back1()"
-                  color="primary"
-                  label="返回"
-                  class="q-ml-sm"
-                />
-              </q-stepper-navigation>
-            </q-form>
-          </q-step>
-        </q-stepper>
-      </div> -->
     </q-card>
     <q-inner-loading :showing="loading">
       <q-spinner-bars size="50px" color="primary" />
@@ -157,10 +95,6 @@ export default {
   name: 'LifeAdd',
   data () {
     return {
-      step: 1,
-      title1: '缴费单位',
-      title2: '缴费户号',
-      caption: ''
     }
   },
   components: {
@@ -221,36 +155,28 @@ export default {
     getIconImgName,
     getTypeName,
     async addAccount () {
-      if (!(this.company && this.company.name)) {
-        this.$q.notify({
-          color: 'red',
-          message: '请选择缴费机构',
-          position: 'top',
-          timeout: 1500
-        })
-        return
-      }
-      if (!(this.accountNumber && this.accountNumber.length > 0)) {
-        this.$q.notify({
-          color: 'red',
-          message: '请填写缴费户号',
-          position: 'top',
-          timeout: 1500
-        })
-        return
-      }
+      // if (!(this.company && this.company.name)) {
+      //   this.$q.notify({
+      //     color: 'red',
+      //     message: '请选择缴费机构',
+      //     position: 'top',
+      //     timeout: 1500
+      //   })
+      //   return
+      // }
+      // if (!(this.accountNumber && this.accountNumber.length > 0)) {
+      //   this.$q.notify({
+      //     color: 'red',
+      //     message: '请填写缴费户号',
+      //     position: 'top',
+      //     timeout: 1500
+      //   })
+      //   return
+      // }
       const result = await this.$store.dispatch('life/addAccount', { accountNumber: this.accountNumber, company: this.company })
       if (result === 'ok') {
         this.$router.push('life')
       }
-    },
-    continue1 () {
-      this.step = 2
-      this.caption = this.company ? this.company.name : null
-    },
-    back1 () {
-      this.step = 1
-      this.caption = null
     },
     onItemClick (item) {
       this.company = item
