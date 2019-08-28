@@ -72,11 +72,10 @@
         </div>
       </div>
       <q-btn
-        label="确认账单"
         class="row full-width q-mb-md q-mt-lg"
         color="secondary"
         type="submit"
-      />
+        label="确认账单"/>
     </q-form>
   </div>
 </template>
