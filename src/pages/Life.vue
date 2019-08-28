@@ -18,13 +18,26 @@
           </q-card>
         </q-card-section>
         <q-card-section class="q-pa-sm" style="flex:1">
-          <div class="row q-my-md">
+          <!-- <div class="row q-my-md">
             <div class="col q-pl-sm">新增缴费</div>
             <small class="col q-pr-sm items-end text-right" style="color: blue" @click="pickCity()">
               {{ city.name }}
               <q-icon name="keyboard_arrow_down" style="font-size:1.5em"/>
             </small>
-          </div>
+          </div> -->
+          <q-item class="q-pl-sm q-pr-xs q-py-xs">
+            <q-item-section>
+              <q-item-label>新增缴费</q-item-label>
+            </q-item-section>
+            <q-item-section side >
+              <q-item-label>
+                <small class="col q-pr-sm items-end text-right" style="color: blue" @click="pickCity()">
+                  {{ city.name }}
+                  <q-icon name="keyboard_arrow_down" style="font-size:1.5em"/>
+                </small>
+              </q-item-label>
+            </q-item-section>
+          </q-item>
           <q-card class="row justify-around q-pa-md">
               <div class="col-3 text-center "  v-for="(item, index) in paymentItems" :key="index">
                 <q-btn flat  outline class="full-width" :disable="!item.available" @click="toLifeAdd(item)">
