@@ -19,7 +19,7 @@
       <fund-tabs v-if="isShowFund"></fund-tabs>
     </q-header>
 
-    <q-footer v-show="isShowRoot || isShowRootFoot" class="bg-white" :class="this.isIPhoneFllS() ? 'q-pb-lg' : 'q-pb-nonce'">
+    <q-footer v-if="isShowRoot || isShowRootFoot" class="bg-white" :class="this.isIPhoneFllS() ? 'q-pb-lg' : 'q-pb-nonce'">
       <q-toolbar class="bg-secondary text-white row">
         <q-toolbar-title class="col-6">
           <small> 金额：</small>
@@ -41,6 +41,7 @@
         <q-btn flat class="col-3 q-pa-sm" label="支付" color="white" @click="placeOrder()" :disable="!payable"/>
       </q-toolbar>
     </q-footer>
+
     <q-page-container>
       <router-view />
     </q-page-container>

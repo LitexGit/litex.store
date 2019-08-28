@@ -2,26 +2,26 @@
   <div class="q-px-lg">
     <q-form submit @submit="toDealDetail()">
       <div class="row q-pb-sm">
-        <div class="col-5">应缴金额</div>
+        <div class="col-5 text-grey-7">应缴金额</div>
         <div class="col">{{ bill.payAmount }}元</div>
       </div>
       <div class="row q-py-sm">
         <q-separator />
       </div>
       <div class="row q-py-sm" v-if="bill.customerName">
-        <div class="col-5">缴费户名</div>
+        <div class="col-5 text-grey-7">缴费户名</div>
         <div class="col">{{ bill.customerName }}</div>
       </div>
       <div class="row q-py-sm" v-if="account.number">
-        <div class="col-5">缴费户号</div>
+        <div class="col-5 text-grey-7">缴费户号</div>
         <div class="col">{{ account.number }}</div>
       </div>
       <div class="row q-py-sm" v-if="bill.customerAddress">
-        <div class="col-5">用户地址</div>
+        <div class="col-5 text-grey-7">用户地址</div>
         <div class="col">{{ bill.customerAddress }}</div>
       </div>
       <div class="row q-py-sm" v-if="account.companyName">
-        <div class="col-5">缴费单位</div>
+        <div class="col-5 text-grey-7">缴费单位</div>
         <div class="col">{{ account.companyName }}</div>
       </div>
       <div class="row q-pt-sm q-pb-sm">
@@ -42,8 +42,8 @@
         <div class="col-4 text-center q-px-sm">
           <q-btn
             :label="adviceAmount + '元'"
-            color="grey-4"
-            text-color="black"
+            :color="depositAmount === adviceAmount ? 'primary' : 'grey-4'"
+            :text-color="depositAmount === adviceAmount ? 'white' : 'black'"
             size="md"
             class="full-width"
             dense
@@ -53,8 +53,8 @@
         <div class="col-4 text-center q-px-sm">
           <q-btn
             :label="adviceAmount + 50 + '元'"
-            color="grey-4"
-            text-color="black"
+            :color="depositAmount === adviceAmount + 50 ? 'primary' : 'grey-4'"
+            :text-color="depositAmount === adviceAmount + 50 ? 'white' : 'black'"
             class="full-width"
             dense
             @click="setAmount(adviceAmount + 50)"
@@ -63,8 +63,8 @@
         <div class="col-4 text-center q-px-sm">
           <q-btn
             :label="adviceAmount + 100 + '元'"
-            color="grey-4"
-            text-color="black"
+            :color="depositAmount === adviceAmount + 100 ? 'primary' : 'grey-4'"
+            :text-color="depositAmount === adviceAmount + 100 ? 'white' : 'black'"
             class="full-width"
             dense
             @click="setAmount(adviceAmount + 100)"
@@ -72,11 +72,11 @@
         </div>
       </div>
       <q-btn
-        label="下一步"
+        label="确认账单"
         class="row full-width q-mb-md q-mt-lg"
         color="secondary"
         type="submit"
-      ></q-btn>
+      />
     </q-form>
   </div>
 </template>

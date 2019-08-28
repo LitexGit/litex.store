@@ -1,9 +1,11 @@
 <template>
   <q-page padding class="flex column">
     <div style="flex:1">
-
         <q-card-section class="q-pa-sm" v-if="accounts && accounts.length > 0">
-          <div class="q-pb-md q-pl-sm">我的缴费</div>
+          <div class="row q-pb-md justify-around">
+            <div class="col q-pl-sm">缴费账户</div>
+            <div class="text-weight-bolder q-pr-sm" @click="pickCity()">...</div>
+          </div>
           <q-card class="q-py-sm">
             <div class="q-px-sm" v-for="(account, index) in accounts" :key="index">
               <life-account-item
@@ -15,7 +17,6 @@
              </div>
           </q-card>
         </q-card-section>
-
         <q-card-section class="q-pa-sm" style="flex:1">
           <div class="row q-my-md">
             <div class="col q-pl-sm">新增缴费</div>
@@ -24,7 +25,6 @@
               <q-icon name="keyboard_arrow_down" style="font-size:1.5em"/>
             </small>
           </div>
-
           <q-card class="row justify-around q-pa-md">
               <div class="col-3 text-center "  v-for="(item, index) in paymentItems" :key="index">
                 <q-btn flat  outline class="full-width" :disable="!item.available" @click="toLifeAdd(item)">
@@ -32,9 +32,7 @@
                 </q-btn>
               </div>
           </q-card>
-
         </q-card-section>
-
     </div>
 
     <div class="text-center">

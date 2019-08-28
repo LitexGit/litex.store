@@ -1,23 +1,19 @@
 <template>
-  <q-page padding class="flex">
-    <q-card class="q-pa-sm container" flat>
-      <q-card-section class="q-pa-sm">
-        <q-card class="q-mt-sm">
-          <div class="row q-pt-sm">
-            <div class="col text-center">
-              <q-btn round id="detailBtn">
-                <q-icon :name="getIconImgName(account.type, true)"></q-icon>
-                <!-- <svg class="icon item-center" aria-hidden="true">
-                  <use :xlink:href="getIconName(account.type)"></use>
-                </svg> -->
-              </q-btn>
-            </div>
+   <q-page padding class="flex column">
+   <q-card class="q-ma-sm q-mt-md" style="flex: 1">
+        <div class="row q-pt-sm">
+          <div class="col text-center">
+            <q-btn disable round id="detailBtn">
+              <q-icon :name="getIconImgName(account.type, true)"/>
+            </q-btn>
           </div>
-          <water-deal v-if="account.type === 1"></water-deal>
-          <common-deal v-else></common-deal>
-        </q-card>
-      </q-card-section>
+        </div>
+        <water-deal v-if="account.type === 1"/>
+        <common-deal v-else/>
     </q-card>
+    <!-- <div v-if="account.type != 1" class="q-pa-xs">
+      <q-btn class="full-width q-pa-sm" color="secondary" label="确认账单" @click="$router.push('lifeDealDetail')"/>
+    </div> -->
   </q-page>
 </template>
 

@@ -1,50 +1,45 @@
 <template>
   <q-page padding class="flex">
-    <q-card class="q-pa-sm container" flat>
-      <q-card-section class="q-pa-sm">
-        <q-card class="q-mt-sm">
+     <q-card class="q-ma-sm q-mt-md" style="flex: 1">
           <div class="row q-pt-sm">
             <div class="col text-center ">
               <q-btn round id="detailBtn">
                 <q-icon :name="getIconImgName(account.type, true)"></q-icon>
-                <!-- <svg class="icon text-center" aria-hidden="true">
-                  <use :xlink:href="getIconImgName(account.type)"></use>
-                </svg> -->
               </q-btn>
             </div>
           </div>
           <div class="q-px-lg">
             <div class="row text-center q-pb-sm">
-              <div class="col text-subtitle2">缴费金额</div>
+              <div class="col text-subtitle2 text-grey-7">缴费金额</div>
             </div>
             <div class="row text-center q-pb-md">
-              <div class="col text-bold text-h4">￥{{ depositAmount }}</div>
+              <div class="col text-bold text-amber-14 text-h4">￥{{ depositAmount }}</div>
             </div>
             <div class="row q-py-sm">
-              <div class="col-5">应缴金额</div>
+              <div class="col-5 text-grey-7">应缴金额</div>
               <div class="col">{{ bill.payAmount }}元</div>
             </div>
             <div class="row q-py-sm">
-              <div class="col-5">入表金额</div>
+              <div class="col-5 text-grey-7">入表金额</div>
               <div class="col">{{ depositAmount - bill.payAmount }}元</div>
             </div>
             <div class="row q-py-sm">
               <q-separator />
             </div>
             <div class="row q-py-sm" v-if="bill.customerName">
-              <div class="col-5">缴费户名</div>
+              <div class="col-5 text-grey-7">缴费户名</div>
               <div class="col">{{ bill.customerName }}</div>
             </div>
             <div class="row q-py-sm" v-if="account.number">
-              <div class="col-5">缴费户号</div>
+              <div class="col-5 text-grey-7">缴费户号</div>
               <div class="col">{{ account.number }}</div>
             </div>
             <div class="row q-py-sm" v-if="bill.customerAddress">
-              <div class="col-5">用户地址</div>
+              <div class="col-5 text-grey-7">用户地址</div>
               <div class="col">{{ bill.customerAddress }}</div>
             </div>
             <div class="row q-py-sm" v-if="account.companyName">
-              <div class="col-5">缴费单位</div>
+              <div class="col-5 text-grey-7">缴费单位</div>
               <div class="col">{{ account.companyName }}</div>
             </div>
             <div class="row q-pt-sm q-pb-lg">
@@ -55,8 +50,12 @@
             </div>
           </div>
         </q-card>
+
+    <!-- <q-card class="q-pa-sm container" flat>
+      <q-card-section class="q-pa-sm">
       </q-card-section>
-    </q-card>
+    </q-card> -->
+
   </q-page>
 </template>
 
