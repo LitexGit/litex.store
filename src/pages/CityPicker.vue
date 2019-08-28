@@ -22,13 +22,21 @@
                 :key="index"
               >
                 <q-btn
-                  :label="city.name"
                   outline
                   no-caps
-                  color="grey-7"
+                  color="grey-7 q-px-xs"
                   class="city"
                   @click="setCity(city)"
                 >
+                  <template>
+                    <div class="">
+                      {{
+                        city.name.length > 4
+                          ? city.name.substring(0, 4) + "..."
+                          : city.name
+                      }}
+                    </div>
+                  </template>
                 </q-btn>
               </div>
             </div>
@@ -52,13 +60,21 @@
                 :key="index"
               >
                 <q-btn
-                  :label="city.name"
                   outline
                   no-caps
                   color="grey-7"
-                  class="city"
+                  class="city q-px-xs"
                   @click="setCity(city)"
                 >
+                  <template>
+                    <div class="">
+                      {{
+                        city.name.length > 4
+                          ? city.name.substring(0, 4) + "..."
+                          : city.name
+                      }}
+                    </div>
+                  </template>
                 </q-btn>
               </div>
             </div>
@@ -156,7 +172,7 @@ export default {
   position: fixed;
   top: 15%;
   right: 2%;
-  width: 15px;
+  width: 20px;
   overflow: hidden;
 }
 </style>
