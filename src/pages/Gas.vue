@@ -177,6 +177,9 @@ export default {
   },
   created () {
     this.$store.dispatch('gas/getGoodsList', { selectedCard: this.selectedCard })
+    if (this.cards && this.cards.length > 0) {
+      this.selectedCard = this.cards[0]
+    }
   },
   destroyed: function () {
     this.$store.dispatch('pn/updatePrice', { path: this.$route.path })

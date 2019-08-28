@@ -94,10 +94,12 @@
             </q-item-section>
           </q-item>
         </q-list>
-        <div class="text-grey text-caption q-mt-lg q-px-xs">
+        <div class="text-grey text-caption q-mt-md q-px-xs">
           <q-list>
             <q-item-label>
-              注意事项：
+              <div class="line">
+                注意事项：
+              </div>
             </q-item-label>
 
             <q-item dense>
@@ -224,6 +226,6 @@ export default {
   flex: 1;
 }
 .line {
-  line-height: 20px;
+  line-height: 25px;
 }
 </style>
