@@ -9,12 +9,12 @@ export default {
     {
       value: 1,
       label: '中国石油',
-      img: '../statics/gas/zgsy.jpg'
+      img: '../statics/gas/shiyou.png'
     },
     {
       value: 2,
       label: '中国石化',
-      img: '../statics/gas/zgsh.jpg'
+      img: '../statics/gas/shihua.png'
     }
   ],
   records: []

@@ -6,10 +6,10 @@
           <div v-for="(card, index) in cards" :key="index">
             <q-card class="q-mb-md  card">
               <q-item class="q-pa-sm" clickable v-ripple>
-                <q-item-section no-wrap>
-                  <q-item-label class="q-py-xs q-pb-md">
-                    <q-icon :name="'img:' + img(card.type)" size="xs"></q-icon>
-                    <span class="q-pl-xs">
+                <q-item-section>
+                  <q-item-label class="q-py-xs q-mb-sm">
+                    <q-icon :name="'img:' + img(card.type)" size="md"></q-icon>
+                    <span class="q-pl-sm q-mt-sm">
                       {{ brand(card.type) }}
                     </span>
                   </q-item-label>
