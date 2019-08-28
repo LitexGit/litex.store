@@ -76,7 +76,7 @@
           @click="clickGoods(goods, product.productId)"
         >
           <div>
-            <div>{{ goods.goodsDes }}</div>
+            <div style="font-size:0.9em">{{ goods.goodsDes }}</div>
             <small>
               售价:<span>{{ (goods.price / 100).toFixed(2) }}</span
               >元
@@ -154,7 +154,7 @@ export default {
     clickGoods: function (goods, productId) {
       goods.productId = productId
       this.$store.commit('gas/update', { selectedGoods: goods })
-      this.$store.dispatch('pn/updateGasPrice')
+      this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
     },
     brand: function (type) {
       let label = '中国石化'
@@ -176,10 +176,10 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('gas/getGoodsList', { selectedCard: this.selectedCard })
     if (this.cards && this.cards.length > 0) {
       this.selectedCard = this.cards[0]
     }
+    this.$store.dispatch('gas/getGoodsList', { selectedCard: this.selectedCard })
   },
   destroyed: function () {
     this.$store.dispatch('pn/updatePrice', { path: this.$route.path })

@@ -11,7 +11,7 @@ export async function updatePrice ({ commit, rootGetters, rootState }, payload) 
       payPrice = price
       break
     case '/shop/gas':
-      const { selectedGoods: { gasPrice } } = rootState.gas
+      const { selectedGoods: { price: gasPrice } } = rootState.gas
       payPrice = gasPrice
       break
     case '/shop/lifeDeal':
