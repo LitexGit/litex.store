@@ -6,6 +6,7 @@ import Fund from 'pages/Fund'
 import Order from 'pages/Order'
 import CardList from 'pages/CardList'
 import Life from 'pages/Life'
+import LifeAccountList from 'pages/LifeAccountList'
 import LifeAdd from 'pages/LifeAdd'
 import LifeDeal from 'pages/LifeDeal'
 import LifeDealDetail from 'pages/LifeDealDetail'
@@ -30,6 +31,7 @@ const routes = [{
     { path: 'order', component: Order },
     { path: 'cardList', component: CardList },
     { path: 'life', component: Life },
+    { path: 'lifeAccountList', component: LifeAccountList },
     { path: 'lifeAdd', component: LifeAdd },
     { path: 'lifeDeal', component: LifeDeal },
     { path: 'lifeDealDetail', component: LifeDealDetail },
