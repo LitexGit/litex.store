@@ -13,7 +13,6 @@
               :label="info"
               :disable="!ableToSelectCard"
               color="primary"
-              clearable
               lazy-rules
               :rules="[val => val && val.id > 0]"
               @input="selectCard(selectedCard)"
@@ -46,10 +45,9 @@
           <div class="col-1 q-pb-md q-pl-xs">
             <q-btn
               flat
-              dense
               round
               @click="addCard"
-              icon="img:statics/gas/add-credit.png"
+              icon="img:statics/gas/jiayoukachongzhi.png"
             >
               <!-- <img style="width: 28px" src="../statics/gas/addfiles.png" /> -->
               <!-- <q-icon name="img:statics/gas/add-credit.png" style="font-size:0.1em"></q-icon> -->
