@@ -1,6 +1,6 @@
 <template>
   <q-page padding class="flex">
-    <q-card class="q-pa-sm container">
+    <q-card class="q-pa-sm container" flat>
       <div>
         <q-list>
           <q-item-label header class="q-pt-sm q-pb-sm">缴费记录</q-item-label>

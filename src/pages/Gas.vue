@@ -1,6 +1,6 @@
 <template>
-  <q-page padding class="flex">
-    <q-card class="q-pa-sm container">
+  <q-page padding class="flex column">
+    <q-card class="q-pa-sm container" flat>
       <q-card-section>
         <div class="row items-center">
           <div class="col-11">
@@ -84,16 +84,17 @@
           </div>
         </q-btn>
       </q-card-section>
-      <div class="text-center">
+    </q-card>
+    <div class="text-center">
         <q-btn
           flat
           type="a"
           label="充值记录"
           color="blue"
           to="gasRecords"
+          size="sm"
         ></q-btn>
       </div>
-    </q-card>
     <q-inner-loading :showing="loading || channelLoading">
       <q-spinner-bars size="50px" color="primary" />
     </q-inner-loading>

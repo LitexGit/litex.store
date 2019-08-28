@@ -1,6 +1,6 @@
 <template>
-  <q-page padding class="flex">
-    <q-card class="q-pa-sm container">
+  <q-page padding class="flex column">
+    <q-card class="q-pa-sm container" flat>
       <q-card-section>
         <q-input
           filled
@@ -43,16 +43,17 @@
           </div>
         </q-btn>
       </q-card-section>
-      <div class="text-center q-mt-sm">
+    </q-card>
+    <div class="text-center q-mt-sm">
         <q-btn
           flat
           type="a"
           label="充值记录"
           color="blue"
           to="phoneRecords"
+          size="sm"
         ></q-btn>
       </div>
-    </q-card>
     <q-inner-loading :showing="loading001 || loading002">
       <q-spinner-bars size="50px" color="primary" />
     </q-inner-loading>
