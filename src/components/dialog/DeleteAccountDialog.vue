@@ -1,12 +1,12 @@
 <template>
   <q-dialog ref="deleteAccountDialog" @hide="onDialogHide" persistent>
     <q-card class="q-dialog-plugin">
-      <q-card-section class="text-h6 q-pa-sm text-center">
+      <q-card-section class="text-h6 q-pa-sm text-center text-white bg-primary">
         确认删除？
       </q-card-section>
       <q-separator />
-      <q-card-section class="q-pa-sm">
-        <div class="column">
+      <q-card-section class="q-pa-sm  q-pt-md">
+        <div class="column q-pl-lg">
           <div class="col q-pa-xs q-ml-md">
             类 型：{{ getTypeName(account.type) }}
           </div>

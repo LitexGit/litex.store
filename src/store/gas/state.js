@@ -1,6 +1,6 @@
 export default {
   loading: false,
-  disable: true,
+  disable: false,
   skus: [],
   selectedGoods: {},
   cards: [],
