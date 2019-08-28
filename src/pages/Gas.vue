@@ -17,6 +17,7 @@
               lazy-rules
               :rules="[val => val && val.id > 0]"
               @input="selectCard(selectedCard)"
+              behavior="menu"
             >
               <template v-slot:prepend>
                 <q-icon name="local_gas_station" />
