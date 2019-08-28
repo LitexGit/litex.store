@@ -1,19 +1,26 @@
 <template>
-  <q-dialog ref="cardRemoveDialog" @hide="onDialogHide" persistent>
-    <q-card class="q-dialog-plugin">
-      <q-card-section class="text-h6 q-pa-sm text-center">
+  <q-dialog
+    ref="cardRemoveDialog"
+    @hide="onDialogHide"
+    persistent
+    minimized
+    content-classes="flex justify-center items-center"
+    position="standard"
+  >
+    <q-card class="container ">
+      <q-card-section class="text-h6 q-pa-sm text-center text-white bg-primary">
         确认删除？
       </q-card-section>
       <q-separator />
-      <q-card-section class="q-pa-sm">
-        <div class="column">
+      <q-card-section class="q-pa-xs q-pt-md">
+        <div class="column q-pl-lg">
           <div class="col q-pa-xs q-ml-md">类 型：{{ cardType.label }}</div>
           <div class="col q-pa-xs q-ml-md">卡 号：{{ card.id }}</div>
           <div class="col q-pa-xs q-ml-md">姓 名：{{ card.user }}</div>
           <div class="col q-pa-xs q-ml-md">手 机：{{ card.tel }}</div>
         </div>
       </q-card-section>
-      <q-card-actions align="right">
+      <q-card-actions align="right" class="q-pt-xs">
         <q-btn color="primary" label="确认" @click="onOKClick" />
         <q-btn color="primary" label="取消" @click="onCancelClick" />
       </q-card-actions>
@@ -74,3 +81,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.container {
+  border: 2px solid #2ca6e0;
+  width: 80%;
+}
+</style>
