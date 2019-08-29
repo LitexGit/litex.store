@@ -4,12 +4,12 @@
       <div v-if="cards && cards.length > 0">
         <q-list class="q-mt-sm">
           <div v-for="(card, index) in cards" :key="index">
-            <q-card class="q-mb-md  card">
+            <q-card class="q-mb-md card">
               <q-item class="q-pa-sm" clickable v-ripple>
                 <q-item-section>
                   <q-item-label class="q-py-xs q-mb-sm">
                     <q-icon :name="'img:' + img(card.type)" size="md"></q-icon>
-                    <span class="q-pl-sm q-mt-sm">
+                    <span class="q-pl-sm ">
                       {{ brand(card.type) }}
                     </span>
                   </q-item-label>
