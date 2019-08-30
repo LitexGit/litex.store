@@ -2,27 +2,28 @@
   <q-page padding class="flex">
     <q-card class="q-pa-sm container" flat>
       <div v-if="cards && cards.length > 0">
-        <q-list class="q-mt-sm">
+        <q-list>
+          <q-item-label header class="q-pa-xs q-pb-sm">加油卡列表</q-item-label>
+          <q-separator />
           <div v-for="(card, index) in cards" :key="index">
-            <q-card class="q-mb-md card">
-              <q-item class="q-pa-sm" clickable v-ripple>
-                <q-item-section>
-                  <q-item-label class="q-py-xs q-mb-sm">
-                    <q-icon :name="'img:' + img(card.type)" size="md"></q-icon>
-                    <span class="q-pl-sm ">
-                      {{ brand(card.type) }}
-                    </span>
-                  </q-item-label>
-                  <q-item-label caption> 姓名：{{ card.user }} </q-item-label>
-                  <q-item-label caption> 卡号：{{ card.id }} </q-item-label>
-                </q-item-section>
-                <q-item-section side top>
-                  <q-item-label @click="removeCard(card)">
-                    <q-icon name="delete"></q-icon>
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-card>
+            <q-item class="q-pa-sm q-my-sm" clickable v-ripple>
+              <q-item-section side>
+                <q-item-label class="q-py-xs q-mb-xs">
+                  <q-icon :name="'img:' + img(card.type)" size="md"></q-icon>
+                </q-item-label>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="q-pb-xs"> {{ brand(card.type) }} </q-item-label>
+                <q-item-label caption> 姓名：{{ card.user }} </q-item-label>
+                <q-item-label caption> 卡号：{{ card.id }} </q-item-label>
+              </q-item-section>
+              <q-item-section side>
+                <q-item-label @click="removeCard(card)">
+                  <q-icon name="delete" size="xs"></q-icon>
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-separator />
           </div>
         </q-list>
       </div>
@@ -86,8 +87,5 @@ export default {
 <style scoped>
 .container {
   flex: 1;
-}
-.card {
-  background-color: #80cbc4;
 }
 </style>
