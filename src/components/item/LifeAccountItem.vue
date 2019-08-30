@@ -15,7 +15,7 @@
         <!-- <q-icon name="backspace" class="delete" @click="deleteAccount(account)"/> -->
       </div>
     </div>
-    <div class="col-12 bg-grey-5" style="height: 0.5px"/>
+    <!-- <div class="col-12 bg-grey-5" style="height: 0.5px"/> -->
   </q-btn>
 </template>
 

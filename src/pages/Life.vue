@@ -19,6 +19,11 @@
               :number="account.number"
               :account="account"
             />
+            <div
+              class="col-12 bg-grey-5"
+              style="height: 0.5px"
+              v-if="index < accounts.length - 1"
+            />
           </div>
         </q-card>
       </q-card-section>
