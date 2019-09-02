@@ -171,7 +171,7 @@ export function verifyCardId (type, id) {
   const syReg = /^(\d){16}$/
   // 中国石化
   const shReg = /^(\d){19}$/
-  console.log(syReg, id, syReg.test(id))
+  // console.log(syReg, id, syReg.test(id))
   return type === 1 ? syReg.test(id) : shReg.test(id)
 }
 
