@@ -131,25 +131,25 @@ export default {
     }
   },
   watch: {
-    $route: {
-      deep: true,
-      handler: function (newVal, oldVal) {
-        const { path } = newVal
-        switch (path) {
-          case '/shop/phone':
-            break
-          case '/shop/gas':
-            break
-          case '/shop/vip':
-          case '/shop/life':
-            this.$router.go(-1)
-            this.$q.notify({ message: '即将上线, 敬请期待...', position: 'top', color: 'positive', timeout: this.duration })
-            break
-          default:
-            break
-        }
-      }
-    },
+    // $route: {
+    //   deep: true,
+    //   handler: function (newVal, oldVal) {
+    //     const { path } = newVal
+    //     switch (path) {
+    //       case '/shop/phone':
+    //         break
+    //       case '/shop/gas':
+    //         break
+    //       case '/shop/vip':
+    //       case '/shop/life':
+    //         this.$router.go(-1)
+    //         this.$q.notify({ message: '即将上线, 敬请期待...', position: 'top', color: 'positive', timeout: this.duration })
+    //         break
+    //       default:
+    //         break
+    //     }
+    //   }
+    // },
     isInitL2: function (newValue, oldValue) {
       if (!this.isInitL2) return
       this.$store.dispatch('config/getOnchainBalance')

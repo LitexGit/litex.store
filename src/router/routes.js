@@ -14,7 +14,12 @@ import LifeRecords from 'pages/LifeRecords'
 import PhoneRecords from 'pages/PhoneRecords'
 import GasRecords from 'pages/GasRecords'
 import CityPicker from 'pages/CityPicker'
+import Vip from 'pages/Vip'
 
+import { Notify } from 'quasar'
+function notify () {
+  Notify.create({ message: '即将上线, 敬请期待...', position: 'top', color: 'positive', timeout: 1500 })
+}
 const routes = [{
   path: '/',
   redirect: '/shop'
@@ -25,20 +30,70 @@ const routes = [{
   children: [
     { path: '', redirect: 'phone' },
     { path: 'phone', component: Phone },
+    { path: 'phoneRecords', component: PhoneRecords },
     { path: 'gas', component: Gas },
     { path: 'addcard', component: AddCard },
+    { path: 'cardList', component: CardList },
+    { path: 'gasRecords', component: GasRecords },
     { path: 'fund', component: Fund },
     { path: 'order', component: Order },
-    { path: 'cardList', component: CardList },
-    { path: 'life', component: Life },
-    { path: 'lifeAccountList', component: LifeAccountList },
-    { path: 'lifeAdd', component: LifeAdd },
-    { path: 'lifeDeal', component: LifeDeal },
-    { path: 'lifeDealDetail', component: LifeDealDetail },
-    { path: 'lifeRecords', component: LifeRecords },
-    { path: 'phoneRecords', component: PhoneRecords },
-    { path: 'gasRecords', component: GasRecords },
-    { path: 'cityPicker', component: CityPicker },
+    {
+      path: 'vip',
+      component: Vip,
+      beforeEnter: (to, from, next) => {
+        notify()
+      }
+    },
+    {
+      path: 'life',
+      component: Life,
+      beforeEnter: (to, from, next) => {
+        notify()
+      }
+    },
+    {
+      path: 'lifeAccountList',
+      component: LifeAccountList,
+      beforeEnter: (to, from, next) => {
+        notify()
+      }
+    },
+    {
+      path: 'lifeAdd',
+      component: LifeAdd,
+      beforeEnter: (to, from, next) => {
+        notify()
+      }
+    },
+    {
+      path: 'lifeDeal',
+      component: LifeDeal,
+      beforeEnter: (to, from, next) => {
+        notify()
+      }
+    },
+    {
+      path: 'lifeDealDetail',
+      component: LifeDealDetail,
+      beforeEnter: (to, from, next) => {
+        notify()
+      }
+    },
+    {
+      path: 'lifeRecords',
+      component: LifeRecords,
+      beforeEnter: (to, from, next) => {
+        notify()
+      }
+    },
+
+    {
+      path: 'cityPicker',
+      component: CityPicker,
+      beforeEnter: (to, from, next) => {
+        notify()
+      }
+    },
     {
       path: '*',
       component: () =>
