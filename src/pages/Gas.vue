@@ -49,7 +49,7 @@
               @click="addCard"
               icon="img:statics/gas/jiayoukachongzhi.png"
             >
-              <!-- <img style="width: 28px" src="../statics/gas/addfiles.png" /> -->
+              <!-- <img style="width: 28px" src="statics/gas/addfiles.png" /> -->
               <!-- <q-icon name="img:statics/gas/add-credit.png" style="font-size:0.1em"></q-icon> -->
             </q-btn>
           </div>
@@ -165,7 +165,7 @@ export default {
       return label
     },
     img (type) {
-      let img = '../statics/gas/zgsh.jpg'
+      let img = 'statics/gas/zgsh.jpg'
       this.cardTypes.forEach(item => {
         if (item.value === type) {
           img = item.img

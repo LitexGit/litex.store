@@ -69,7 +69,7 @@ export default {
       return label
     },
     img (type) {
-      let img = '../statics/gas/zgsh.jpg'
+      let img = 'statics/gas/zgsh.jpg'
       this.cardTypes.forEach(item => {
         if (item.value === type) {
           img = item.img

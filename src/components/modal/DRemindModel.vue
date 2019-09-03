@@ -6,7 +6,7 @@
         <q-btn class="col-1" color="white" dense flat size="md" icon="close" @click="clickClose()"/>
         <div class="row col-11 q-pr-md justify-center items-center text-white">
           <span class="text-subtitle1">充值须知</span>
-          <img class="q-ml-sm" style="width: 20px" src="../../statics/icons/reminder.png" />
+          <img class="q-ml-sm" style="width: 20px" src="statics/icons/reminder.png" />
         </div>
       </div>
       <div class="bg-white q-pa-md">
