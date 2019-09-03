@@ -130,6 +130,15 @@
                 </q-item-label>
               </q-item-section>
             </q-item>
+             <q-item dense>
+              <q-item-section>
+                <q-item-label>
+                  <div class="line text-negative">
+                    4. 加油卡充值到账时间较长，请耐心等待。
+                  </div>
+                </q-item-label>
+              </q-item-section>
+            </q-item>
           </q-list>
         </div>
       </q-card-section>
