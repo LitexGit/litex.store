@@ -56,7 +56,7 @@
           >
             <div>
               <div>{{ goods.goodsDes }}</div>
-              <div :class="disable ? 'text-grey-6' : 'text-black'" style="font-size:9px !important; display:inline-block; white-space:nowrap;">
+              <div :class="disable ? 'text-grey-6' : 'text-grey-9'" style="font-size:10px !important; display:inline-block; white-space:nowrap;">
                 售价:
                 <span>{{ (goods.price / 100).toFixed(2) }}</span>元
               </div>
