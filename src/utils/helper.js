@@ -379,9 +379,6 @@ const isIPhoneXR = /iphone/gi.test(window.navigator.userAgent) && window.deviceP
 
 
 export function isIPhoneFllS (){
-  // console.log('isIPhoneX ==> ' + isIPhoneX)
-  // console.log('isIPhoneXSMax ==> ' + isIPhoneXSMax)
-  // console.log('isIPhoneXR ==> ' + isIPhoneXR)
-  // return isIPhoneX || isIPhoneXSMax || isIPhoneXR
-  return false
+  const isImToken = getWalletInfo() === 'imToken'
+  return isImToken && isIPhoneX || isIPhoneXSMax || isIPhoneXR
 }

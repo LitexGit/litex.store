@@ -1,22 +1,26 @@
 <template>
   <q-layout view="lHh Lpr lFf">
+
     <q-header reveal elevated>
+
       <q-toolbar>
         <q-btn size="lg" flat dense round  :disable='isShowRoot' @click="$router.go(-1)">
           <q-icon v-if="!isShowRoot" name="chevron_left" />
         </q-btn>
         <q-toolbar-title class="flex flex-center column">
-          <span>LITE<b>X</b> Store</span>
-          <small class="text-caption">{{title}}</small>
+          <!-- <span>LITE<b>X</b> Store</span> -->
+          <span class="text-subtitle1 text-weight-regular">{{title}}</span>
         </q-toolbar-title>
         <menu-btn/>
       </q-toolbar>
+
       <ChannelStatusBar :status="channelStatus"/>
+
       <q-tabs v-show="isShowRoot">
-        <q-route-tab v-for="(category, index) in categorys" :key="index" exact
+        <q-route-tab class="text-subtitle2" v-for="(category, index) in categorys" :key="index" exact
            :name="getRouter(category.categoryId)" :to="getRouter(category.categoryId)" :label="category.categoryDes" />
       </q-tabs>
-      <fund-tabs v-if="isShowFund"></fund-tabs>
+      <fund-tabs v-if="isShowFund"/>
     </q-header>
 
     <q-footer v-if="isShowRoot || isShowRootFoot" class="bg-white" :class="this.isIPhoneFllS() ? 'q-pb-lg' : 'q-pb-nonce'">
@@ -131,25 +135,6 @@ export default {
     }
   },
   watch: {
-    // $route: {
-    //   deep: true,
-    //   handler: function (newVal, oldVal) {
-    //     const { path } = newVal
-    //     switch (path) {
-    //       case '/shop/phone':
-    //         break
-    //       case '/shop/gas':
-    //         break
-    //       case '/shop/vip':
-    //       case '/shop/life':
-    //         this.$router.go(-1)
-    //         this.$q.notify({ message: '即将上线, 敬请期待...', position: 'top', color: 'positive', timeout: this.duration })
-    //         break
-    //       default:
-    //         break
-    //     }
-    //   }
-    // },
     isInitL2: function (newValue, oldValue) {
       if (!this.isInitL2) return
       this.$store.dispatch('config/getOnchainBalance')
@@ -232,7 +217,7 @@ export default {
     }
   },
   mounted: async function () {
-    console.log('==============mounted======================')
+    this.$store.commit('config/update', { title: 'LITEX Store' })
     this.$layer2.on('TokenApproval', (err, res) => {
       console.log('===========TokenApproval=========================')
       console.log('TokenApproval from L2', err, res)
@@ -347,5 +332,4 @@ export default {
 </script>
 
 <style>
-
 </style>

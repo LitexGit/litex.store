@@ -1,28 +1,19 @@
 <template>
   <q-page padding class="flex">
     <q-card class="q-pa-sm container">
+      <div class="row justify-between items-center">
+        <q-item-label>加油卡类型:</q-item-label>
+        <q-btn
+          v-if="cards && cards.length > 0"
+          to="/shop/CardList"
+          flat
+          round
+          color="primary"
+          icon="img:statics/gas/cards_management.png"
+        />
+      </div>
       <q-card-section class="q-pa-xs">
         <q-list>
-          <q-item-label header class="q-pa-xs q-mb-sm">
-            添加加油卡
-          </q-item-label>
-          <q-separator />
-          <q-item class="q-pa-xs" dense>
-            <q-item-section>
-              <q-item-label>加油卡类型: </q-item-label>
-            </q-item-section>
-            <q-item-section side>
-              <q-btn
-                size="md"
-                dense
-                flat
-                text-color="primary"
-                label="加油卡列表"
-                to="/shop/CardList"
-                v-if="cards && cards.length > 0"
-              />
-            </q-item-section>
-          </q-item>
           <q-item class="q-pa-xs">
             <q-item-section v-for="item in cardTypes" :key="item.value">
               <div class="text-center">
@@ -37,15 +28,12 @@
               </div>
             </q-item-section>
           </q-item>
-          <q-item class="q-pa-xs">
+          <q-item class="q-px-lg">
             <q-item-section side no-wrap class="q-pr-xs">
-              <q-item-label class="text-black">
-                卡号：
-              </q-item-label>
+              <q-item-label class="text-black">卡号：</q-item-label>
             </q-item-section>
             <q-item-section>
               <q-input
-                class=""
                 style="flex: 1"
                 input-style="text-align: right"
                 type="number"
@@ -56,15 +44,12 @@
               />
             </q-item-section>
           </q-item>
-          <q-item class="q-pa-xs">
+          <q-item class="q-px-lg">
             <q-item-section side class="q-pr-xs">
-              <q-item-label class="text-black">
-                姓名：
-              </q-item-label>
+              <q-item-label class="text-black">姓名：</q-item-label>
             </q-item-section>
             <q-item-section>
               <q-input
-                class=""
                 style="flex: 1"
                 input-style="text-align: right"
                 dense
@@ -74,15 +59,12 @@
               />
             </q-item-section>
           </q-item>
-          <q-item class="q-pa-xs">
+          <q-item class="q-px-lg">
             <q-item-section side class="q-pr-xs">
-              <q-item-label class="text-black">
-                手机：
-              </q-item-label>
+              <q-item-label class="text-black">手机：</q-item-label>
             </q-item-section>
             <q-item-section>
               <q-input
-                class=""
                 style="flex: 1"
                 input-style="text-align: right"
                 type="number"
@@ -95,56 +77,18 @@
           </q-item>
         </q-list>
         <div class="text-grey text-caption q-mt-md q-px-xs">
-          <q-list>
-            <q-item-label>
-              <div class="line">
-                注意事项：
-              </div>
-            </q-item-label>
-
-            <q-item dense>
-              <q-item-section>
-                <q-item-label>
-                  <div class="line">
-                    1. 请务必确认加油卡信息正确无误。
-                  </div>
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-            <q-item dense>
-              <q-item-section>
-                <q-item-label>
-                  <div class="line">
-                    2. 信息填错导致的财产损失本产品概不负责。
-                  </div>
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-            <q-item dense>
-              <q-item-section>
-                <q-item-label>
-                  <div class="line">
-                    3.
-                    完成网上充值后，需到所充值油卡当地加油站进行激活(圈存)操作，否则充值金额将无法生效。
-                  </div>
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-             <q-item dense>
-              <q-item-section>
-                <q-item-label>
-                  <div class="line text-negative">
-                    4. 加油卡充值到账时间较长，请耐心等待。
-                  </div>
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
+          <div class="text-grey-8">注意事项：</div>
+          <div class="q-mt-sm q-pl-md">
+            <div>1. 请务必确认加油卡信息正确无误。</div>
+            <div>2. 信息填错导致的财产损失本产品概不负责。</div>
+            <div>3. 完成网上充值后，需到所充值油卡当地加油站进行激活(圈存)操作，否则充值金额将无法生效。</div>
+            <div class="text-negative">4. 加油卡充值到账时间较长，请耐心等待。</div>
+          </div>
         </div>
       </q-card-section>
       <center>
         <q-btn
-          class="q-my-md"
+          class="q-mt-xl"
           label="确认添加"
           style="width:80%"
           color="primary"
@@ -172,13 +116,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('gas', [
-      'cardTypes',
-      'cards'
-    ]),
-    ...mapState('config', [
-      'duration'
-    ])
+    ...mapState('gas', ['cardTypes', 'cards']),
+    ...mapState('config', ['duration'])
   },
   methods: {
     verifyCardId,
@@ -225,7 +164,11 @@ export default {
     }
   },
   mounted: function () {
-    this.$store.commit('config/update', { isShowRoot: false, isShowRootFoot: false, title: '添加加油卡' })
+    this.$store.commit('config/update', {
+      isShowRoot: false,
+      isShowRootFoot: false,
+      title: '添加加油卡'
+    })
   }
 }
 </script>

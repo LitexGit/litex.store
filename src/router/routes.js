@@ -16,10 +16,10 @@ import GasRecords from 'pages/GasRecords'
 import CityPicker from 'pages/CityPicker'
 import Vip from 'pages/Vip'
 
-import { Notify } from 'quasar'
-function notify () {
-  Notify.create({ message: '即将上线, 敬请期待...', position: 'top', color: 'positive', timeout: 1500 })
-}
+// import { Notify } from 'quasar'
+// function notify () {
+//   Notify.create({ message: '即将上线, 敬请期待...', position: 'top', color: 'positive', timeout: 1500 })
+// }
 const routes = [{
   path: '/',
   redirect: '/shop'
@@ -39,60 +39,60 @@ const routes = [{
     { path: 'order', component: Order },
     {
       path: 'vip',
-      component: Vip,
-      beforeEnter: (to, from, next) => {
-        notify()
-      }
+      component: Vip
+      // beforeEnter: (to, from, next) => {
+      //   notify()
+      // }
     },
     {
       path: 'life',
-      component: Life,
-      beforeEnter: (to, from, next) => {
-        notify()
-      }
+      component: Life
+      // beforeEnter: (to, from, next) => {
+      //   notify()
+      // }
     },
     {
       path: 'lifeAccountList',
-      component: LifeAccountList,
-      beforeEnter: (to, from, next) => {
-        notify()
-      }
+      component: LifeAccountList
+      // beforeEnter: (to, from, next) => {
+      //   notify()
+      // }
     },
     {
       path: 'lifeAdd',
-      component: LifeAdd,
-      beforeEnter: (to, from, next) => {
-        notify()
-      }
+      component: LifeAdd
+      // beforeEnter: (to, from, next) => {
+      //   notify()
+      // }
     },
     {
       path: 'lifeDeal',
-      component: LifeDeal,
-      beforeEnter: (to, from, next) => {
-        notify()
-      }
+      component: LifeDeal
+      // beforeEnter: (to, from, next) => {
+      //   notify()
+      // }
     },
     {
       path: 'lifeDealDetail',
-      component: LifeDealDetail,
-      beforeEnter: (to, from, next) => {
-        notify()
-      }
+      component: LifeDealDetail
+      // beforeEnter: (to, from, next) => {
+      //   notify()
+      // }
     },
     {
       path: 'lifeRecords',
-      component: LifeRecords,
-      beforeEnter: (to, from, next) => {
-        notify()
-      }
+      component: LifeRecords
+      // beforeEnter: (to, from, next) => {
+      //   notify()
+      // }
     },
 
     {
       path: 'cityPicker',
-      component: CityPicker,
-      beforeEnter: (to, from, next) => {
-        notify()
-      }
+      component: CityPicker
+      // beforeEnter: (to, from, next) => {
+      //   notify()
+      // }
     },
     {
       path: '*',

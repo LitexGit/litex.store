@@ -13,7 +13,7 @@
           <div class="col q-pa-xs q-ml-md">户 号：{{ account.number }}</div>
         </div>
       </q-card-section>
-      <q-card-actions align="right">
+      <q-card-actions align="around">
         <q-btn color="primary" label="确认" @click="onOKClick" />
         <q-btn color="primary" label="取消" @click="onCancelClick" />
       </q-card-actions>

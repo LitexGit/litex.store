@@ -17,7 +17,7 @@
             </q-item-section>
             <q-item-section side>
               <q-item-label @click="deleteAccount(account)">
-                <q-icon name="delete" style="font-size:1.2em" class=""></q-icon>
+                <q-icon color="red" name="delete" size="xs" class=""></q-icon>
               </q-item-label>
             </q-item-section>
           </q-item>

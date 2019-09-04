@@ -20,40 +20,33 @@
           </template>
         </q-input>
       </q-card-section>
-      <q-card-section
-        v-for="(product, index) in skus"
-        :key="index"
-        class="q-gutter-sm"
-      >
+      <q-card-section v-for="(product, index) in skus" :key="index" class="q-gutter-sm">
         <div>{{ product.productDes }}</div>
-        <q-btn
-          v-for="(goods, index) in product.goodsList"
-          :key="index"
-          :color="disable ? 'grey-6' : 'primary'"
-          :disable="disable"
-          :outline="goods.goodsId != selectGoods.goodsId"
-          @click="clickGoods(goods, product.productId)"
-        >
-          <div>
-            <div>{{ goods.goodsDes }}</div>
-            <small>
-              售价:<span>{{ (goods.price / 100).toFixed(2) }}</span
-              >元
-            </small>
-          </div>
-        </q-btn>
+        <div class="row justify-start">
+          <q-btn  style="width: 30%"
+            class="text-caption q-mx-xs q-mb-md q-px-sm"
+            v-for="(goods, index) in product.goodsList"
+            :key="index"
+            :color="disable ? 'grey-6' : 'primary'"
+            :disable="disable"
+            :outline="goods.goodsId != selectGoods.goodsId"
+            @click="clickGoods(goods, product.productId)"
+          >
+            <!-- <img v-if="goods.goodsId === selectGoods.goodsId" src="statics/store/preferential.png" style="width: 20px; height:20px; position:absolute; right: -6px; top: -2px"> -->
+            <div style="">
+              <div>{{ goods.goodsDes }}</div>
+              <div :class="disable ? 'text-grey-6' : 'text-black'" style="font-size:10px !important; display:inline-block; white-space:nowrap;">
+                售价:
+                <span class="">{{ (goods.price / 100).toFixed(2) }}元</span>
+              </div>
+            </div>
+          </q-btn>
+        </div>
       </q-card-section>
     </q-card>
     <div class="text-center q-mt-sm">
-        <q-btn
-          flat
-          type="a"
-          label="充值记录"
-          color="blue"
-          to="phoneRecords"
-          size="sm"
-        ></q-btn>
-      </div>
+      <q-btn flat type="a" label="充值记录" color="blue" to="phoneRecords" size="sm"></q-btn>
+    </div>
     <q-inner-loading :showing="loading001 || loading002">
       <q-spinner-bars size="50px" color="primary" />
     </q-inner-loading>
@@ -116,7 +109,10 @@ export default {
       } else {
         // this.$store.dispatch('sku/getGoodsList', { accountNum: input, debug: this.debug })
         // this.$store.commit('sku/update', { disable: false })
-        this.$store.dispatch('phone/getGoodsList', { accountNum: input, debug: this.debug })
+        this.$store.dispatch('phone/getGoodsList', {
+          accountNum: input,
+          debug: this.debug
+        })
         this.$store.commit('phone/update', { disable: false })
       }
     },
@@ -147,14 +143,21 @@ export default {
     this.debug = this.$route.query.debug
     this.debug = !(this.debug === undefined || this.debug === null)
     // this.$store.dispatch('sku/getGoodsList', { accountNum: phone, debug: this.debug })
-    this.$store.dispatch('phone/getGoodsList', { accountNum: phone, debug: this.debug })
+    this.$store.dispatch('phone/getGoodsList', {
+      accountNum: phone,
+      debug: this.debug
+    })
   },
   destroyed: function () {
     this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
     this.$store.commit('phone/update', { selectGoods: {} })
   },
   mounted: function () {
-    this.$store.commit('config/update', { isShowRoot: true, isShowRootFoot: true, title: undefined })
+    this.$store.commit('config/update', {
+      isShowRoot: true,
+      isShowRootFoot: true,
+      title: 'LITEX Store'
+    })
   }
 }
 </script>

@@ -23,16 +23,8 @@
               </template>
               <template v-slot:option="scope">
                 <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
-                  <q-item-section
-                    avatar
-                    no-padding
-                    class="q-px-xs items-center"
-                  >
-                    <q-btn
-                      :icon="'img:' + img(scope.opt.type)"
-                      flat
-                      class="q-pa-xs"
-                    ></q-btn>
+                  <q-item-section avatar no-padding class="q-px-xs items-center">
+                    <q-btn :icon="'img:' + img(scope.opt.type)" flat class="q-pa-xs"/>
                   </q-item-section>
                   <q-item-section>
                     <q-item-label v-html="scope.opt.user" />
@@ -43,56 +35,39 @@
             </q-select>
           </div>
           <div class="col-1 q-pb-md q-pl-xs">
-            <q-btn
-              flat
-              round
-              @click="addCard"
-              icon="img:statics/gas/jiayoukachongzhi.png"
-            >
-              <!-- <img style="width: 28px" src="statics/gas/addfiles.png" /> -->
-              <!-- <q-icon name="img:statics/gas/add-credit.png" style="font-size:0.1em"></q-icon> -->
-            </q-btn>
+            <q-btn class="" @click="addCard" flat round color="primary" icon="img:statics/gas/edit_image.png"/>
           </div>
         </div>
       </q-card-section>
-      <q-card-section
-        v-for="(product, index) in skus"
-        :key="index"
-        class="q-gutter-sm"
-      >
+      <q-card-section v-for="(product, index) in skus" :key="index" class="q-gutter-sm">
         <div
           v-if="product && product.goodsList && product.goodsList.length > 0"
-        >
-          {{ product.productDes }}
+        >{{ product.productDes }}</div>
+        <div class="row justify-start">
+          <q-btn
+            v-for="(goods, index) in product.goodsList"
+            :key="index"
+            style="width: 30%"
+            class="text-caption q-mx-xs q-mb-md q-px-sm"
+            :color="disable ? 'grey-6' : 'primary'"
+            :disable="disable"
+            :outline="goods.goodsId != selectedGoods.goodsId"
+            @click="clickGoods(goods, product.productId)"
+          >
+            <div>
+              <div>{{ goods.goodsDes }}</div>
+              <div :class="disable ? 'text-grey-6' : 'text-black'" style="font-size:9px !important; display:inline-block; white-space:nowrap;">
+                售价:
+                <span>{{ (goods.price / 100).toFixed(2) }}</span>元
+              </div>
+            </div>
+          </q-btn>
         </div>
-        <q-btn
-          v-for="(goods, index) in product.goodsList"
-          :key="index"
-          :color="disable ? 'grey-6' : 'primary'"
-          :disable="disable"
-          :outline="goods.goodsId != selectedGoods.goodsId"
-          @click="clickGoods(goods, product.productId)"
-        >
-          <div>
-            <div style="font-size:0.9em">{{ goods.goodsDes }}</div>
-            <small>
-              售价:<span>{{ (goods.price / 100).toFixed(2) }}</span
-              >元
-            </small>
-          </div>
-        </q-btn>
       </q-card-section>
     </q-card>
     <div class="text-center">
-        <q-btn
-          flat
-          type="a"
-          label="充值记录"
-          color="blue"
-          to="gasRecords"
-          size="sm"
-        ></q-btn>
-      </div>
+      <q-btn flat type="a" label="充值记录" color="blue" to="gasRecords" size="sm"></q-btn>
+    </div>
     <q-inner-loading :showing="loading || channelLoading">
       <q-spinner-bars size="50px" color="primary" />
     </q-inner-loading>
@@ -105,8 +80,7 @@ import { mapState } from 'vuex'
 export default {
   name: 'Gas',
   data () {
-    return {
-    }
+    return {}
   },
   computed: {
     ...mapState('gas', [
@@ -146,7 +120,9 @@ export default {
         this.$store.commit('gas/update', { disable: true })
         this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
       } else {
-        this.$store.dispatch('gas/getGoodsList', { selectedCard: this.selectedCard })
+        this.$store.dispatch('gas/getGoodsList', {
+          selectedCard: this.selectedCard
+        })
         this.$store.commit('gas/update', { disable: false })
       }
     },
@@ -178,14 +154,20 @@ export default {
     if (this.cards && this.cards.length > 0) {
       this.selectedCard = this.cards[0]
     }
-    this.$store.dispatch('gas/getGoodsList', { selectedCard: this.selectedCard })
+    this.$store.dispatch('gas/getGoodsList', {
+      selectedCard: this.selectedCard
+    })
   },
   destroyed: function () {
     this.$store.dispatch('pn/updatePrice', { path: this.$route.path })
     this.$store.commit('gas/update', { selectedGoods: {} })
   },
   mounted: function () {
-    this.$store.commit('config/update', { isShowRoot: true, isShowRootFoot: true, title: undefined })
+    this.$store.commit('config/update', {
+      isShowRoot: true,
+      isShowRootFoot: true,
+      title: 'LITEX Store'
+    })
   }
 }
 </script>

@@ -27,7 +27,7 @@ export default {
   tokens: [],
   // config
 
-  title: 'LITE X Store',
+  title: 'LITEX Store',
   isShowRoot: true,
   isShowFund: false,
   isShowRootFoot: true,

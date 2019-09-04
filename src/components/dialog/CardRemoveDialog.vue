@@ -12,15 +12,15 @@
         确认删除？
       </q-card-section>
       <q-separator />
-      <q-card-section class="q-pa-xs q-pt-md">
-        <div class="column q-pl-lg">
-          <div class="col q-pa-xs q-ml-md">类 型：{{ cardType.label }}</div>
-          <div class="col q-pa-xs q-ml-md">卡 号：{{ card.id }}</div>
-          <div class="col q-pa-xs q-ml-md">姓 名：{{ card.user }}</div>
-          <div class="col q-pa-xs q-ml-md">手 机：{{ card.tel }}</div>
+      <q-card-section class="q-pa-lg q-py-md text-grey-7">
+        <div class="q-px-lg q-ml-md">
+          <div>类 型：<span class="text-grey-10">{{ cardType.label }}</span></div>
+          <div>卡 号：<span class="text-grey-10">{{ card.id }}</span></div>
+          <div>姓 名：<span class="text-grey-10">{{ card.user }}</span></div>
+          <div>手 机：<span class="text-grey-10">{{ card.tel }}</span></div>
         </div>
       </q-card-section>
-      <q-card-actions align="right" class="q-pt-xs">
+      <q-card-actions align="around" class="q-pt-xs">
         <q-btn color="primary" label="确认" @click="onOKClick" />
         <q-btn color="primary" label="取消" @click="onCancelClick" />
       </q-card-actions>

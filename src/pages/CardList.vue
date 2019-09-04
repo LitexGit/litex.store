@@ -3,27 +3,25 @@
     <q-card class="q-pa-sm container" flat>
       <div v-if="cards && cards.length > 0">
         <q-list>
-          <q-item-label header class="q-pa-xs q-pb-sm">加油卡列表</q-item-label>
-          <q-separator />
           <div v-for="(card, index) in cards" :key="index">
-            <q-item class="q-pa-sm q-my-sm" clickable v-ripple>
+            <q-item class="q-pa-sm q-my-xs" style="background-color:#CDE9F4; border-radius: 3px;" clickable v-ripple>
               <q-item-section side>
-                <q-item-label class="q-py-xs q-mb-xs">
-                  <q-icon :name="'img:' + img(card.type)" size="md"></q-icon>
-                </q-item-label>
+                <q-icon :name="'img:' + img(card.type)" size="xl"/>
               </q-item-section>
               <q-item-section>
                 <q-item-label class="q-pb-xs"> {{ brand(card.type) }} </q-item-label>
                 <q-item-label caption> 姓名：{{ card.user }} </q-item-label>
-                <q-item-label caption> 卡号：{{ card.id }} </q-item-label>
+                <q-item-label caption> 卡号：
+                  <span class="text-primary text-weight-bold">{{ card.id }}</span>
+                </q-item-label>
               </q-item-section>
               <q-item-section side>
                 <q-item-label @click="removeCard(card)">
-                  <q-icon name="delete" size="xs"></q-icon>
+                  <q-icon  color="red" name="delete" size="xs"></q-icon>
                 </q-item-label>
               </q-item-section>
             </q-item>
-            <q-separator />
+            <!-- <q-separator/> -->
           </div>
         </q-list>
       </div>
@@ -87,5 +85,6 @@ export default {
 <style scoped>
 .container {
   flex: 1;
+
 }
 </style>

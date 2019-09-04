@@ -1,54 +1,34 @@
 <template>
   <q-page padding class="flex">
-    <q-card class="q-pa-sm container" flat>
-      <div>
-        <q-list>
-          <q-item-label header class="q-pt-sm q-pb-sm">充值记录</q-item-label>
-          <div v-if="!records || records.length <= 0">
-            <q-separator inset class="q-mb-xs" />
-            <q-item-section class="text-center">
-              <q-item-label header>
-                暂无数据
-              </q-item-label>
-            </q-item-section>
-          </div>
-          <div v-else>
-            <div v-for="(record, index) in records" :key="index">
-              <q-separator inset class="q-my-xs" />
-
-              <q-item clickable v-ripple>
+    <q-card class="q-pa-sm container flex" flat>
+      <div
+        v-if="!records || records.length <= 0"
+        class="flex column justify-center items-center q-pb-xl"
+        style="flex:1"
+      >
+        <img src="statics/store/empty.png">
+        <span class="q-mt-lg text-body1">暂无记录</span>
+      </div>
+      <q-list v-else style="flex:1">
+          <div v-for="(record, index) in records" :key="index">
+              <q-item clickable v-ripple style="">
                 <q-item-section avatar class="self-center">
                   <q-icon :name="iconName" color="secondary" />
                 </q-item-section>
-
                 <q-item-section class="content">
-                  <q-item-label>
-                    {{ record.orderInfo.orderDes }}
-                  </q-item-label>
-                  <q-item-label caption>
-                    {{ record.orderInfo.accountNum }}
-                  </q-item-label>
-                  <q-item-label caption>
-                    {{ format(new Date(record.stamp), "YYYY-MM-DD HH:mm:ss") }}
-                  </q-item-label>
+                  <q-item-label>{{ record.orderInfo.orderDes }}</q-item-label>
+                  <q-item-label caption>{{ record.orderInfo.accountNum }}</q-item-label>
+                  <q-item-label caption>{{ format(new Date(record.stamp), "YYYY-MM-DD HH:mm:ss") }}</q-item-label>
                 </q-item-section>
-
                 <q-item-section side>
-                  <q-item-label caption>
-                    ￥ {{ record.orderInfo.fiatAmount / 100 }}
-                  </q-item-label>
-                  <q-item-label caption>
-                    {{ tokenAmount(record) }}{{ record.token.symbol }}
-                  </q-item-label>
-                  <q-item-label caption>
-                    {{ getOrderState(record.status) }}
-                  </q-item-label>
+                  <q-item-label caption>￥ {{ record.orderInfo.fiatAmount / 100 }}</q-item-label>
+                  <q-item-label caption>{{ tokenAmount(record) }}{{ record.token.symbol }}</q-item-label>
+                  <q-item-label caption>{{ getOrderState(record.status) }}</q-item-label>
                 </q-item-section>
               </q-item>
+              <q-separator v-if="records.length && index != records.length - 1" inset class="q-mt-xs"/>
             </div>
-          </div>
         </q-list>
-      </div>
     </q-card>
     <q-inner-loading :showing="loading">
       <q-spinner-bars size="50px" color="primary" />
@@ -73,18 +53,22 @@ export default {
   methods: {
     format,
     roundFun,
-    getOrderState: (state) => {
+    getOrderState: state => {
       return ORDER_STATE[state]
     },
     tokenAmount: function (record) {
       return roundFun(
-        record.token.amount /
-        Math.pow(10, record.token.decimal),
-        record.token.symbol)
+        record.token.amount / Math.pow(10, record.token.decimal),
+        record.token.symbol
+      )
     }
   },
   created () {
-    this.$store.commit('config/update', { isShowRoot: false, isShowRootFoot: false, title: '充值记录' })
+    this.$store.commit('config/update', {
+      isShowRoot: false,
+      isShowRootFoot: false,
+      title: '充值记录'
+    })
   }
 }
 </script>
