@@ -91,8 +91,12 @@ export default {
       // TODO 校验 02:通道状态
       // 校验 03:banlance
       const amount = this.toWei({ input: this.authInput, decimal: this.token.decimal })
-      const isGTE = utils.toBN(this.token.balance).gt(utils.toBN(amount))
+      const isGTE = utils.toBN(this.token.balance).gte(utils.toBN(amount))
       // TODO 校验 04: 异常提示
+      if (!isGTE) {
+        this.$q.notify({ message: '钱包余额不足,请及时充值', position: 'top', type: 'negative', timeout: this.duration })
+        return false
+      }
       return isGTE
     },
     clickAuthorize: function () {

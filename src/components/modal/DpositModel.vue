@@ -88,7 +88,11 @@ export default {
       // 校验 03:banlance
       const amount = this.toWei({ input: this.depInput, decimal: this.token.decimal })
       const isGT = utils.toBN(this.token.balance).gt(utils.toBN(amount))
-      return isGT
+      if (!isGT) {
+        this.$q.notify({ message: '钱包余额不足,请及时充值', position: 'top', type: 'negative', timeout: this.duration })
+        return false
+      }
+      return true
     },
     clickConfirm: function () {
       blur()
