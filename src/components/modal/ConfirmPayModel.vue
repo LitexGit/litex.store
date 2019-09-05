@@ -26,7 +26,7 @@
           <span>{{ amount }}</span
           >&nbsp;<span>{{ symbol }}</span>
         </center>
-        <div class="q-py-md q-px-md text-body2">
+        <div class="q-pb-md q-px-md text-body2">
           <span
             >订单信息：<span>{{ orderinfo.accountNum }}</span></span
           >
@@ -37,7 +37,7 @@
           <br />
           <span>付款方式：</span><span>{{ symbol }}</span>
         </div>
-        <center>
+        <center :class="this.isIPhoneFllS() ? 'q-pb-lg' : 'q-pb-nonce'">
           <q-btn
             class="q-px-xl"
             color="primary"
@@ -53,7 +53,7 @@
 <script>
 
 import { mapState, mapGetters } from 'vuex'
-import { toDecimal, mathCeil } from '../../utils/helper'
+import { toDecimal, mathCeil, isIPhoneFllS } from '../../utils/helper'
 
 export default {
   name: 'ConfirmPayModel',
@@ -120,6 +120,7 @@ export default {
     }
   },
   methods: {
+    isIPhoneFllS,
     toDecimal,
     ...mapGetters('config', [
       'getSelectedToken'
