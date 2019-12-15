@@ -10,22 +10,37 @@ export function loading (state, loading) {
 }
 
 export function updateConfigs (state, config) {
-  const { baseUrl, categorys, telegramUrl, tokens } = config
+  const {
+    baseUrl,
+    categorys,
+    telegramUrl,
+    tokens,
+    contractAddress: {
+      ethPNAddress,
+      appRpcUrl,
+      appPNAddress
+    }
+  } = config
+
   state.baseURL = baseUrl
   state.categorys = categorys
   state.telegramURL = telegramUrl
 
+  state.ethPNAddress = ethPNAddress
+  state.appPNAddress = appPNAddress
+  state.appRpcUrl = appRpcUrl
+
+  const completion = { status: 0, channelBalance: '0', balance: '0' }
+
   let list = []
   for (const token of tokens) {
-    for (const t of state.tokens) {
-      const { symbol } = token
-      const { symbol: s } = t
-      if (s === symbol) {
-        list.push(Object.assign(t, token))
-      }
-    }
+    list.push(Object.assign(token, completion))
   }
   state.tokens = list
+
+  // console.log('=============config=======================')
+  // console.log(state)
+  // console.log('=============config=======================')
 }
 
 export function updateSelected (state, { index }) {
@@ -77,4 +92,10 @@ export function syncChannelStatus (state, { channel }) {
   })
   token.status = channel.status
   token.loading = channel.loading
+}
+
+export function updateIsShowRoot (state, { isShowRoot, isShowFund, title }) {
+  state.isShowRoot = isShowRoot
+  state.isShowFund = isShowFund
+  state.title = title
 }

@@ -10,14 +10,36 @@ import * as utils from 'web3-utils'
 export async function placeOrder ({ commit, rootState }, payload) {
   console.log('===============【下单】=====================')
   const { config: { tokens, selected, duration } } = rootState
-  // 01:校验 手机号码
-  const { phone } = payload
-  if (!isPoneAvailable(phone)) {
-    Notify.create({ message: '请输入正确的手机号码', position: 'top', color: 'red', timeout: duration })
-    return
+  const { path } = payload
+  let selectGoods, accountNum, remark
+  switch (path) {
+    case '/shop/phone':
+      // 01:校验 手机号码
+      const { info: { phone } } = rootState.phone
+      if (!isPoneAvailable(phone)) {
+        Notify.create({ message: '请输入正确的手机号码', position: 'top', color: 'red', timeout: duration })
+        return
+      }
+      selectGoods = rootState.phone.selectGoods
+      accountNum = phone
+      remark = null
+      break
+    case '/shop/gas':
+      selectGoods = rootState.gas.selectedGoods
+      const selectedCard = rootState.gas.selectedCard
+      if (selectedCard === null || selectedCard === {}) {
+        Notify.create({ message: '请选择加油卡', position: 'top', color: 'red', timeout: duration })
+        return
+      }
+      accountNum = selectedCard.id
+      remark = JSON.stringify({
+        phoneNum: selectedCard.tel
+      })
+      break
+    default: return
   }
+
   // 02:校验 商品
-  const { sku: { selectGoods } } = rootState
   const { productId, goodsId } = selectGoods
   if (!productId || !goodsId) {
     Notify.create({ message: '请先选择下单商品', position: 'top', color: 'red', timeout: duration })
@@ -29,7 +51,8 @@ export async function placeOrder ({ commit, rootState }, payload) {
   console.log(status)
   console.log('=======placeOrder=====status========================')
   if (parseInt(status) === 0) {
-    Notify.create({ message: '余额不足,请及时充值...', position: 'top', color: 'red', timeout: duration })
+    // Notify.create({ message: '余额不足,请及时充值...', position: 'top', color: 'red', timeout: duration })
+    commit('config/update', { showDepositDialog: true }, { root: true })
     return
   }
   if (parseInt(status) === 2) {
@@ -43,15 +66,16 @@ export async function placeOrder ({ commit, rootState }, payload) {
   price = price * Math.pow(10, decimal)
   const isGte = utils.toBN(price).gte(utils.toBN(channelBalance))
   if (isGte) {
-    Notify.create({ message: '余额不足,请及时充值', position: 'top', color: 'red', timeout: duration })
+    // Notify.create({ message: '余额不足,请及时充值', position: 'top', color: 'red', timeout: duration })
+    commit('config/update', { showDepositDialog: true }, { root: true })
     return
   }
   // 04:下单
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
   commit('updateLoading', true)
-  const order = await api.placeOrder({ address, accountNum: phone, tokenType, productId, goodsId })
+  const order = await api.placeOrder({ address, accountNum, tokenType, productId, goodsId, remark })
   commit('updateLoading', false)
-  commit('update', { current: Object.assign(order, { status: 1 }) })
+  commit('update', { current: Object.assign(order, { status: 1, productId: selectGoods.productId }) })
   commit('updateShowConfirmPay', { open: true })
 }
 
@@ -86,6 +110,6 @@ export async function updateOrderRecords ({ commit }, { account }) {
   const records = await api.getOrderRecords({
     address: account
   })
-  commit('updateOrderRecords', records)
+  commit('updateOrderRecords', records.filter(record => record.status && record.status !== 0))
   commit('updateLoading', false)
 }

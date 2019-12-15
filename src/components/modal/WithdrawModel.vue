@@ -11,12 +11,12 @@
       <div class="bg-white q-pa-md">
         <center>可提现金额</center>
         <center>
-          <balance-view class="text-primary text-subtitle1" :symbol="token.symbol" :decimal="token.decimal" :amount="token.channelBalance" :symbolStyle="symbolStyle"/>
+          <balance-view class="text-primary text-subtitle1" :symbol="token.symbol" :decimal="token.decimal" :amount="token.channelBalance" :float="token.round"  :symbolStyle="symbolStyle"/>
         </center>
         <div class="q-mt-sm text-caption text-weight-light">
           1.<span>您提现的代币将直接进入您的数字钱包账户。</span><br/>
           2.<span>您可以随时提现。</span><br/>
-          3.<span>提现涉及与以太坊的链上交互，提现金额会扣除Gas费。成功的操作可以在“资金记录中查看”</span>
+          3.<span>提现涉及与以太坊的链上交互，提现金额会扣除Gas费。成功的操作可以在“资金记录”中查看</span>
         </div>
         <center class="q-mt-sm">
           <q-btn class="q-px-xl" dense color="primary" label="全部提现" @click="clickContinue()"/>

@@ -11,7 +11,7 @@
       </div>
       <div class="bg-white q-pa-md">
         <div class="text-caption text-weight-light">
-          拒绝钱包的确认提现请求会导致取消提现。 此操作会导致游戏暂时锁定1-2分钟。请保持取现过程流畅。
+          拒绝钱包的确认提现请求会导致取消提现。 此操作会导致页面暂时锁定1-2分钟。请保持取现过程流畅。
         </div>
         <center class="q-mt-sm">
           <q-btn class="q-px-xl" dense color="primary" label="确认提现" @click="clickConfirm()"/>

@@ -14,7 +14,7 @@
         </center>
         <div class="q-py-md q-px-md text-body2">
           <span>订单信息：<span>{{orderinfo.accountNum}}</span></span> <br/>
-          <span>话费充值：￥<span>{{fiat}}</span></span> <br/>
+          <span>{{use}}：￥<span>{{fiat}}</span></span> <br/>
           <span>付款方式：</span><span>{{symbol}}</span>
         </div>
         <center>
@@ -50,12 +50,24 @@ export default {
         this.$store.commit('order/updateShowOrderDModel', { open })
       }
     },
+    use: function () {
+      switch (this.current.productId) {
+        case 1:
+          return '话费充值'
+        case 2:
+          return '流量充值'
+        case 3:
+          return '加油卡充值'
+        default:
+          return '话费充值'
+      }
+    },
     amount: function () {
       let amount = this.orderinfo.amount || '0'
       const decimal = this.getSelectedToken().decimal
-      const float = this.getSelectedToken().float
+      const round = this.getSelectedToken().round
       amount = toDecimal({ amount, decimal })
-      return mathCeil({ decimal: amount, float })
+      return mathCeil({ decimal: amount, round })
     },
     orderinfo: function () {
       return this.current.orderinfo || {}
@@ -88,7 +100,7 @@ export default {
       this.$store.commit('order/updateShowOrderDModel', { open: false })
       const info = { phone: null }
       const selectGoods = { goodsId: null, productId: null }
-      this.$store.commit('sku/update', { info, selectGoods, remind: '请输入手机号' })
+      this.$store.commit('phone/update', { info, selectGoods, remind: '请输入手机号' })
       this.$store.dispatch('pn/updatePrice')
     },
     clickClose: function () {

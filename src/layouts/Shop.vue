@@ -2,19 +2,24 @@
   <q-layout view="lHh Lpr lFf">
     <q-header reveal elevated>
       <q-toolbar>
-        <q-btn round flat disable @click="goback"/>
-        <q-toolbar-title class="row justify-center">
+        <q-btn size="lg" flat dense round  :disable='isShowRoot' @click="$router.go(-1)">
+          <q-icon v-if="!isShowRoot" name="chevron_left" />
+        </q-btn>
+        <q-toolbar-title class="flex flex-center column">
           <span>LITE<b>X</b> Store</span>
+          <small class="text-caption">{{title}}</small>
         </q-toolbar-title>
-        <MenuBtn></MenuBtn>
+        <menu-btn/>
       </q-toolbar>
-      <!-- <OrderStatusBar :status="current.status" pay="pay()" cancel="cancelOrder()" refresh="" /> -->
-      <q-tabs>
+      <ChannelStatusBar :status="channelStatus"/>
+      <q-tabs v-show="isShowRoot">
         <q-route-tab v-for="(category, index) in categorys" :key="index" exact
            :name="getRouter(category.categoryId)" :to="getRouter(category.categoryId)" :label="category.categoryDes" />
       </q-tabs>
+      <fund-tabs v-if="isShowFund"></fund-tabs>
     </q-header>
-    <q-footer>
+
+    <q-footer v-show="isShowRoot" class="bg-white" :class="this.isIPhoneFllS() ? 'q-pb-lg' : 'q-pb-nonce'">
       <q-toolbar class="bg-secondary text-white row">
         <q-toolbar-title class="col-6">
           <small> 金额：</small>
@@ -22,9 +27,9 @@
         </q-toolbar-title>
         <q-separator dark vertical inset />
 
-        <q-btn-dropdown class="col" flat :label="tokens[selected].symbol || '选择币种'">
+        <q-btn-dropdown class="col" flat :label="symbol || ''" v-model="showSelectDropdown">
           <q-list separator>
-            <!-- :clickable="token.status === 1" -->
+
             <q-item class="q-pa-none" v-for="(token, index) in tokens" clickable v-close-popup
               :key="index"  :active="index === selected"
               @click="selectToken(index)">
@@ -48,43 +53,44 @@
     <w-remind-model/>
     <deposit-token-model/>
     <order-details-model/>
+    <deposit-dialog/>
 
   </q-layout>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-// import OrderStatusBar from '../components/OrderStatusBar.vue'
+import ChannelStatusBar from '../components/ChannelStatusBar.vue'
 import { TokenItem } from '../components/item'
 import { ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel } from '../components/modal'
+import { DepositDialog } from '../components/dialog'
 import MenuBtn from '../components/menu/MenuBtn'
-import { getAccount, getNetwork, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil } from '../utils/helper'
+import { FundTabs } from '../components/tabs'
+import { getAccount, getRouter, isCurrentUser, getShowToken, toDecimal, mathCeil, sleep, getPlatformOS, isIPhoneFllS } from '../utils/helper'
 import { Preferences, PrefKeys } from '../utils/preferences'
 import Api from '../constants/interface'
 
-// import VConsole from 'vconsole'
-// // eslint-disable-next-line no-new
-// new VConsole()
-
-// OrderStatusBar
 export default {
   name: 'MyLayout',
   components: {
-    MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel
+    MenuBtn, TokenItem, ConfirmPayModel, DRemindModel, PreDpositModel, DpositModel, WithdrawModel, WRemindModel, DepositTokenModel, OrderDetailsModel, DepositDialog, ChannelStatusBar, FundTabs
   },
   data () {
     return {}
   },
   computed: {
     ...mapState('config', {
+      title: 'title',
       duration: 'duration',
       tokens: 'tokens',
       selected: 'selected',
       categorys: 'categorys',
       isInitL2: 'isInitL2',
-      account: 'account'
+      account: 'account',
+      isShowRoot: 'isShowRoot',
+      isShowFund: 'isShowFund'
     }),
-    ...mapState('sku', {
+    ...mapState('phone', {
       info: 'info',
       selectGoods: 'selectGoods'
     }),
@@ -100,6 +106,23 @@ export default {
     }),
     phone: function () {
       return this.info.phone
+    },
+    showSelectDropdown: {
+      set: function (val) {
+        this.$store.commit('config/update', { showSelectDropdown: val })
+      },
+      get: function () {
+        return this.$store.state.config.showSelectDropdown
+      }
+    },
+    symbol: function () {
+      const { symbol = '' } = this.tokens[this.selected] || {}
+      return symbol
+    },
+    // 0:不可用 1:可用 2:准备中
+    channelStatus: function () {
+      const { status = 0 } = this.tokens[this.selected] || {}
+      return status
     }
   },
   watch: {
@@ -110,12 +133,11 @@ export default {
         switch (path) {
           case '/shop/phone':
             break
-          case '/shop/gas':
+          case '/shop/gas': // break
           case '/shop/vip':
             this.$router.go(-1)
             this.$q.notify({ message: '即将上线, 敬请期待...', position: 'top', color: 'positive', timeout: this.duration })
             break
-
           default:
             break
         }
@@ -139,11 +161,13 @@ export default {
   methods: {
     getRouter,
     getAccount,
-    getNetwork,
     isCurrentUser,
     getShowToken,
     toDecimal,
     mathCeil,
+    sleep,
+    getPlatformOS,
+    isIPhoneFllS,
     goback: function () {
       this.$router.go(-1)
     },
@@ -153,10 +177,10 @@ export default {
       this.$store.dispatch('pn/updatePrice')
     },
     placeOrder: function () {
-      this.$store.dispatch('order/placeOrder', { phone: this.phone })
+      this.$store.dispatch('order/placeOrder', { path: this.$route.path })
     },
     deposit: function (token) {
-      console.log('=============【deposit】=======================')
+      console.log('========【deposit】=======================')
       const { address, symbol } = token
       this.$store.dispatch('channel/preDeposit', { address, symbol })
     },
@@ -167,17 +191,21 @@ export default {
     }
   },
   created: function () {
-    this.$store.dispatch('config/getConfigs')
-
+    this.$store.commit('gas/initCards')
+    console.log('============created========================')
     window.addEventListener('load', async () => {
-      console.log('=============load=======================')
+      while (!window.web3) {
+        console.log('检测Web3是否注入=>')
+        console.log(window.web3)
+        await sleep(1000)
+      }
+      this.$store.dispatch('config/getConfigs')
       const account = await this.getAccount()
       this.$store.commit('config/update', { account: account.toLowerCase() })
 
       this.$socket && this.$socket.emit(Api.SOCKET_CONNECT, JSON.stringify({ address: account }))
       Preferences.setItem(PrefKeys.USER_ACCOUNT, account.toLowerCase())
       this.$store.dispatch('config/register')
-      this.$store.dispatch('config/initLayer2')
 
       window.ethereum.on('accountsChanged', (accounts) => {
         console.log('=============【切换 账号】=======================')
@@ -197,6 +225,7 @@ export default {
     }
   },
   mounted: async function () {
+    console.log('==============mounted======================')
     this.$layer2.on('TokenApproval', (err, res) => {
       console.log('===========TokenApproval=========================')
       console.log('TokenApproval from L2', err, res)
@@ -212,14 +241,12 @@ export default {
       this.$store.dispatch('config/getBalance')
 
       const cToken = this.getShowToken(token, this.tokens)
-      const { symbol, decimal, float } = cToken
+      const { symbol, decimal, round } = cToken
       let value = this.toDecimal({ amount, decimal })
-      value = this.mathCeil({ decimal: value, float })
+      value = this.mathCeil({ decimal: value, round })
       const message = '成功授权' + ' ' + value + ' ' + symbol
       this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
       this.$store.dispatch('channel/confirmDeposit', { amount, address: token })
-
-      // this.$store.dispatch('config/getChannelInfo')
     })
     this.$layer2.on('Deposit', (err, res) => {
       console.log('===========Deposit=========================')
@@ -236,9 +263,9 @@ export default {
       this.$store.dispatch('config/getBalance')
 
       const cToken = this.getShowToken(token, this.tokens)
-      const { symbol, decimal, float } = cToken
+      const { symbol, decimal, round } = cToken
       let value = this.toDecimal({ amount, decimal })
-      value = this.mathCeil({ decimal: value, float })
+      value = this.mathCeil({ decimal: value, round })
       const message = '成功充值' + ' ' + value + ' ' + symbol
       this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
 
@@ -260,9 +287,9 @@ export default {
       this.$store.dispatch('config/getBalance')
 
       const cToken = this.getShowToken(token, this.tokens)
-      const { symbol, decimal, float } = cToken
+      const { symbol, decimal, round } = cToken
       let value = this.toDecimal({ amount, decimal })
-      value = this.mathCeil({ decimal: value, float })
+      value = this.mathCeil({ decimal: value, round })
       const message = '成功提现' + ' ' + value + ' ' + symbol
       this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
 
@@ -278,9 +305,9 @@ export default {
       const { user, amount, token } = res
       if (!this.isCurrentUser(user)) return
       const cToken = this.getShowToken(token, this.tokens)
-      const { symbol, decimal, float } = cToken
+      const { symbol, decimal, round } = cToken
       let value = this.toDecimal({ amount, decimal })
-      value = this.mathCeil({ decimal: value, float })
+      value = this.mathCeil({ decimal: value, round })
       const message = '提现' + ' ' + value + ' ' + symbol + '请求已取消'
       this.$q.notify({ message, position: 'top', color: 'positive', timeout: this.duration })
 
@@ -308,17 +335,5 @@ export default {
 </script>
 
 <style>
-</style>
 
-  // test1: function (data) {
-  //   console.log('==============test1======================')
-  //   console.log(data)
-  //   console.log('==============test1======================')
-  // },
-  // test2: function (data) {
-  //   // orderId ==> order details
-  //   // type => msg =>(账户 100￥话费 已到账)
-  //   console.log('==============test2======================')
-  //   console.log(data)
-  //   console.log('==============test2======================')
-  // }
+</style>

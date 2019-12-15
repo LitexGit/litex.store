@@ -1,33 +1,43 @@
 
-#  LITEX.STORRE
+
+# LiteX.Store   ![](<https://img.shields.io/badge/build-passing-brightgreen.svg>)  ![](<https://img.shields.io/badge/codeStyle-Standard-brightgreen.svg>)
+
+A front end of landing project base on layer2 in the blockchain field running with Eth wallet.
+
+**site**: http://test.litex.store
+
+**backend**: https://github.com/litexio/litex.store.backend
+
+## Features
+
+- Supports multi-coins for real consumption
+
+- Speeds up transactions based on layer2 state channel technology
+
+- Powered by [Vue](https://github.com/vuejs/vue)、[Vuex](https://github.com/vuejs/vuex)、[Vue-Router](https://github.com/vuejs/vue-router)、[Quasar](https://github.com/quasarframework/quasar)、[Web3](https://github.com/ethereum/web3.js) and a few more
+
+
+## Installation
+
 ```
-Litex.Store 是区块链支付的落地项目
+git clone https://github.com/litexio/litex.store.git
+
+cd litex.store
+npm install
 ```
-## :earth_asia: Environment
-### :wrench: 开发工具
+
+## Start
+
 ```
-01: Visual Studio code
-02: Google Chrome
-03: Mac
+# develop
+quasar dev
+# build
+quasar build
 ```
-## :arrow_down: Setup
 
-**Step 1:** `git clone` [repo](https://github.com/litexio/litex.store.git)
+## License
 
-**Step 2:** `npm install`
+[MIT](http://opensource.org/licenses/MIT)
 
-## :arrow_forward: Run App
-
-1. cd to the repo
-2. 开发 `quasar dev`
-
-   生产 `quasar build`
-
-
-## :satellite: Link
-[VUE 渐进式JavaScript框架](https://cn.vuejs.org/index.html)
-
-[Quasar 基于Vue开源UI框架](http://www.quasarchs.com/guide/introduction-to-quasar.html)
-
-[Vuex 状态管理模式](https://vuex.vuejs.org/zh/)
+Copyright (c) 2019-present, [litex.io](https://litex.io/)
 

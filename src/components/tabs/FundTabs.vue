@@ -1,0 +1,53 @@
+<template>
+  <div>
+    <q-tabs
+      v-model="type"
+      dense
+      class="bg-primary text-white row"
+      indicator-bg-color="primary"
+      align="justify"
+      narrow-indicator
+    >
+      <q-tab
+        v-for="(token, index) in tokens"
+        :key="token.type"
+        :label="token.symbol"
+        :name="token.type"
+        @click="selectToken(index, token.type)"
+        class="col-4"
+      ></q-tab>
+    </q-tabs>
+  </div>
+</template>
+
+<script>
+import { mapState } from 'vuex'
+
+export default {
+  // name: 'ComponentName',
+  data () {
+    return {}
+  },
+  computed: {
+    ...mapState('config', [
+      'tokens', 'selected', 'account'
+    ]),
+    type: function () {
+      const { type = 1 } = this.tokens[this.selected] || {}
+      return type
+    }
+  },
+  methods: {
+    back: () => {
+      window.history.back(-1)
+    },
+    selectToken (index, type) {
+      this.$store.dispatch('fund/updateFundRecords', { type, account: this.account })
+      this.$store.commit('config/updateSelected', { index })
+    }
+  }
+}
+</script>
+
+<style>
+</style>

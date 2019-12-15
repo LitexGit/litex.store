@@ -13,7 +13,6 @@
       </q-card-section>
       <q-card-section v-for="(product, index) in skus" :key="index" class="q-gutter-sm">
         <div>{{product.productDes}}</div>
-        <!-- :label="" -->
         <q-btn v-for="(goods, index) in product.goodsList" :key="index" :color="disable ? 'grey-6' : 'primary'"
           :disable="disable" :outline="goods.goodsId!=selectGoods.goodsId" @click="clickGoods(goods, product.productId)">
           <div>
@@ -39,6 +38,7 @@ export default {
   name: 'PageIndex',
   data () {
     return {
+      debug: undefined
     }
   },
   computed: {
@@ -49,26 +49,29 @@ export default {
     ...mapState('channel', {
       loading002: 'loading'
     }),
-    ...mapState('sku', {
+    ...mapState('phone', {
       remind: 'remind',
       skus: 'skus',
       info: 'info',
       disable: 'disable',
       selectGoods: 'selectGoods'
     }),
+    // ...mapState('pn', {
+    //   selectGoods: 'selectGoods'
+    // }),
     phone: {
       get () {
-        return this.$store.state.sku.info.phone
+        return this.$store.state.phone.info.phone
       },
       set (phone) {
-        this.$store.commit('sku/update', { info: { phone } })
+        this.$store.commit('phone/update', { info: { phone } })
       }
     }
   },
   watch: {
     isShowOrderDModel: function (newValue, oldValue) {
       if (!newValue) return
-      this.$store.commit('sku/update', { disable: true })
+      this.$store.commit('phone/update', { disable: true })
     }
   },
   methods: {
@@ -77,12 +80,14 @@ export default {
     inputValue: function (input) {
       if (!this.isPoneAvailable(input)) {
         const selectGoods = { goodsId: null, productId: null }
-        this.$store.commit('sku/update', { selectGoods })
+        this.$store.commit('phone/update', { selectGoods })
         this.$store.dispatch('pn/updatePrice')
-        this.$store.commit('sku/update', { disable: true })
+        this.$store.commit('phone/update', { disable: true })
       } else {
-        this.$store.dispatch('sku/getGoodsList', { accountNum: input })
-        this.$store.commit('sku/update', { disable: false })
+        // this.$store.dispatch('sku/getGoodsList', { accountNum: input, debug: this.debug })
+        // this.$store.commit('sku/update', { disable: false })
+        this.$store.dispatch('phone/getGoodsList', { accountNum: input, debug: this.debug })
+        this.$store.commit('phone/update', { disable: false })
       }
     },
     // 更新提示
@@ -90,26 +95,36 @@ export default {
       const { phone } = info
       if (!this.isPoneAvailable(phone)) {
         const selectGoods = { goodsId: null, productId: null }
-        this.$store.commit('sku/update', { selectGoods })
+        this.$store.commit('phone/update', { selectGoods })
         this.$store.dispatch('pn/updatePrice')
-        this.$store.commit('sku/update', { disable: true })
+        this.$store.commit('phone/update', { disable: true })
       } else {
-        this.$store.commit('sku/update', { disable: false })
+        this.$store.commit('phone/update', { disable: false })
 
-        this.$store.commit('sku/update', { info })
-        this.$store.commit('sku/updatePhoneRemind', info)
+        this.$store.commit('phone/update', { info })
+        this.$store.commit('phone/updatePhoneRemind', info)
       }
     },
     clickGoods: function (goods, productId) {
       goods.productId = productId
-      this.$store.commit('sku/update', { selectGoods: goods })
+      this.$store.commit('phone/update', { selectGoods: goods })
       this.$store.dispatch('pn/updatePrice')
     }
   },
   // 默认商品列表
   created () {
     const { phone } = this.info
-    this.$store.dispatch('sku/getGoodsList', { accountNum: phone })
+    this.debug = this.$route.query.debug
+    this.debug = !(this.debug === undefined || this.debug === null)
+    // this.$store.dispatch('sku/getGoodsList', { accountNum: phone, debug: this.debug })
+    this.$store.dispatch('phone/getGoodsList', { accountNum: phone, debug: this.debug })
+  },
+  destroyed: function () {
+    this.$store.commit('pn/updatePrice', 0)
+    this.$store.commit('phone/update', { selectGoods: {} })
+  },
+  mounted: function () {
+    this.$store.commit('config/update', { title: undefined })
   }
 }
 </script>

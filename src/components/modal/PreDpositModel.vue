@@ -13,14 +13,14 @@
       </div>
       <div class="bg-white q-px-md q-pb-md q-pt-sm">
         <!-- @blur="updateInputValue({input})" -->
-        <q-input filled type='number' v-model="authInput" label="请输入数量"/>
+        <q-input filled type='number' v-model="authInput" label="请输入数量" @blur="blur1()" @focus="focus()" />
         <div class="q-mt-md">
           <span>钱包余额：</span>
-          <balance-view :symbol="token.symbol" :decimal="token.decimal" :amount="token.balance" :float="token.float"/>
+          <balance-view :symbol="token.symbol" :decimal="token.decimal" :amount="token.balance" :float="token.round"/>
           <div class="q-mt-md text-caption text-weight-light">
             1.<span>您的充值安全由<span class="text-weight-regular">以太坊状态通道</span>保障，游戏运营方无法操纵用户充值的代币，且您可以随时提现。</span><br/>
             2.<span>抢红包之前请先充值，以保证有相应场次足够的代币。</span><br/>
-            3.<span>充值涉及与以太坊的链上交互，请确保有足够的Gas费。成功的操作可以在“资金记录中查看”。</span><br/>
+            3.<span>充值涉及与以太坊的链上交互，请确保有足够的Gas费。成功的操作可以在“资金记录”中查看。</span><br/>
           </div>
           <center class="q-mt-md">
             <q-btn class="q-px-xl" dense color="primary" label="确认授权" @click="clickAuthorize()"/>
@@ -41,7 +41,10 @@ export default {
   name: 'PreDpositModel',
   components: { BalanceView },
   data () {
-    return {}
+    return {
+      isScroll: false,
+      timer: null
+    }
   },
   computed: {
     ...mapState('config', {
@@ -87,7 +90,7 @@ export default {
       }
       // TODO 校验 02:通道状态
       // 校验 03:banlance
-      const amount = this.toWei({ input: this.authInput, decimal: this.token.decimal, pos: this.token.float })
+      const amount = this.toWei({ input: this.authInput, decimal: this.token.decimal })
       const isGTE = utils.toBN(this.token.balance).gt(utils.toBN(amount))
       // TODO 校验 04: 异常提示
       return isGTE
@@ -95,9 +98,22 @@ export default {
     clickAuthorize: function () {
       blur()
       if (!this.checkInput(this.authInput)) return
-      const amount = this.toWei({ input: this.authInput, decimal: this.token.decimal, pos: this.token.float })
+      const amount = this.toWei({ input: this.authInput, decimal: this.token.decimal })
       this.$store.commit('channel/updateShowPreDpositModel', { open: false })
       this.$store.dispatch('channel/submitERC20Approval', { amount, address: this.token.address })
+    },
+    blur1 () {
+      this.isScroll = true
+      clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
+        if (this.isScroll) {
+          window.scrollTo(0, 0)
+          clearTimeout(this.timer)
+        }
+      }, 300)
+    },
+    focus () {
+      this.isScroll = false
     }
   }
 }

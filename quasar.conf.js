@@ -19,7 +19,6 @@ module.exports = function (ctx) {
 
     framework: {
       // all: true, // --- includes everything; for dev only!
-
       components: [
         'QLayout',
         'QHeader',
@@ -58,13 +57,15 @@ module.exports = function (ctx) {
         'QDialog',
         'QInnerLoading',
         'QSpinner',
-        'QSpinnerBars'
+        'QSpinnerBars',
+        'QImg',
+        'QSelect'
       ],
 
       directives: ['Ripple', 'ClosePopup'],
 
       // Quasar plugins
-      plugins: ['Notify', 'Loading']
+      plugins: ['Notify', 'Loading', 'Dialog']
 
       // iconSet: 'ionicons-v4'
       // lang: 'de' // Quasar language
