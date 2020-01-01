@@ -1,5 +1,5 @@
 
-#  LITEX.STORRE
+#  LITEX.STORE
 ```
 Litex.Store 是区块链支付的落地项目
 ```
