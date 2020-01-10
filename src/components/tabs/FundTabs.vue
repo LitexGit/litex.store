@@ -6,6 +6,7 @@
       indicator-bg-color="primary"
       align="justify"
       narrow-indicator
+      v-model="tab"
     >
       <q-tab
         v-for="(token, index) in tokens"
@@ -30,7 +31,13 @@ export default {
   computed: {
     ...mapState('config', [
       'tokens', 'selected', 'account'
-    ])
+    ]),
+    tab: {
+      get () {
+        return this.tokens[this.selected].type
+      },
+      set () {}
+    }
   },
   methods: {
     back: () => {
