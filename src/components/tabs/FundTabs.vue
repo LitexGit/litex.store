@@ -34,7 +34,7 @@ export default {
     ]),
     tab: {
       get () {
-        return this.tokens[this.selected].type
+        return this.tokens[this.selected] ? this.tokens[this.selected].type : 0
       },
       set () {}
     }
