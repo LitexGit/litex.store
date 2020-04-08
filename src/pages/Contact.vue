@@ -1,6 +1,6 @@
 <template>
   <q-page padding class="flex">
-    <q-card class="q-pa-sm">
+    <q-card class="q-pa-sm" style="flex:1">
       <div class="flex justify-center">
         <img
           src="statics/lxt-logo.png"
@@ -13,11 +13,11 @@
         <div class="q-pt-lg q-pl-md">
           <span class=" q-pr-md">Telegram:</span>
           <a href="https://t.me/joinchat/LPid-BOz24r2M3LcDtZzcg">
-            <span  style="word-break:break-all;">{{ telegramURL }}</span>
+            <span  style="word-break:break-all;">联系电报客服</span>
           </a>
         </div>
         <div class="q-pt-md q-pl-md">
-          <span class="q-pr-xl">邮箱:</span>
+          <span class="q-pr-md">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱:</span>
           <a
             href="mailto:contact@litex.io?subject=联系我们&body=请编辑你要提交的内容:"
           >
