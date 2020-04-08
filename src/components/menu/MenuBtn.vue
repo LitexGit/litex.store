@@ -81,7 +81,7 @@ export default {
           this.showIntroduction = true
           break
         case 'contactUS':
-          window.location.href = this.telegramURL
+          this.$router.push('/shop/contact')
           break
         default:
           break

@@ -29,8 +29,7 @@ export function updateSelectedSku (state, selected) {
   state.selected = selected
 }
 
-export function updateRecords (state, payload) {
-  const { records } = payload
+export function updateRecords (state, { records }) {
   records.sort((record1, record2) => {
     return record2.stamp - record1.stamp
   })

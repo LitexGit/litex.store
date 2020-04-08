@@ -7,9 +7,6 @@ export async function getGoodsList ({ commit }, payload) {
   // 当前默认为 0 => 话费流量
   const categoryId = 0
   const { accountNum = '', debug } = payload
-  // console.log('============accountNum========================')
-  // console.log(accountNum)
-  // console.log('============accountNum========================')
   const skus = await api.getGoodsList({ categoryId, accountNum, debug })
   commit('update', { skus })
   commit('loading', false)
@@ -22,22 +19,19 @@ export async function getGoodsList ({ commit }, payload) {
 export async function getRecords ({ commit }, payload) {
   commit('loading', true)
   const address = Preferences.getItem(PrefKeys.USER_ACCOUNT)
-  const type1 = 1 // 话费
-  const type2 = 2 // 流量
   // 话费充值记录
-  const callRecords = await api.getOrderRecords({ address, type: type1 })
+  const callRecords = await api.getOrderRecords({ address, type: 1 })
   callRecords.forEach(element => {
     element.type = 1
   })
   // 流量充值记录
-  const flowRecords = await api.getOrderRecords({ address, type: type2 })
+  const flowRecords = await api.getOrderRecords({ address, type: 2 })
   flowRecords.forEach(element => {
     element.type = 2
   })
-
-  callRecords.push.apply(callRecords, flowRecords)
-  // commit('updateRecords', { records: callRecords })
+  const records = [...callRecords, ...flowRecords]
+  // callRecords.push.apply(callRecords, flowRecords)
   // 对未进行支付的订单进行过滤
-  commit('updateRecords', { records: callRecords.filter(record => record.status && record.status !== 0) })
+  commit('updateRecords', { records: records.filter(record => record.status && record.status !== 0) })
   commit('loading', false)
 }

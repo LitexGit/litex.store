@@ -15,6 +15,7 @@ import PhoneRecords from 'pages/PhoneRecords'
 import GasRecords from 'pages/GasRecords'
 import CityPicker from 'pages/CityPicker'
 import Vip from 'pages/Vip'
+import Contact from 'pages/Contact'
 
 import { Notify } from 'quasar'
 function notify () {
@@ -37,6 +38,7 @@ const routes = [{
     { path: 'gasRecords', component: GasRecords },
     { path: 'fund', component: Fund },
     { path: 'order', component: Order },
+    { path: 'contact', component: Contact },
     {
       path: 'vip',
       component: Vip,
